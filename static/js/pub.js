@@ -227,7 +227,7 @@ saicfc.win = {
             windowHeight = window.screen.availHeight;//$(window).height();
 
         fit = fit == undefined ? true : fit;
-        var offset = fit ? [topHeight + "px",leftWidth + "px"] : "150px";
+        var offset = fit ? [topHeight + "px",leftWidth + "px"] : "100px";
 
         width = fit ? windowWidth - 10 : (width == undefined ? 600 : width);
         height = fit ? (windowHeight - 3*topHeight) : (height == undefined ? 400 : height);

@@ -9,6 +9,10 @@
     <!-- bootstrap & fonts -->
     <link rel="stylesheet" href="../../../static/ace/css/bootstrap.css" />
     <link rel="stylesheet" href="../../../static/ace/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="../../../static/ztree/css/metroStyle/metroStyle.css"/>
+
     <!-- ace styles & fonts & common-->
     <link rel="stylesheet" href="../../../static/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
     <link rel="stylesheet" href="../../../static/ace/css/ace-fonts.css" />
@@ -33,8 +37,27 @@
     <script type="text/javascript">
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
+    <div class="sidebar widget-box widget-color-green" style="width: 230px;">
+        <div class="widget-header widget-header-flat">
+            <h4 class="widget-title">
+                <i class="ace-icon fa fa-filter"></i>
+                角色树
+            </h4>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <!-- start condition -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul id="roleTree" class="ztree"></ul>
+                    </div>
+                </div>
+                <!-- end condition -->
+            </div><!-- /.widget-main -->
+        </div><!-- /.widget-body -->
+    </div>
     <!-- /section:basics/sidebar -->
-    <div class="main-content">
+    <div class="main-content" style="margin-left: 230px;">
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row">
@@ -125,7 +148,6 @@
                                             </label>
                                         </th>
                                         <th class="center">角色名称</th>
-                                        <th class="center">角色编号</th>
                                         <th class="center">创建时间</th>
                                         <th class="center">备注</th>
                                         <th class="center">操作</th>
@@ -156,6 +178,8 @@
 <script src="../../../static/js/pub.js"></script>
 
 <!-- page specific plugin scripts -->
+<script src="../../../static/ztree/js/jquery.ztree.all-3.5.js"></script>
+
 <!--datatables组件-->
 <script src="../../../static/ace/js/dataTables/jquery.dataTables.js"></script>
 <script src="../../../static/ace/js/dataTables/jquery.dataTables.bootstrap.js"></script>

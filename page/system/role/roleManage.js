@@ -34,7 +34,7 @@ saicfc.nameSpace.reg("sys.role");
          */
         this.setParamFun = function(){
             editRole.roleName = $("#roleName").val();
-            editRole.roleCode = $("#roleCode").val();
+            editRole.roleType = "default";
             editRole.remark = $("#remark").val();
         };
 
@@ -65,18 +65,16 @@ saicfc.nameSpace.reg("sys.role");
                         url = ctxData + "/sys/role/update?date=" + new Date().getTime();
                     }
                     $.ajax({
-                        "url": url ,
-                        "data": editRole,
-                        "success": function(retData){
+                        url: url ,
+                        data: editRole,
+                        success: function(retData){
                             saicfc.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 var iframeContent = saicfc.tab.getIframeContent();
                                 iframeContent.roleMain.editCallBackFun({"roleId" : $.getUrlParam("id")});
                                 saicfc.win.close();
                             }
-                        },
-                        "dataType": "jsonp",
-                        "cache": false
+                        }
                     });
                 }
             };
@@ -99,15 +97,12 @@ saicfc.nameSpace.reg("sys.role");
                 return;
             }
             $.ajax({
-                "dataType": "jsonp",
-                "cache": false,
-                "url": ctxData + "/sys/role/querybyid?roleId=" + roleId + "&date=" + new Date().getTime,
-                "success": function(retData){
+                url: ctxData + "/sys/role/querybyid?roleId=" + roleId + "&date=" + new Date().getTime,
+                success: function(retData){
                     if(retData.status == "0"){
                         var data = retData.data;
                         editRole.roleId = data.roleId;
                         $("#roleName").val(data.roleName);
-                        $("#roleCode").val(data.roleCode);
                         $("#remark").val(data.remark);
                     }
                 }

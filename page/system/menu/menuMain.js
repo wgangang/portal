@@ -99,11 +99,9 @@ saicfc.nameSpace.reg("sys.menu");
             saicfc.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
-                        "url": ctxData + "/sys/menu/delete?date=" + new Date().getTime(),
-                        "data": {menuId : selRows[0].menuId },
-                        "dataType": "jsonp",
-                        "cache": false,
-                        "success": function(retData){
+                        url: ctxData + "/sys/menu/delete?date=" + new Date().getTime(),
+                        data: {menuId : selRows[0].menuId },
+                        success: function(retData){
                             saicfc.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                obj.loadMenuTreeFun();
@@ -128,15 +126,13 @@ saicfc.nameSpace.reg("sys.menu");
                 "sAjaxSource": ctxData + '/sys/menu/query',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
-                        "url": sUrl,
-                        "data": aoData,
-                        "success": function(data){
+                        url: sUrl,
+                        data: aoData,
+                        success: function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
                             parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
-                        },
-                        "dataType": "jsonp",
-                        "cache": false
+                        }
                     });
                 },
                 "fnServerParams": function (aoData) {
@@ -162,12 +158,12 @@ saicfc.nameSpace.reg("sys.menu");
                         return '<label class="pos-rel"><input id="' + value + '" type="checkbox" class="ace" /><span class="lbl"></span></label>';
                     }
                 },{
-                    "data": "menuName",
+                    data: "menuName",
                     sWidth : "100",
                     sClass : "text-center",
                     sSort : false
                 },{
-                    "data": "type",
+                    data: "type",
                     sWidth : "60",
                     sClass : "text-center",
                     sSort : false,
@@ -175,29 +171,29 @@ saicfc.nameSpace.reg("sys.menu");
                         return value == "0" ? "菜单" : "功能";
                     }
                 },{
-                    "data": "url",
+                    data: "url",
                     sWidth : "200",
                     sClass : "text-left"
                 },{
-                    "data": "icon",
+                    data: "icon",
                     sWidth : "40",
                     sClass : "text-center",
                     render : function (value) {
                         return "<span class='menu-icon fa " + (value == "" ? "fa-caret-right" : value) + "'></span>";
                     }
                 },{
-                    "data": "sort",
+                    data: "sort",
                     sWidth : "60",
                     sClass : "text-center"
                 },{
-                    "data": "createTime",
+                    data: "createTime",
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
                         return saicfc.moment.formatYMD(value);
                     }
                 },{
-                    "data": "menuId",
+                    data: "menuId",
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(){
@@ -228,7 +224,6 @@ saicfc.nameSpace.reg("sys.menu");
         this.loadMenuTreeFun = function () {
             $.ajax({
                 url: ctxData + "/sys/menu/querytree?date="+new Date().getTime(),
-                dataType: "jsonp",
                 success: function(retData){
                     if(retData.status == 0){
                         $.fn.zTree.init($("#menuTree"),{

@@ -10,15 +10,17 @@
                 window.location.reload(true);
             }
             if( xhr.responseJSON != undefined && xhr.responseJSON.errCode == "ERR_MSG_0001"){
-                saicfc.win.alert(xhr.responseJSON.msg);
+                //saicfc.win.alert(xhr.responseJSON.msg);
             }
 
         },
         error : function(data){
         	saicfc.progress.hide(_progress_index);
-            if(data.status != 404)
-                window.location.reload(true);
-        }
+            /*if(data.status != 404)
+                window.location.reload(true);*/
+        },
+        dataType: "json",
+        cache: false
     });
 
     $.getUrlParam = function (name) {
@@ -186,7 +188,7 @@ saicfc.utils = {
         var serverPath = "";
         switch (reqType){
             case "system" :  //系统管理
-                serverPath = saicfc.utils.getContextPath();
+                serverPath = "http://localhost:8080/portal";//saicfc.utils.getContextPath();
                 break;
             case "anti" :
                 serverPath = saicfc.utils.getContextPath();

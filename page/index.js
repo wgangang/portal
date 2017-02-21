@@ -29,10 +29,10 @@ saicfc.nameSpace.reg("sys");
             });
 
             //加载用户信息
-            obj.initUserInfoFun();
+            //obj.initUserInfoFun();
 
             //加载快捷键
-            obj.loadQuickKeyFun();
+            //obj.loadQuickKeyFun();
 
             //选中tab是修改选中菜单
             $("#portal_tabs").on("click","li>a",function(e){
@@ -66,14 +66,12 @@ saicfc.nameSpace.reg("sys");
         /** 初始化菜单 */
         this.initMenuFun = function(){
             $.ajax({
-                "url": ctxData + "/sys/menu/querymenubyuser?date=" + new Date().getTime() ,
-                "success": function(retData){
+                url: ctxData + "/sys/auth/queryusermenu?date=" + new Date().getTime() ,
+                success: function(retData){
                     var menuHtml = "";
                     menuHtml =  obj.foreachFun(menuHtml,retData.data) + "</ul></li>";
                     $("#portal_menus").append(menuHtml);
-                },
-                "dataType": "jsonp",
-                "cache": false
+                }
             });
         };
 
@@ -249,9 +247,8 @@ saicfc.nameSpace.reg("sys");
                 },
                 error : function(){
                     window.location.reload(true);
-                },
-                dataType: "jsonp",
-                cache: false
+                }
+
             });
         };
 

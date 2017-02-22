@@ -197,8 +197,8 @@ saicfc.utils = {
                 serverPath = saicfc.utils.getContextPath() + "/static/ace/js/dataTables/language/zn_ch.json";
                 break;
             default:
-                serverPath = saicfc.utils.getContextPath();
-        }
+        serverPath = saicfc.utils.getContextPath();
+    }
         return serverPath;
     },
     getContextPath : function() {

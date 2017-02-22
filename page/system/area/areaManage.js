@@ -2,10 +2,10 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.dict");
+saicfc.nameSpace.reg("sys.area");
 
 (function(){
-    sys.dict.dictManage = function(){
+    sys.area.areaManage = function(){
 
         var ctxData = saicfc.utils.getServerPath("system");
 
@@ -32,9 +32,8 @@ saicfc.nameSpace.reg("sys.dict");
          * @returns {string}
          */
         this.setParamFun = function(){
-            editMenu.dictName = $("#dictName").val();
-            editMenu.dictCode = $("#dictCode").val();
-            editMenu.dictValue = $("#dictValue").val();
+            editMenu.areaName = $("#areaName").val();
+            editMenu.areaCode = $("#areaCode").val();
             editMenu.sort = $("#sort").val();
             editMenu.remark = $("#remark").val();
         };
@@ -43,7 +42,7 @@ saicfc.nameSpace.reg("sys.dict");
          * 验证 function
          */
         this.validateFun = function(){
-            $("#dictForm").html5Validate(function() {
+            $("#areaForm").html5Validate(function() {
                 obj.saveFun();
             }, {
                 validate : function() {
@@ -60,10 +59,10 @@ saicfc.nameSpace.reg("sys.dict");
                 if(btn == "yes"){
                     obj.setParamFun();
                     var url = "";
-                    if($.getUrlParam("dictId")== undefined || $.getUrlParam("dictId") =="" ){
-                        url = ctxData + "/sys/dict/save?date=" + new Date().getTime();
+                    if($.getUrlParam("areaId")== undefined || $.getUrlParam("areaId") =="" ){
+                        url = ctxData + "/sys/area/save?date=" + new Date().getTime();
                     }else{
-                        url = ctxData + "/sys/dict/update?date=" + new Date().getTime();
+                        url = ctxData + "/sys/area/update?date=" + new Date().getTime();
                     }
                     $.ajax({
                         url: url,
@@ -72,7 +71,7 @@ saicfc.nameSpace.reg("sys.dict");
                             saicfc.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 var iframeContent = saicfc.tab.getIframeContent();
-                                iframeContent.dictMain.editCallBackFun({"dictId" : $.getUrlParam("id")});
+                                iframeContent.areaMain.editCallBackFun({"areaId" : $.getUrlParam("id")});
                                 saicfc.win.close();
                             }
                         }
@@ -93,22 +92,21 @@ saicfc.nameSpace.reg("sys.dict");
          * form 表单初始化数据
          */
         this.formSetValue = function(){
-            var dictId = $.getUrlParam("dictId");
-            if(dictId == undefined || dictId =="" ){
+            var areaId = $.getUrlParam("areaId");
+            if(areaId == undefined || areaId =="" ){
                 editMenu.parentId = $.getUrlParam("parentId");
                 return;
             }
             $.ajax({
-                url: ctxData + "/sys/dict/querybyid?dictId=" + dictId + "&date=" + new Date().getTime(),
+                url: ctxData + "/sys/area/querybyid?areaId=" + areaId + "&date=" + new Date().getTime(),
                 success: function(retData){
                     if(retData.status == "0"){
                         var data = retData.data;
-                        editMenu.dictId = data.dictId;
+                        editMenu.areaId = data.areaId;
                         editMenu.parentId = data.parentId;
                         
-                        $("#dictName").val(data.dictName);
-                        $("#dictCode").val(data.dictCode);
-                        $("#dictValue").val(data.dictValue);
+                        $("#areaName").val(data.areaName);
+                        $("#areaCode").val(data.areaCode);
                         $("#sort").val(data.sort);
                         $("#remark").val(data.remark);
                     }
@@ -123,11 +121,11 @@ saicfc.nameSpace.reg("sys.dict");
      * 初始化数据
      */
     $(document).ready(function() {
-        dictManage.init();
+        areaManage.init();
     });
 })();
 
-var dictManage = new sys.dict.dictManage();
+var areaManage = new sys.area.areaManage();
 
 
 

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>角色管理</title>
+    <title>机构管理</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <!-- bootstrap & fonts -->
@@ -41,7 +41,7 @@
         <div class="widget-header widget-header-flat">
             <h4 class="widget-title">
                 <i class="ace-icon fa fa-filter"></i>
-                机构树
+                结构树
             </h4>
         </div>
         <div class="widget-body">
@@ -56,13 +56,12 @@
             </div><!-- /.widget-main -->
         </div><!-- /.widget-body -->
     </div>
-    <!-- /section:basics/sidebar -->
     <div class="main-content" style="margin-left: 230px;">
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="widget-box widget-color-green2">
+                    <div class="col-sm-12 no-padding">
+                        <div class="widget-box widget-color-blue">
                             <div class="widget-header widget-header-flat">
                                 <h4 class="widget-title">
                                     <i class="ace-icon fa fa-filter"></i>
@@ -79,7 +78,7 @@
                                     </a>
                                 </div>
                                 <div class="widget-toolbar no-border">
-                                    <a href="javascript:void(0);" id="btn-search" class="white btn-search">
+                                    <a href="javascript:void(0);" class="white btn-search">
                                         <i class="ace-icon fa fa-search"></i> 查询
                                     </a>
                                 </div>
@@ -90,11 +89,16 @@
                                     <div class="row filter">
                                         <div class="col-sm-12 filter-item">
                                             <ul class="list-unstyled list-inline">
-                                                <span>角色名称:</span>
+                                                <span>机构名称:</span>
                                                 <li>
-                                                    <input type="text" class="input-xlarge" id="roleName" placeholder="角色名称"/>
+                                                    <input type="text" class="input-xlarge" id="officeName" placeholder="机构名称"/>
+                                                </li>
+                                                <span>机构编号:</span>
+                                                <li>
+                                                    <input type="text" class="input-xlarge" id="officeCode" placeholder="机构编号"/>
                                                 </li>
                                             </ul>
+
                                         </div>
                                     </div>
                                     <!-- end condition -->
@@ -102,9 +106,8 @@
                             </div><!-- /.widget-body -->
                         </div>
                     </div>
-
-                    <div class="col-sm-12">
-                        <div class="widget-box widget-color-green">
+                    <div class="col-sm-12 no-padding">
+                        <div class="widget-box widget-color-blue3">
                             <div class="widget-header widget-header-flat">
                                 <h4 class="widget-title">
                                     <i class="ace-icon fa fa-th"></i>
@@ -117,7 +120,7 @@
                                     </a>
                                 </div>
                                 <div class="widget-toolbar">
-                                    <a href="javascript:void(0);" id="btn-refresh" class="white btn-search">
+                                    <a href="javascript:void(0);" class="white btn-search">
                                         <i class="ace-icon fa fa-refresh"></i> 刷新
                                     </a>
                                 </div>
@@ -139,7 +142,7 @@
                             </div>
                             <div class="widget-body">
                                 <div class="widget-main no-padding">
-                                    <table id="role-table" class="table table-striped table-bordered table-hover">
+                                    <table id="office-table" class="table table-striped table-bordered table-hover">
                                         <thead>
                                         <th class="left">
                                             <label class="pos-rel">
@@ -147,13 +150,14 @@
                                                 <span class="lbl"></span>
                                             </label>
                                         </th>
-                                        <th class="center">角色名称</th>
-                                        <th class="center">英文名称</th>
-                                        <th class="center">系统数据</th>
+                                        <th class="center">机构名称</th>
+                                        <th class="center">机构编号</th>
+                                        <th class="center">机构类型</th>
+                                        <th class="center">负责人</th>
+                                        <th class="center">电话</th>
+                                        <th class="center">排序</th>
                                         <th class="center">创建时间</th>
-                                        <th class="center">备注</th>
                                         <th class="center">操作</th>
-                                        <th class="center">权限分配</th>
                                         </thead>
                                     </table>
                                 </div><!-- /.widget-main -->
@@ -187,6 +191,6 @@
 <script src="../../../static/ace/js/dataTables/jquery.dataTables.bootstrap.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="roleMain.js"></script>
+<script src="officeMain.js"></script>
 </body>
 </html>

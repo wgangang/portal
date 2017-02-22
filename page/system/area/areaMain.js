@@ -2,10 +2,10 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.menu");
+saicfc.nameSpace.reg("sys.area");
 
 (function(){
-    sys.menu.menuMain = function(){
+    sys.area.areaMain = function(){
         var ctxData = saicfc.utils.getServerPath("system");
 
         /**
@@ -14,8 +14,8 @@ saicfc.nameSpace.reg("sys.menu");
          */
         var obj = this;
 
-        this.menuTable = {};
-        this.menuTree = {};
+        this.areaTable = {};
+        this.areaTree = {};
         this.curSelTree={};
 
         /**
@@ -26,13 +26,13 @@ saicfc.nameSpace.reg("sys.menu");
              * 查询
              */
             $(".btn-search").click(function(){
-                obj.menuTable.ajax.reload();
+                obj.areaTable.ajax.reload();
             });
             $(document).bind("keydown",".filter input",function(e){
                 var theEvent = window.event || e;
                 var code = theEvent.keyCode || theEvent.which;
                 if (code == 13) {
-                    obj.menuTable.ajax.reload();
+                    obj.areaTable.ajax.reload();
                 }
             });
 
@@ -58,8 +58,8 @@ saicfc.nameSpace.reg("sys.menu");
              */
             $("#btn-remove").on("click",obj.removeFun);
 
-            obj.loadMenuTreeFun();
-            obj.loadMenuTableFun();
+            obj.loadAreaTreeFun();
+            obj.loadAreaTableFun();
 
         };
 
@@ -68,30 +68,30 @@ saicfc.nameSpace.reg("sys.menu");
          * 新增 function
          */
         this.plusFun = function(){
-            if(obj.curSelTree.id == undefined ){
+           if(obj.curSelTree.id == undefined ){
                 saicfc.win.alert("请选择要添加的节点");
                 return;
             }
-            saicfc.win.show("菜单新增","system/menu/menuManage.html?parentId=" + obj.curSelTree.id,$(window).width()-150,500);
+            saicfc.win.show("区域新增","system/area/areaManage.html?parentId=" + obj.curSelTree.id,700,400,false);
         }
 
         /**
          * 修改 function
          */
         this.editFun = function(){
-            var selRows = obj.menuTable.rows(".info").data();
+            var selRows = obj.areaTable.rows(".info").data();
             if(selRows.length < 1){
                 saicfc.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("菜单修改","system/menu/menuManage.html?menuId=" + selRows[0].menuId,$(window).width()-150,500);
+            saicfc.win.show("区域修改","system/area/areaManage.html?areaId=" + selRows[0].areaId,700,400,false);
         }
 
         /**
          * 删除 function
          */
         this.removeFun = function(){
-            var selRows = obj.menuTable.rows(".info").data();
+            var selRows = obj.areaTable.rows(".info").data();
             if(selRows.length < 1){
                 saicfc.win.alert("请选择修改的数据");
                 return;
@@ -99,12 +99,12 @@ saicfc.nameSpace.reg("sys.menu");
             saicfc.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
-                        url: ctxData + "/sys/menu/delete?date=" + new Date().getTime(),
-                        data: {menuId : selRows[0].menuId },
+                        url: ctxData + "/sys/area/delete?date=" + new Date().getTime(),
+                        data: {areaId : selRows[0].areaId },
                         success: function(retData){
                             saicfc.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                               obj.loadMenuTreeFun();
+                               obj.loadAreaTreeFun();
                             }
                         }
                     });
@@ -115,15 +115,15 @@ saicfc.nameSpace.reg("sys.menu");
         /**
          * 加载数据表 function
          */
-        this.loadMenuTableFun = function(){
-            var record_table = $("#menu-table").DataTable({
+        this.loadAreaTableFun = function(){
+            var record_table = $("#area-table").DataTable({
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
                 "bSort" : false,
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/sys/menu/query',
+                "sAjaxSource": ctxData + '/sys/area/query',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         url: sUrl,
@@ -141,7 +141,7 @@ saicfc.nameSpace.reg("sys.menu");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "menuName", "value": $("#menuName").val() },
+                        { "name": "areaName", "value": $("#areaName").val() },
                         { "name": "parentId", "value": parentId }
                     );
                 },
@@ -152,35 +152,20 @@ saicfc.nameSpace.reg("sys.menu");
                     }
                 ],
                 "aoColumns": [{
-                    data : "menuName",
+                    data : "areaName",
                     sWidth : "2",
                     render : function(value){
                         return '<label class="pos-rel"><input id="' + value + '" type="checkbox" class="ace" /><span class="lbl"></span></label>';
                     }
                 },{
-                    data: "menuName",
+                    data: "areaName",
                     sWidth : "100",
                     sClass : "text-center",
                     sSort : false
                 },{
-                    data: "type",
-                    sWidth : "60",
-                    sClass : "text-center",
-                    sSort : false,
-                    render : function(value){
-                        return value == "0" ? "菜单" : "功能";
-                    }
-                },{
-                    data: "url",
+                    data: "areaCode",
                     sWidth : "200",
                     sClass : "text-left"
-                },{
-                    data: "icon",
-                    sWidth : "40",
-                    sClass : "text-center",
-                    render : function (value) {
-                        return "<span class='menu-icon fa " + (value == "" ? "fa-caret-right" : value) + "'></span>";
-                    }
                 },{
                     data: "sort",
                     sWidth : "60",
@@ -193,40 +178,40 @@ saicfc.nameSpace.reg("sys.menu");
                         return saicfc.moment.formatYMD(value);
                     }
                 },{
-                    data: "menuId",
+                    data: "areaId",
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(){
-                        return "<div class='bolder'> <a class='red' href='javaScript:menuMain.editFun()'><i class='ace-icon fa fa-edit'></i></a> | " +
-                            "<a class='red' href='javaScript:menuMain.removeFun()'><i class='ace-icon fa fa-remove'></i></a></div> ";
+                        return "<div class='bolder'> <a class='red' href='javaScript:areaMain.editFun()'><i class='ace-icon fa fa-edit'></i></a> | " +
+                            "<a class='red' href='javaScript:areaMain.removeFun()'><i class='ace-icon fa fa-remove'></i></a></div> ";
                     }
                 }]
             });
 
-            obj.menuTable = record_table;
+            obj.areaTable = record_table;
 
             //单选事件
-            $("#menu-table tbody").on("click","tr",function() {
-                $.each($("#menu-table tbody").find("input[type='checkbox']"),function(index,object){
+            $("#area-table tbody").on("click","tr",function() {
+                $.each($("#area-table tbody").find("input[type='checkbox']"),function(index,object){
                     object.checked = false;
                 });
                 $(this).find("input[type='checkbox']").get(0).checked = true;
-                $("#menu-table>tbody>tr").removeClass("info");
+                $("#area-table>tbody>tr").removeClass("info");
                 $(this).addClass("info");
             });
 
-            $("#menu-table tbody").on("dblclick","tr",function() {
+            $("#area-table tbody").on("dblclick","tr",function() {
                 obj.editFun();
             });
         }
 
         /*** 加载 tree **/
-        this.loadMenuTreeFun = function () {
+        this.loadAreaTreeFun = function () {
             $.ajax({
-                url: ctxData + "/sys/menu/querytree?date="+new Date().getTime(),
+                url: ctxData + "/sys/area/querytree?date="+new Date().getTime(),
                 success: function(retData){
                     if(retData.status == 0){
-                        $.fn.zTree.init($("#menuTree"),{
+                        $.fn.zTree.init($("#areaTree"),{
                             check: {
                                 enable: false,
                             },
@@ -237,30 +222,30 @@ saicfc.nameSpace.reg("sys.menu");
                             },
                             callback: {
                                 onClick: function onClick(e, treeId, treeNode) {
-                                    obj.menuTree.selectNode(treeNode);
+                                    obj.areaTree.selectNode(treeNode);
                                     obj.curSelTree = treeNode;
-                                    obj.menuTable.ajax.reload();
+                                    obj.areaTable.ajax.reload();
                                     e.preventDefault();
                                     return false;
                                 }
                             }
                         }, retData.data);
 
-                        obj.menuTree = $.fn.zTree.getZTreeObj("menuTree");
+                        obj.areaTree = $.fn.zTree.getZTreeObj("areaTree");
 
                         if(obj.curSelTree.id != undefined ){
-                            obj.menuTree.selectNode(obj.curSelTree);
+                            obj.areaTree.selectNode(obj.curSelTree);
                         }else{
-                            var nodes = obj.menuTree.getNodes();
+                            var nodes = obj.areaTree.getNodes();
                             if (nodes.length>0) {
-                                obj.menuTree.selectNode(nodes[0]);
+                                obj.areaTree.selectNode(nodes[0]);
                                 obj.curSelTree = nodes[0];
                             }
                         }
 
-                        obj.menuTree.expandAll(true);
+                        obj.areaTree.expandAll(true);
 
-                        obj.menuTable.ajax.reload();
+                        obj.areaTable.ajax.reload();
                     }
                     //渲染结束重新设置高度
                     parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
@@ -276,8 +261,8 @@ saicfc.nameSpace.reg("sys.menu");
          */
         this.editCallBackFun = function(params){
             //加载数据
-            obj.loadMenuTreeFun();
-            if(params.menuId== undefined || params.menuId =="" ){
+            obj.loadAreaTreeFun();
+            if(params.areaId== undefined || params.areaId =="" ){
                 return;
             }
             //选中之前选中的数据
@@ -291,10 +276,10 @@ saicfc.nameSpace.reg("sys.menu");
      * 初始化数据
      */
     $(document).ready(function() {
-        menuMain.init();
+        areaMain.init();
     });
 })();
-var menuMain = new sys.menu.menuMain();
+var areaMain = new sys.area.areaMain();
 
 
 

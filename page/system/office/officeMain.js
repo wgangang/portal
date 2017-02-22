@@ -2,10 +2,10 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.department");
+saicfc.nameSpace.reg("sys.office");
 
 (function(){
-    sys.department.departmentMain = function(){
+    sys.office.officeMain = function(){
         var ctxData = saicfc.utils.getServerPath("system");
 
         /**
@@ -14,8 +14,8 @@ saicfc.nameSpace.reg("sys.department");
          */
         var obj = this;
 
-        this.departmentTable = {};
-        this.departmentTree = {};
+        this.officeTable = {};
+        this.officeTree = {};
         this.curSelTree={};
 
         /**
@@ -26,13 +26,13 @@ saicfc.nameSpace.reg("sys.department");
              * 查询
              */
             $(".btn-search").click(function(){
-                obj.departmentTable.ajax.reload();
+                obj.officeTable.ajax.reload();
             });
             $(document).bind("keydown",".filter input",function(e){
                 var theEvent = window.event || e;
                 var code = theEvent.keyCode || theEvent.which;
                 if (code == 13) {
-                    obj.departmentTable.ajax.reload();
+                    obj.officeTable.ajax.reload();
                 }
             });
 
@@ -58,8 +58,8 @@ saicfc.nameSpace.reg("sys.department");
              */
             $("#btn-remove").on("click",obj.removeFun);
 
-            obj.loadDepartmentTreeFun();
-            obj.loadDepartmentTableFun();
+            obj.loadOfficeTreeFun();
+            obj.loadOfficeTableFun();
         };
 
 
@@ -71,26 +71,26 @@ saicfc.nameSpace.reg("sys.department");
                 saicfc.win.alert("请选择要添加的节点");
                 return;
             }
-            saicfc.win.show("部门新增","system/department/departmentManage.html?parentId=" + obj.curSelTree.id,$(window).width()-150,500);
+            saicfc.win.show("机构新增","system/office/officeManage.html?parentId=" + obj.curSelTree.id,$(window).width()-150,500);
         }
 
         /**
          * 修改 function
          */
         this.editFun = function(){
-            var selRows = obj.departmentTable.rows(".info").data();
+            var selRows = obj.officeTable.rows(".info").data();
             if(selRows.length < 1){
                 saicfc.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("部门修改","system/department/departmentManage.html?departmentId=" + selRows[0].departmentId,$(window).width()-150,500);
+            saicfc.win.show("机构修改","system/office/officeManage.html?officeId=" + selRows[0].officeId,$(window).width()-150,500);
         }
 
         /**
          * 删除 function
          */
         this.removeFun = function(){
-            var selRows = obj.departmentTable.rows(".info").data();
+            var selRows = obj.officeTable.rows(".info").data();
             if(selRows.length < 1){
                 saicfc.win.alert("请选择修改的数据");
                 return;
@@ -98,12 +98,12 @@ saicfc.nameSpace.reg("sys.department");
             saicfc.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
-                        url: ctxData + "/sys/department/delete?date=" + new Date().getTime(),
-                        data: {departmentId : selRows[0].departmentId },
+                        url: ctxData + "/sys/office/delete?date=" + new Date().getTime(),
+                        data: {officeId : selRows[0].officeId },
                         success: function(retData){
                             saicfc.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                obj.loadDepartmentTreeFun();
+                                obj.loadOfficeTreeFun();
                             }
                         }
                     });
@@ -114,15 +114,15 @@ saicfc.nameSpace.reg("sys.department");
         /**
          * 加载数据表 function
          */
-        this.loadDepartmentTableFun = function(){
-            var record_table = $("#department-table").DataTable({
+        this.loadOfficeTableFun = function(){
+            var record_table = $("#office-table").DataTable({
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
                 "bSort" : false,
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/sys/department/query',
+                "sAjaxSource": ctxData + '/sys/office/query',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         url: sUrl,
@@ -140,8 +140,8 @@ saicfc.nameSpace.reg("sys.department");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "departmentName", "value": $("#departmentName").val() },
-                        { "name": "departmentCode", "value": $("#departmentCode").val() },
+                        { "name": "officeName", "value": $("#officeName").val() },
+                        { "name": "officeCode", "value": $("#officeCode").val() },
                         { "name": "parentId", "value": parentId }
                     );
                 },
@@ -152,18 +152,33 @@ saicfc.nameSpace.reg("sys.department");
                     }
                 ],
                 "aoColumns": [{
-                    data : "departmentId",
+                    data : "officeId",
                     sWidth : "2",
                     render : function(value){
                         return '<label class="pos-rel"><input id="' + value + '" type="checkbox" class="ace" /><span class="lbl"></span></label>';
                     }
                 },{
-                    data: "departmentName",
+                    data: "officeName",
                     sWidth : "100",
                     sClass : "text-center",
                     sSort : false
                 },{
-                    data: "departmentCode",
+                    data: "officeCode",
+                    sWidth : "100",
+                    sClass : "text-center",
+                    sSort : false
+                },{
+                    data: "officeType",
+                    sWidth : "100",
+                    sClass : "text-center",
+                    sSort : false
+                },{
+                    data: "master",
+                    sWidth : "100",
+                    sClass : "text-center",
+                    sSort : false
+                },{
+                    data: "phone",
                     sWidth : "100",
                     sClass : "text-center",
                     sSort : false
@@ -179,40 +194,40 @@ saicfc.nameSpace.reg("sys.department");
                         return saicfc.moment.formatYMD(value);
                     }
                 },{
-                    data: "departmentId",
+                    data: "officeId",
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(){
-                        return "<div class='bolder'> <a class='red' href='javaScript:departmentMain.editFun()'><i class='ace-icon fa fa-edit'></i></a> | " +
-                            "<a class='red' href='javaScript:departmentMain.removeFun()'><i class='ace-icon fa fa-remove'></i></a></div> ";
+                        return "<div class='bolder'> <a class='red' href='javaScript:officeMain.editFun()'><i class='ace-icon fa fa-edit'></i></a> | " +
+                            "<a class='red' href='javaScript:officeMain.removeFun()'><i class='ace-icon fa fa-remove'></i></a></div> ";
                     }
                 }]
             });
 
-            obj.departmentTable = record_table;
+            obj.officeTable = record_table;
 
             //单选事件
-            $("#department-table tbody").on("click","tr",function() {
-                $.each($("#department-table tbody").find("input[type='checkbox']"),function(index,object){
+            $("#office-table tbody").on("click","tr",function() {
+                $.each($("#office-table tbody").find("input[type='checkbox']"),function(index,object){
                     object.checked = false;
                 });
                 $(this).find("input[type='checkbox']").get(0).checked = true;
-                $("#department-table>tbody>tr").removeClass("info");
+                $("#office-table>tbody>tr").removeClass("info");
                 $(this).addClass("info");
             });
 
-            $("#department-table tbody").on("dblclick","tr",function() {
+            $("#office-table tbody").on("dblclick","tr",function() {
                 obj.editFun();
             });
         }
 
         /*** 加载 tree **/
-        this.loadDepartmentTreeFun = function () {
+        this.loadOfficeTreeFun = function () {
             $.ajax({
-                url: ctxData + "/sys/department/querytree?date="+new Date().getTime(),
+                url: ctxData + "/sys/office/querytree?date="+new Date().getTime(),
                 success: function(retData){
                     if(retData.status == 0){
-                        $.fn.zTree.init($("#departmentTree"),{
+                        $.fn.zTree.init($("#officeTree"),{
                             check: {
                                 enable: false,
                             },
@@ -223,29 +238,29 @@ saicfc.nameSpace.reg("sys.department");
                             },
                             callback: {
                                 onClick: function onClick(e, treeId, treeNode) {
-                                    obj.departmentTree.selectNode(treeNode);
+                                    obj.officeTree.selectNode(treeNode);
                                     obj.curSelTree = treeNode;
-                                    obj.departmentTable.ajax.reload();
+                                    obj.officeTable.ajax.reload();
                                     return false;
                                 }
                             }
                         }, retData.data);
 
-                        obj.departmentTree = $.fn.zTree.getZTreeObj("departmentTree");
+                        obj.officeTree = $.fn.zTree.getZTreeObj("officeTree");
 
                         if(obj.curSelTree.id != undefined ){
-                            obj.departmentTree.selectNode(obj.curSelTree);
+                            obj.officeTree.selectNode(obj.curSelTree);
                         }else{
-                            var nodes = obj.departmentTree.getNodes();
+                            var nodes = obj.officeTree.getNodes();
                             if (nodes.length>0) {
-                                obj.departmentTree.selectNode(nodes[0]);
+                                obj.officeTree.selectNode(nodes[0]);
                                 obj.curSelTree = nodes[0];
                             }
                         }
 
-                        obj.departmentTree.expandAll(true);
+                        obj.officeTree.expandAll(true);
 
-                        obj.departmentTable.ajax.reload();
+                        obj.officeTable.ajax.reload();
                     }
                     //渲染结束重新设置高度
                     parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
@@ -260,8 +275,8 @@ saicfc.nameSpace.reg("sys.department");
          */
         this.editCallBackFun = function(params){
             //加载数据
-            obj.loadDepartmentTreeFun();
-            if(params.departmentId== undefined || params.departmentId =="" ){
+            obj.loadOfficeTreeFun();
+            if(params.officeId== undefined || params.officeId =="" ){
                 return;
             }
             //选中之前选中的数据
@@ -275,10 +290,10 @@ saicfc.nameSpace.reg("sys.department");
      * 初始化数据
      */
     $(document).ready(function() {
-        departmentMain.init();
+        officeMain.init();
     });
 })();
-var departmentMain = new sys.department.departmentMain();
+var officeMain = new sys.office.officeMain();
 
 
 

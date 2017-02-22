@@ -19,7 +19,7 @@ saicfc.nameSpace.reg("sys.role");
          * @type {{}}
          */
         this.roleTable = {};
-        this.roleTree = {};
+        this.officeTree = {};
         this.curSelTree={};
 
         /**
@@ -141,13 +141,13 @@ saicfc.nameSpace.reg("sys.role");
                     });
                 },
                 "fnServerParams": function (aoData) {
-                    var parentId = 0;
+                    var officeId = 0;
                     if(obj.curSelTree.id != undefined ){
-                        parentId = obj.curSelTree.id;
+                        officeId = obj.curSelTree.id;
                     }
                     aoData.push(
                         { "name": "roleName", "value": $("#roleName").val() },
-                        { "name": "parentId", "value": parentId }
+                        { "name": "officeId", "value": officeId }
                     );
                 },
                 "aoColumnDefs": [
@@ -164,6 +164,16 @@ saicfc.nameSpace.reg("sys.role");
                     }
                 },{
                     data: "roleName",
+                    sWidth : "100",
+                    sClass : "text-center",
+                    sSort : false
+                },{
+                    data: "roleEnname",
+                    sWidth : "100",
+                    sClass : "text-center",
+                    sSort : false
+                },{
+                    data: "sysFlag",
                     sWidth : "100",
                     sClass : "text-center",
                     sSort : false
@@ -233,10 +243,10 @@ saicfc.nameSpace.reg("sys.role");
         /*** 加载 tree **/
         this.loadRolereeFun = function () {
             $.ajax({
-                url: ctxData + "/sys/role/querytree?date="+new Date().getTime(),
+                url: ctxData + "/sys/office/querytree?date="+new Date().getTime(),
                 success: function(retData){
                     if(retData.status == 0){
-                        $.fn.zTree.init($("#roleTree"),{
+                        $.fn.zTree.init($("#officeTree"),{
                             check: {
                                 enable: false,
                             },
@@ -247,7 +257,7 @@ saicfc.nameSpace.reg("sys.role");
                             },
                             callback: {
                                 onClick: function onClick(e, treeId, treeNode) {
-                                    obj.roleTree.selectNode(treeNode);
+                                    obj.officeTree.selectNode(treeNode);
                                     obj.curSelTree = treeNode;
                                     obj.roleTable.ajax.reload();
                                     return false;
@@ -255,19 +265,19 @@ saicfc.nameSpace.reg("sys.role");
                             }
                         }, retData.data);
 
-                        obj.roleTree = $.fn.zTree.getZTreeObj("roleTree");
+                        obj.officeTree = $.fn.zTree.getZTreeObj("officeTree");
 
                         if(obj.curSelTree.id != undefined ){
-                            obj.roleTree.selectNode(obj.curSelTree);
+                            obj.officeTree.selectNode(obj.curSelTree);
                         }else{
-                            var nodes = obj.roleTree.getNodes();
+                            var nodes = obj.officeTree.getNodes();
                             if (nodes.length>0) {
-                                obj.roleTree.selectNode(nodes[0]);
+                                obj.officeTree.selectNode(nodes[0]);
                                 obj.curSelTree = nodes[0];
                             }
                         }
 
-                        obj.roleTree.expandAll(true);
+                        obj.officeTree.expandAll(true);
 
                         obj.roleTable.ajax.reload();
                     }

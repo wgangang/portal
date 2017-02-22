@@ -77,7 +77,7 @@ saicfc.nameSpace.reg("sys.role");
                 saicfc.win.alert("请选择要添加的节点");
                 return;
             }
-            saicfc.win.show("角色新增","system/role/roleManage.html?parentId=" + obj.curSelTree.id,600,300,false);
+            saicfc.win.show("角色新增","system/role/roleManage.html?officeId=" + obj.curSelTree.id,600,400,false);
         }
 
         /**
@@ -89,7 +89,7 @@ saicfc.nameSpace.reg("sys.role");
                 saicfc.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("角色修改","system/role/roleManage.html?roleId=" + selRows[0].roleId,600,300,false);
+            saicfc.win.show("角色修改","system/role/roleManage.html?roleId=" + selRows[0].roleId,600,400,false);
         }
 
         /**
@@ -174,12 +174,15 @@ saicfc.nameSpace.reg("sys.role");
                     sSort : false
                 },{
                     data: "sysFlag",
-                    sWidth : "100",
+                    sWidth : "80",
                     sClass : "text-center",
-                    sSort : false
+                    sSort : false,
+                    render : function(value){
+                        return value == "0" ? "是" : "否";
+                    }
                 },{
                     data: "createTime",
-                    sWidth : "100",
+                    sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
                         return saicfc.moment.formatYMD(value);

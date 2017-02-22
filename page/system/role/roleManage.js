@@ -34,7 +34,8 @@ saicfc.nameSpace.reg("sys.role");
          */
         this.setParamFun = function(){
             editRole.roleName = $("#roleName").val();
-            editRole.roleType = "default";
+            editRole.roleEnname = $("#roleEnname").val();
+            editRole.sysFlag = $("#sysFlag").val();
             editRole.remark = $("#remark").val();
         };
 
@@ -94,6 +95,7 @@ saicfc.nameSpace.reg("sys.role");
         this.formSetValue = function(){
             var roleId = $.getUrlParam("roleId");
             if(roleId== undefined || roleId =="" ){
+                editMenu.officeId = $.getUrlParam("officeId");
                 return;
             }
             $.ajax({
@@ -102,7 +104,10 @@ saicfc.nameSpace.reg("sys.role");
                     if(retData.status == "0"){
                         var data = retData.data;
                         editRole.roleId = data.roleId;
+                        editRole.officeId = data.officeId;
                         $("#roleName").val(data.roleName);
+                        $("#roleEnname").val(data.roleEnname);
+                        $("#sysFlag").selectpicker('val',data.sysFlag);
                         $("#remark").val(data.remark);
                     }
                 }

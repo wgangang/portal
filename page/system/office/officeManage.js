@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.org");
+saicfc.nameSpace.reg("sys.office");
 
 (function(){
-    sys.org.orgManage = function(){
+    sys.office.officeManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = saicfc.utils.getServerPath("system");
 
         /**
          * 申明内部对象
@@ -15,7 +15,7 @@ saicfc.nameSpace.reg("sys.org");
          */
         var obj = this;
 
-        var editorg = {};
+        var editOffice = {};
 
         /**
          * 初始化调用 function
@@ -33,20 +33,24 @@ saicfc.nameSpace.reg("sys.org");
          * @returns {string}
          */
         this.setParamFun = function(){
-            editorg.orgName = $("#orgName").val();
-            editorg.orgCode = $("#orgCode").val();
-            editorg.customCode = $("#customCode").val();
-            editorg.orgType = $("#orgType").val();
-            editorg.icon = $("#icon").val();
-            editorg.sort = $("#sort").val();
-            editorg.remark = $("#remark").val();
+            editOffice.officeName = $("#officeName").val();
+            editOffice.officeCode = $("#officeCode").val();
+            editOffice.officeType = $("#officeType").val();
+            editOffice.master = $("#master").val();
+            editOffice.phone = $("#phone").val();
+            editOffice.email = $("#email").val();
+            editOffice.zipCode = $("#zipCode").val();
+            editOffice.fax = $("#fax").val();
+            editOffice.address = $("#address").val();
+            editOffice.sort = $("#sort").val();
+            editOffice.remark = $("#remark").val();
         };
 
         /**
          * 验证 function
          */
         this.validateFun = function(){
-            $("#orgForm").html5Validate(function() {
+            $("#officeForm").html5Validate(function() {
                 obj.saveFun();
             }, {
                 validate : function() {
@@ -63,24 +67,22 @@ saicfc.nameSpace.reg("sys.org");
                 if(btn == "yes"){
                     obj.setParamFun();
                     var url = "";
-                    if($.getUrlParam("orgId")== undefined || $.getUrlParam("orgId") =="" ){
-                        url = ctxData + "/sys/org/save?date=" + new Date().getTime();
+                    if($.getUrlParam("officeId")== undefined || $.getUrlParam("officeId") =="" ){
+                        url = ctxData + "/sys/office/save?date=" + new Date().getTime();
                     }else{
-                        url = ctxData + "/sys/org/update?date=" + new Date().getTime();
+                        url = ctxData + "/sys/office/update?date=" + new Date().getTime();
                     }
                     $.ajax({
-                        "url": url ,
-                        "data": editorg,
-                        "success": function(retData){
+                        url: url ,
+                        data: editOffice,
+                        success: function(retData){
                             saicfc.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 var iframeContent = saicfc.tab.getIframeContent();
-                                iframeContent.orgMain.editCallBackFun({"orgId" : $.getUrlParam("orgId")});
+                                iframeContent.officeMain.editCallBackFun({"officeId" : $.getUrlParam("officeId")});
                                 saicfc.win.close();
                             }
-                        },
-                        "dataType": "jsonp",
-                        "cache": false
+                        }
                     });
                 }
             };
@@ -98,26 +100,28 @@ saicfc.nameSpace.reg("sys.org");
          * form 表单初始化数据
          */
         this.formSetValue = function(){
-            var orgId = $.getUrlParam("orgId");
-            if(orgId== undefined || orgId =="" ){
-                editorg.parentId = $.getUrlParam("parentId");
+            var officeId = $.getUrlParam("officeId");
+            if(officeId== undefined || officeId =="" ){
+                editOffice.parentId = $.getUrlParam("parentId");
                 return;
             }
             $.ajax({
-                "dataType": "jsonp",
-                "cache": false,
-                "url": ctxData + "/sys/org/querybyid?orgId=" + orgId + "&date=" + new Date().getTime,
-                "success": function(retData){
+                url: ctxData + "/sys/office/querybyid?officeId=" + officeId + "&date=" + new Date().getTime,
+                success: function(retData){
                     if(retData.status == "0"){
                         var data = retData.data;
-                        editorg.orgId = data.orgId;
-                        editorg.parentId = data.parentId;
+                        editOffice.officeId = data.officeId;
+                        editOffice.parentId = data.parentId;
 
-                        $("#orgName").val(data.orgName);
-                        $("#orgCode").val(data.orgCode);
-                        $("#customCode").val(data.customCode);
-                        $("#orgType").val(data.orgType);
-                        $("#icon").val(data.icon);
+                        $("#officeName").val(data.officeName);
+                        $("#officeCode").val(data.officeCode);
+                        $("#officeType").selectpicker('val',data.officeType);
+                        $("#master").val(data.master);
+                        $("#phone").val(data.phone);
+                        $("#email").val(data.email);
+                        $("#zipCode").val(data.zipCode);
+                        $("#fax").val(data.fax);
+                        $("#address").val(data.address);
                         $("#sort").val(data.sort);
                         $("#remark").val(data.remark);
                     }
@@ -130,8 +134,8 @@ saicfc.nameSpace.reg("sys.org");
      * 初始化数据
      */
     $(document).ready(function() {
-        orgManage.init();
+        officeManage.init();
     });
 })();
 
-var orgManage = new sys.org.orgManage();
+var officeManage = new sys.office.officeManage();

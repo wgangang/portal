@@ -9,10 +9,14 @@
     <!-- bootstrap & fonts  -->
     <link rel="stylesheet" href="../../../static/ace/css/bootstrap.css" />
     <link rel="stylesheet" href="../../../static/ace/css/font-awesome.css" />
+
     <!-- ace styles & fonts & common-->
     <link rel="stylesheet" href="../../../static/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
     <link rel="stylesheet" href="../../../static/ace/css/ace-fonts.css" />
     <link rel="stylesheet" href="../../../static/css/common.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="../../../static/bootstrap-select/css/bootstrap-select.css" />
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../../static/ace/css/ace-part2.css" class="ace-main-stylesheet"/>
@@ -37,43 +41,72 @@
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row no-margin">
-                    <form id="orgForm" name="orgForm">
+                    <form id="officeForm" name="officeForm">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label for="orgName" class="col-xs-2 control-label">组织名称</label>
+                                <label for="officeName" class="col-xs-2 control-label">机构名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="orgName" placeholder="组织名称" required>
+                                    <input type="text" class="form-control" id="officeName" placeholder="机构名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
-                                <label for="orgCode" class="col-xs-2 control-label">组织编号</label>
+                                <label for="officeCode" class="col-xs-2 control-label">机构编号</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="orgCode" placeholder="组织编号" required>
+                                    <input type="text" class="form-control" id="officeCode" placeholder="机构编号" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
+
                             <div class="form-group">
-                                <label for="customCode" class="col-xs-2 control-label">自定义编号</label>
+                                <label for="officeType" class="col-xs-2 control-label">机构类型</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="customCode" placeholder="自定义编号">
-                                </div>
-                                <div class="col-xs-1 red">*</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="orgType" class="col-xs-2 control-label">机构类型</label>
-                                <div class="col-xs-9">
-                                    <select id="orgType" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="选择机构类型">
-                                        <option value="01">行政管理</option>
-                                        <option value="02">财物管理</option>
+                                    <select id="officeType" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="选择机构类型" required>
+                                        <option value="1">公司</option>
+                                        <option value="2">部门</option>
+                                        <option value="3">小组</option>
+                                        <option value="4">其他</option>
                                     </select>
                                 </div>
-                                <div class="col-xs-1"></div>
+                                <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
-                                <label for="icon" class="col-xs-2 control-label">机构图标</label>
+                                <label for="master" class="col-xs-2 control-label">负&nbsp;&nbsp;责&nbsp;&nbsp;人</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="icon" placeholder="机构图标">
+                                    <input type="text" class="form-control" id="master" placeholder="负责人">
+                                </div>
+                                <div class="col-xs-1 red"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" class="col-xs-2 control-label">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话</label>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" id="phone" placeholder="电话">
+                                </div>
+                                <div class="col-xs-1 red"></div>
+
+                                <label for="email" class="col-xs-1 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" id="email" placeholder="邮箱">
+                                </div>
+                                <div class="col-xs-1 red"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="zipCode" class="col-xs-2 control-label">邮政编码</label>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" id="zipCode" placeholder="邮政编码">
+                                </div>
+                                <div class="col-xs-1 red"></div>
+                                <label for="fax" class="col-xs-1 control-label">传&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;真</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" id="fax" placeholder="传真">
+                                </div>
+                                <div class="col-xs-1 red"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="col-xs-2 control-label">联系地址</label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" id="address" placeholder="联系地址">
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>
@@ -129,7 +162,9 @@
 <script src="../../../static/js/pub.js"></script>
 
 <!-- page specific plugin scripts -->
+<script src="../../../static/bootstrap-select/js/bootstrap-select.js"></script>
 <script src="../../../static/validator/jquery-html5Validate.js"></script>
+
 <script src="officeManage.js"></script>
 </body>
 </html>

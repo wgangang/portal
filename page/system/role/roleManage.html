@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="../../../static/ace/css/ace-fonts.css" />
     <link rel="stylesheet" href="../../../static/css/common.css"/>
 
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="../../../static/bootstrap-select/css/bootstrap-select.css" />
+
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../../static/ace/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
@@ -46,13 +49,23 @@
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
-                            <!--<div class="form-group">
-                                <label for="roleCode" class="col-xs-2 control-label">角色编号</label>
+                            <div class="form-group">
+                                <label for="roleEnname" class="col-xs-2 control-label">英文名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="roleCode" placeholder="角色编号">
+                                    <input type="text" class="form-control" id="roleEnname" placeholder="英文名称">
                                 </div>
                                 <div class="col-xs-1"></div>
-                            </div>-->
+                            </div>
+                            <div class="form-group">
+                                <label for="sysFlag" class="col-xs-2 control-label">系统数据</label>
+                                <div class="col-xs-9">
+                                    <select id="sysFlag" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="系统数据" required>
+                                        <option value="-1" selected>否</option>
+                                        <option value="0">是</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-1"></div>
+                            </div>
                             <div class="form-group">
                                 <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-xs-9">
@@ -98,6 +111,8 @@
 <script src="../../../static/js/pub.js"></script>
 
 <!-- page specific plugin scripts -->
+<script src="../../../static/bootstrap-select/js/bootstrap-select.js"></script>
+
 <script src="../../../static/validator/jquery-html5Validate.js"></script>
 <script src="roleManage.js"></script>
 </body>

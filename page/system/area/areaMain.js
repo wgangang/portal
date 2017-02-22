@@ -164,7 +164,7 @@ saicfc.nameSpace.reg("sys.area");
                     sSort : false
                 },{
                     data: "areaCode",
-                    sWidth : "200",
+                    sWidth : "100",
                     sClass : "text-left"
                 },{
                     data: "sort",

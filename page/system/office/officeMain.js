@@ -160,28 +160,35 @@ saicfc.nameSpace.reg("sys.office");
                 },{
                     data: "officeName",
                     sWidth : "100",
-                    sClass : "text-center",
-                    sSort : false
+                    sClass : "text-center"
                 },{
                     data: "officeCode",
                     sWidth : "100",
-                    sClass : "text-center",
-                    sSort : false
+                    sClass : "text-center"
                 },{
                     data: "officeType",
                     sWidth : "100",
                     sClass : "text-center",
-                    sSort : false
+                    render : function(value){
+                        if(value == "1"){
+                            return "公司";
+                        }else if(value == "2"){
+                            return "部门";
+                        }else if(value == "3"){
+                            return "小组";
+                        }else {
+                            return "其他";
+                        }
+
+                    }
                 },{
                     data: "master",
                     sWidth : "100",
-                    sClass : "text-center",
-                    sSort : false
+                    sClass : "text-center"
                 },{
                     data: "phone",
                     sWidth : "100",
-                    sClass : "text-center",
-                    sSort : false
+                    sClass : "text-center"
                 },{
                     data: "sort",
                     sWidth : "40",

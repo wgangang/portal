@@ -76,7 +76,7 @@ xqsight.nameSpace.reg("xqsight.cms");
                         "success": function(retData){
                             xqsight.win.alert(retData.msg);
                             if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.appMain.editCallBackFun({"appId" : $.getUrlParam("id")});
                                 xqsight.win.close();
                             }

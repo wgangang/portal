@@ -64,7 +64,7 @@ xqsight.nameSpace.reg("sys.user");
                             xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 xqsight.win.alert("您的默认密码是:!password");
-                                var iframeContent = xqsight.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.userMain.editCallBackFun({"userId" : $.getUrlParam("id")});
                                 xqsight.win.close();
                             }

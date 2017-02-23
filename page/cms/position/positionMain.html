@@ -3,12 +3,16 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>应用管理</title>
+    <title>职位管理</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <!-- bootstrap & fonts -->
     <link rel="stylesheet" href="../../../static/ace/css/bootstrap.css" />
     <link rel="stylesheet" href="../../../static/ace/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="../../../static/ztree/css/metroStyle/metroStyle.css"/>
+
     <!-- ace styles & fonts & common-->
     <link rel="stylesheet" href="../../../static/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
     <link rel="stylesheet" href="../../../static/ace/css/ace-fonts.css" />
@@ -33,8 +37,28 @@
     <script type="text/javascript">
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
+    <div class="sidebar widget-box widget-color-green" style="width: 230px;">
+        <div class="widget-header widget-header-flat">
+            <h4 class="widget-title">
+                <i class="ace-icon fa fa-filter"></i>
+                职位树
+            </h4>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <!-- start condition -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul id="positionTree" class="ztree"></ul>
+                    </div>
+                </div>
+                <!-- end condition -->
+            </div><!-- /.widget-main -->
+        </div><!-- /.widget-body -->
+    </div>
+
     <!-- /section:basics/sidebar -->
-    <div class="main-content">
+    <div class="main-content"  style="margin-left: 230px;">
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row">
@@ -67,9 +91,9 @@
                                     <div class="row filter">
                                         <div class="col-sm-12 filter-item">
                                             <ul class="list-unstyled list-inline">
-                                                <span>应用名称:</span>
+                                                <span>职位名称:</span>
                                                 <li>
-                                                    <input type="text" class="input-xlarge" id="appName" placeholder="应用名称"/>
+                                                    <input type="text" class="input-xlarge" id="positionName" placeholder="职位名称"/>
                                                 </li>
 
                                             </ul>
@@ -117,13 +141,17 @@
                             </div>
                             <div class="widget-body">
                                 <div class="widget-main no-padding">
-                                    <table id="app-table" class="table table-striped table-bordered table-hover">
+                                    <table id="position-table" class="table table-striped table-bordered table-hover">
                                         <thead>
-                                        <th class="center">应用名称</th>
-                                        <th class="center">应用编号</th>
-                                        <th class="center">站点域名</th>
-                                        <th class="center">图标</th>
-                                        <th class="center">版本信息</th>
+                                        <th class="left">
+                                            <label class="pos-rel">
+                                                <input type="checkbox" name="checkall" class="ace" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </th>
+                                        <th class="center">职位名称</th>
+                                        <th class="center">职位编号</th>
+                                        <th class="center">排序</th>
                                         <th class="center">创建时间</th>
                                         <th class="center">操作</th>
                                         </thead>
@@ -152,11 +180,12 @@
 <script src="../../../static/js/pub.js"></script>
 
 <!-- page specific plugin scripts -->
+<script src="../../../static/ztree/js/jquery.ztree.all-3.5.js"></script>
+
 <!--datatables组件-->
 <script src="../../../static/ace/js/dataTables/jquery.dataTables.js"></script>
 <script src="../../../static/ace/js/dataTables/jquery.dataTables.bootstrap.js"></script>
 
-<!-- page specific plugin scripts -->
-<script src="appMain.js"></script>
+<script src="positionMain.js"></script>
 </body>
 </html>

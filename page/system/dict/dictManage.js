@@ -71,7 +71,7 @@ xqsight.nameSpace.reg("sys.dict");
                         success: function(retData){
                             xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.dictMain.editCallBackFun({"dictId" : $.getUrlParam("id")});
                                 xqsight.win.close();
                             }

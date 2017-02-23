@@ -73,7 +73,7 @@ xqsight.nameSpace.reg("sys.menu");
                         success: function(retData){
                             xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.menuMain.editCallBackFun({"menuId" : $.getUrlParam("id")});
                                 xqsight.win.close();
                             }

@@ -224,8 +224,8 @@ xqsight.utils = {
             case "system" :  //系统管理
                 serverPath = "http://localhost:8080/portal";//xqsight.utils.getContextPath();
                 break;
-            case "anti" :
-                serverPath = xqsight.utils.getContextPath();
+            case "cms" :
+                serverPath = "http://localhost:8080/portal";//xqsight.utils.getContextPath();
                 break;
             case "dataTableLocal" :
                 serverPath = xqsight.utils.getContextPath() + "/static/ace/js/dataTables/language/zn_ch.json";
@@ -247,7 +247,7 @@ xqsight.utils = {
 };
 
 xqsight.tab = {
-    getIframeContent: function () {
+    getCurrentIframeContent: function () {
         return window.top.$("#portal_tab_content .active > iframe")[0].contentWindow;
     }
 };

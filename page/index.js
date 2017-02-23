@@ -139,7 +139,6 @@ xqsight.nameSpace.reg("sys");
 
         /** 关闭指定的tab */
         this.closeCurrentTab = function(currentSelectedTab){
-
             if($(currentSelectedTab).attr("id") == "tab_home"){
                 xqsight.win.alert("首页不能关闭");
                 obj.tabToolsFun("hide");
@@ -215,9 +214,6 @@ xqsight.nameSpace.reg("sys");
                 currentTabContentIframe = $(currentTabContentId + ">iframe")[0];
             $(currentTabContentIframe).attr("src",currentTabContentIframe.src);
             obj.tabToolsFun("hide");
-        }
-        this.tabReloadByIdFun = function(id){
-            $("#iframe_" + id).attr("src",$("#iframe_" + id).attr("src"));
         }
 
         /** 添加tab */

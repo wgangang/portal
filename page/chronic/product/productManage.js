@@ -121,7 +121,7 @@ xqsight.nameSpace.reg("xqsight.chronic");
                         "success": function(retData){
                             xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.productMain.editCallBackFun({"productId" : $.getUrlParam("id")});
                                 xqsight.win.close();
                             }

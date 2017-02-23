@@ -25,7 +25,7 @@ xqsight.nameSpace.reg("sys.office");
             $("#btn_save").bind("click",obj.validateFun);
             $("#btn_cancel").bind("click",obj.cancelFun);
 
-            //上级
+            //归属区域
             $("#areaId").ComboBoxTree({
                 url: ctxData + "/sys/area/querytree?date="+new Date().getTime(),
                 description: "==请选择==",
@@ -86,7 +86,7 @@ xqsight.nameSpace.reg("sys.office");
                         success: function(retData){
                             xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.officeMain.editCallBackFun({"officeId" : $.getUrlParam("officeId")});
                                 xqsight.win.close();
                             }

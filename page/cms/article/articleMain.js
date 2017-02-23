@@ -2,12 +2,11 @@
  * Created by user on 2015/12/14.
  */
 
-xqsight.nameSpace.reg("xqsight.cms");
+xqsight.nameSpace.reg("cms.article");
 
 (function(){
-    xqsight.cms.articleMain = function(){
+    cms.article.articleMain = function(){
         var ctxData = xqsight.utils.getServerPath("cms");
-        var appId= $.getUrlParam("appId");
         /**
          * 申明内部对象 
          * @type {xqsight.cms}
@@ -30,39 +29,24 @@ xqsight.nameSpace.reg("xqsight.cms");
             $(".btn-search").click(function(){
                 obj.artilceTable.ajax.reload();
             });
-
-            $(document).bind("keydown",".filter input",function(e){
-                var theEvent = window.event || e;
-                var code = theEvent.keyCode || theEvent.which;
-                if (code == 13) {
-                    obj.artilceTable.ajax.reload();
-                }
-            });
-
             /**
              * 重置
              */
             $("#btn-undo").click(function(){
-                xqsight.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".searchDiv");
             });
-
             /**
              * 新增
              */
-            $("#btn-plus").on("click",obj.newFun);
-
+            $("#btn-plus").on("click",obj.plusFun);
             /**
              * 修改
              */
             $("#btn-edit").on("click",obj.editFun);
-
             /**
              * 删除
              */
             $("#btn-remove").on("click",obj.removeFun);
-
-
-            obj.loadModeCodeFun();
 
             obj.loadArtilceTableFun();
         };
@@ -70,8 +54,9 @@ xqsight.nameSpace.reg("xqsight.cms");
         /**
          * 新增 function
          */
-        this.newFun = function(){
-            xqsight.win.show("新增文章","cms/article/articleManage.html?appId=" + appId,600,300,true);
+        this.plusFun = function(){
+            window.top.index.addTabPageFun("article","新增文章","cms/article/articleManage.html");
+           //xqsight.win.show("新增文章","cms/article/articleManage.html",600,300,true);
         }
 
         /**
@@ -83,7 +68,7 @@ xqsight.nameSpace.reg("xqsight.cms");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.show("修改文章","cms/article/articleManage.html?appId=" + appId + "&articleId=" + selRows[0].articleId,600,300,true);
+            xqsight.win.show("修改文章","cms/article/articleManage.html?articleId="+ selRows[0].articleId,600,300,true);
         }
 
         /**
@@ -98,12 +83,10 @@ xqsight.nameSpace.reg("xqsight.cms");
             xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
-                        "url": ctxData + "/cms/article/delete?date=" + new Date().getTime(),
-                        "data": {"articleId":selRows[0].articleId },
-                        "dataType": "jsonp",
-                        "cache": false,
-                        "success": function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
+                        url: ctxData + "/cms/article/delete?date=" + new Date().getTime(),
+                        data: {"articleId":selRows[0].articleId },
+                        success: function(retData){
+                            xqsight.win.alert(retData.msg)
                             if(retData.status == "0"){
                                 obj.artilceTable.ajax.reload();
                             }
@@ -132,21 +115,18 @@ xqsight.nameSpace.reg("xqsight.cms");
                 "sAjaxSource": ctxData + '/cms/article/query',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
-                        "url": sUrl,
-                        "data": aoData,
-                        "success": function(data){
+                        url : sUrl,
+                        data : aoData,
+                        success : function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
                             parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        },
-                        "dataType": "jsonp",
-                        "cache": false
+                        }
                     });
                 },
                 "fnServerParams": function (aoData) {
                     aoData.push(
-                        { "name": "modelId", "value": $("#modelId").val()},
-                        { "name": "appId","value" : appId}
+                        { "name": "articleTitle", "value": $("#articleTitle").val()}
                     );
                 },
                 "aoColumnDefs": [
@@ -156,44 +136,42 @@ xqsight.nameSpace.reg("xqsight.cms");
                     }
                 ],
                 "aoColumns": [{
-                    data : "articleId",
-                    sWidth : "2",
-                    render : function(value){
-                        return '<label class="pos-rel"><input id="' + value + '" type="checkbox" class="ace" /><span class="lbl"></span></label>';
-                    }
-                },{
                     data: "articleTitle",
                     sWidth : "250",
                     sClass : "text-center",
                     sSort : false
                 },{
+                    data: "articleAuthor",
+                    sWidth : "250",
+                    sClass : "text-center",
+                    sSort : false
+                },{
                     data: "articleDescription",
-                    sWidth : "200",
+                    sWidth : "250",
                     sClass : "text-left",
                     render : function(value){
                         return xqsight.win.tipShow(value,400,100);
                     }
                 },{
                     data: "createTime",
-                    sWidth : "200",
+                    sWidth : "100",
                     sClass : "text-center",
                     render : function(value){
-                        return xqsight.moment.formatYMDHms(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 },{
-                    "data": "articleId",
+                    data: "articleId",
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(){
-                        return "<div class='bolder'>"
-                            + "<a class='red' href='javaScript:articleMain.editFun()'><i class='ace-icon fa fa-edit'></i></a> | "
-                            + "<a class='red' href='javaScript:articleMain.removeFun()'><i class='ace-icon fa fa-remove'></i></a> "
-                            + "</div> ";
+                        return "<div class='bolder'> <a class='red' href='javaScript:articleMain.editFun()'><i class='ace-icon fa fa-edit'></i></a> | " +
+                            "<a class='red' href='javaScript:articleMain.removeFun()'><i class='ace-icon fa fa-remove'></i></a></div> ";
                     }
                 }]
             });
 
             obj.artilceTable = record_table;
+
             //单选事件
             $("#article-table tbody").on("click","tr",function() {
                 $.each($("#article-table tbody").find("input[type='checkbox']"),function(index,object){
@@ -209,29 +187,7 @@ xqsight.nameSpace.reg("xqsight.cms");
             });
         }
 
-        /**
-         * 渲染 模块
-         */
-        this.loadModeCodeFun = function(){
-            $.ajax({
-                "url": "modeData.json",
-                "dataType": "json",
-                "cache": true,
-                "success": function(retData){
-                    var data = (appId == "1") ? retData.CHRONIC_GENE : retData.CHRONIC_MANAGE;
-                    $.each(data,function(index,object){
-                        $("#modelId").append("<option value='" + object.modelId +"'>" + object.modelName + "</option>");
-                    });
-                    $('#modelId').selectpicker('refresh');
-                }
-            });
-        }
-
-        /**
-         *
-         * 新增编辑回调函数
-         *
-         */
+        /**  新增编辑回调函数 * */
         this.editCallBackFun = function(params){
             //加载数据
             obj.artilceTable.ajax.reload();
@@ -251,7 +207,7 @@ xqsight.nameSpace.reg("xqsight.cms");
         articleMain.init();
     });
 })();
-var articleMain = new xqsight.cms.articleMain();
+var articleMain = new cms.article.articleMain();
 
 
 

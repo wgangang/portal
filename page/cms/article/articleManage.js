@@ -2,10 +2,10 @@
  * Created by user on 2015/12/14.
  */
 
-xqsight.nameSpace.reg("xqsight.pmpf");
+xqsight.nameSpace.reg("cms.article");
 
 (function(){
-    xqsight.pmpf.articleManage = function(){
+    cms.article.articleManage = function(){
         var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
@@ -30,10 +30,7 @@ xqsight.nameSpace.reg("xqsight.pmpf");
             $("#btn_save").bind("click",obj.validateFun);
             $("#btn_cancel").bind("click",obj.cancelFun);
 
-            obj.loadModeCodeFun();
-
             obj.Editor();
-
         };
 
         this.Editor = function(){
@@ -42,14 +39,19 @@ xqsight.nameSpace.reg("xqsight.pmpf");
                     uploadJson :ctxData+ '/file/manage/uploadftp',
                     //  fileManagerJson :ctxData+ '/cms/article/query', //图片空间获取图片
                     allowFileManager : true,
+                    fillDescAfterUploadImage : true , //图片上传完后编辑图片
                     afterBlur: function(){this.sync();},
-                    afterUpload : function(url) {//获取上传图片的路径
-                        img.push(url);
-                    },
-                    allowImageRemote: false,//隐藏网络上传图片
-                    urlType:'',
+                    allowImageRemote: true,//隐藏网络上传图片
+                    pasteType : 1 ,//纯文本粘贴
                     width:"100%",height:"400px",
-                    items: ["source", "|", "undo", "redo", "|", "preview", "print", "template", "code", "cut", "copy", "paste", "plainpaste", "wordpaste", "justifyleft", "justifycenter", "justifyright", "justifyfull", "insertorderedlist", "insertunorderedlist", "indent", "outdent", "subscript", "superscript", "clearhtml", "quickformat", "selectall", "|", "fullscreen", "/", "formatblock", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold", "italic", "underline", "strikethrough", "lineheight", "removeformat", "|", "image", "flash", "media", "insertfile", "table", "hr", "emoticons", "baidumap", "pagebreak", "anchor", "link", "unlink", "|", "about"]
+                    items: ['source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy',
+                        'paste','plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen',
+                        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                        'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                        'anchor', 'link', 'unlink', '|', 'about']
                 });
             });
         }
@@ -60,11 +62,8 @@ xqsight.nameSpace.reg("xqsight.pmpf");
          */
         this.setParamFun = function(){
             editArticle.articleTitle = $("#articleTitle").val();
-            editArticle.modelId = $("#modelId").val();
             editArticle.articleDescription = $("#articleDescription").val();
             editArticle.articleContent=artileEditor.html();
-            editArticle.createTime=undefined;
-            editArticle.updateTime=undefined;
         };
 
         /**
@@ -99,15 +98,13 @@ xqsight.nameSpace.reg("xqsight.pmpf");
                         "data": editArticle,
                         "type":"POST",
                         "success": function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg);
                             if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.articleMain.editCallBackFun({"articleId" : $.getUrlParam("articleId")});
                                 xqsight.win.close();
                             }
-                        },
-                        "dataType": "jsonp",
-                        "cache": false
+                        }
                     });
                 }
             };
@@ -118,7 +115,8 @@ xqsight.nameSpace.reg("xqsight.pmpf");
          * 取消 function
          */
         this.cancelFun = function(){
-            xqsight.win.close();
+            xqsight.tab.getCurrentIframeContent($.getUrlParam(xqsight.iframeId)).articleMain.artilceTable.ajax.reload()
+            window.top.index.closeCurrentTab(window.top.$("#tab_article"));
         };
 
         /**
@@ -127,42 +125,21 @@ xqsight.nameSpace.reg("xqsight.pmpf");
         this.formSetValue = function(){
             var articleId = $.getUrlParam("articleId");
             if(articleId== undefined || articleId =="" ){
+                editArticle.modelId = $.getUrlParam("modelId");
                 return;
             }
             $.ajax({
-                "dataType": "jsonp",
-                "cache": false,
-                "url": ctxData + "/cms/article/querybyid?articleId=" + articleId + "&date=" + new Date().getTime(),
-                "success": function(retData){
+                url : ctxData + "/cms/article/querybyid?articleId=" + articleId + "&date=" + new Date().getTime(),
+                success : function(retData){
                     if(retData.status == "0"){
-                        editArticle = retData.data.cmsArticle;
-                        $("#articleTitle").val(editArticle.articleTitle);
-                        $("#articleDescription").val(editArticle.articleDescription);
-                        $("#modelId").selectpicker('val', editArticle.modelId);
-                        img = retData.data.img;
-                        artileEditor.html(editArticle.articleContent);
+                        var data = retData.data;
+                        editArticle.articleId = data.cmsArticld;
+
+                        $("#articleTitle").val(data.articleTitle);
+                        $("#articleDescription").val(data.articleDescription);
+                        artileEditor.html(data.articleContent);
                         artileEditor.sync();
                     }
-                }
-            });
-        }
-
-        /**
-         * 渲染 模块
-         */
-        this.loadModeCodeFun = function(){
-            $.ajax({
-                "url": "modeData.json",
-                "dataType": "json",
-                "cache": true,
-                "success": function(retData){
-                    var data = ($.getUrlParam("appId") == "1") ? retData.CHRONIC_GENE : retData.CHRONIC_MANAGE;
-                    $.each(data,function(index,object){
-                        $("#modelId").append("<option value='" + object.modelId +"'>" + object.modelName + "</option>");
-                    });
-                    $('#modelId').selectpicker('refresh');
-
-                    obj.formSetValue();
                 }
             });
         }
@@ -176,4 +153,4 @@ xqsight.nameSpace.reg("xqsight.pmpf");
     });
 })();
 
-var articleManage = new xqsight.pmpf.articleManage();
+var articleManage = new cms.article.articleManage();

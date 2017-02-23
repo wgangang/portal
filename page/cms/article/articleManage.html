@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>用户管理</title>
+    <title>文章管理</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <!-- bootstrap & fonts -->
@@ -42,38 +42,41 @@
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row no-margin">
-                    <form id="articleForm" name="articleForm" class="form-auto"method="post" action="/system/cms/article/save" enctype="multipart/form-data">
+                    <form id="articleForm" name="articleForm" class="form-auto">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label for="articleTitle" class="col-sm-2 control-label">标题</label>
-                                <div class="col-sm-9">
+                                <label for="articleTitle" class="col-sm-1 control-label">标题</label>
+                                <div class="col-sm-4">
                                     <input type="text" class="form-control" id="articleTitle" name="articleTitle" placeholder="标题" required >
-                                    <input type="hidden" id="img" name="img"  >
                                 </div>
                                 <div class="col-sm-1 red">*</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modelId" class="col-xs-2 control-label">模块类型</label>
-                                <div class="col-sm-9">
-                                    <select id="modelId" class="width-100 input-xlarge selectpicker" data-style="btn-white" data-width="100%" title="选择模块类型" required>
-                                        <option value='' selected>选择模块</option>"
-                                    </select>
+
+                                <label for="articleAuthor" class="col-sm-1 control-label">作者</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" id="articleAuthor" name="articleAuthor" placeholder="作者">
                                 </div>
-                                <div class="col-xs-1 red">*</div>
+                                <div class="col-sm-1"></div>
                             </div>
                             <div class="form-group">
-                                <label for="articleDescription" class="col-sm-2 control-label">描述</label>
-                                <div class="col-sm-9">
+                                <label for="articleDescription" class="col-sm-1 control-label">描述</label>
+                                <div class="col-sm-10">
                                     <input type="text" class="form-control" id="articleDescription" name="articleDescription" placeholder="描述" >
                                 </div>
                                 <div class="col-sm-1 "></div>
                             </div>
                             <div class="form-group">
-                                <label for="articleContent" class="col-sm-2 control-label">内容</label>
-                                <div class="col-sm-9">
+                                <label for="articleContent" class="col-sm-1 control-label">内容</label>
+                                <div class="col-sm-10">
                                     <textarea id="articleContent" name="articleContent"></textarea>
                                 </div>
                                 <div class="col-sm-1 red"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="articleSourcle" class="col-sm-1 control-label">来源</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="articleSourcle" name="articleDescription" placeholder="描述" >
+                                </div>
+                                <div class="col-sm-1 "></div>
                             </div>
                         </div>
                     </form>
@@ -123,5 +126,4 @@
 
 <script src="articleManage.js"></script>
 </body>
-</html>
 </html>

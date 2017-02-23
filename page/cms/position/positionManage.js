@@ -2,27 +2,28 @@
  * Created by user on 2015/12/14.
  */
 
-xqsight.nameSpace.reg("sys.area");
+xqsight.nameSpace.reg("xqsight.cms");
 
 (function(){
-    sys.area.areaManage = function(){
+    xqsight.cms.positionManage = function(){
 
-        var ctxData = xqsight.utils.getServerPath("system");
-
-        var editMenu = {};
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
-         * @type {xqsight.pmpf}
+         * @type {xqsight.cms}
          */
         var obj = this;
+
+        var editSite = {};
 
         /**
          * 初始化调用 function
          */
         this.init = function() {
-            $("#btn_save").on("click",obj.validateFun);
-            $("#btn_cancel").on("click",obj.cancelFun);
+            //绑定事件
+            $("#btn_save").bind("click",obj.validateFun);
+            $("#btn_cancel").bind("click",obj.cancelFun);
 
             obj.formSetValue();
         };
@@ -32,17 +33,17 @@ xqsight.nameSpace.reg("sys.area");
          * @returns {string}
          */
         this.setParamFun = function(){
-            editMenu.areaName = $("#areaName").val();
-            editMenu.areaCode = $("#areaCode").val();
-            editMenu.sort = $("#sort").val();
-            editMenu.remark = $("#remark").val();
+            editSite.positionName = $("#positionName").val();
+            editSite.positionCode = $("#positionCode").val();
+            editSite.sort = $("#sort").val();
+            editSite.remark = $("#remark").val();
         };
 
         /**
          * 验证 function
          */
         this.validateFun = function(){
-            $("#areaForm").html5Validate(function() {
+            $("#positionForm").html5Validate(function() {
                 obj.saveFun();
             }, {
                 validate : function() {
@@ -59,19 +60,19 @@ xqsight.nameSpace.reg("sys.area");
                 if(btn == "yes"){
                     obj.setParamFun();
                     var url = "";
-                    if($.getUrlParam("areaId")== undefined || $.getUrlParam("areaId") =="" ){
-                        url = ctxData + "/sys/area/save?date=" + new Date().getTime();
+                    if($.getUrlParam("positionId")== undefined || $.getUrlParam("positionId") =="" ){
+                        url = ctxData + "/cms/position/save?date=" + new Date().getTime();
                     }else{
-                        url = ctxData + "/sys/area/update?date=" + new Date().getTime();
+                        url = ctxData + "/cms/position/update?date=" + new Date().getTime();
                     }
                     $.ajax({
-                        url: url,
-                        data: editMenu,
-                        success: function(retData){
+                        url : url ,
+                        data : editSite,
+                        success : function(retData){
                             xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.areaMain.editCallBackFun({"areaId" : $.getUrlParam("id")});
+                                iframeContent.positionMain.editCallBackFun({"positionId" : $.getUrlParam("id")});
                                 xqsight.win.close();
                             }
                         }
@@ -92,28 +93,24 @@ xqsight.nameSpace.reg("sys.area");
          * form 表单初始化数据
          */
         this.formSetValue = function(){
-            var areaId = $.getUrlParam("areaId");
-            if(areaId == undefined || areaId =="" ){
-                editMenu.parentId = $.getUrlParam("parentId");
+            var positionId = $.getUrlParam("positionId");
+            if(positionId== undefined || positionId =="" ){
+                editSite.parentId = $.getUrlParam("parentId");
                 return;
             }
             $.ajax({
-                url: ctxData + "/sys/area/querybyid?areaId=" + areaId + "&date=" + new Date().getTime(),
-                success: function(retData){
+                url : ctxData + "/cms/position/querybyid?positionId=" + positionId + "&date=" + new Date().getTime,
+                success : function(retData){
                     if(retData.status == "0"){
-                        var data = retData.data;
-                        editMenu.areaId = data.areaId;
-                        editMenu.parentId = data.parentId;
-                        
-                        $("#areaName").val(data.areaName);
-                        $("#areaCode").val(data.areaCode);
-                        $("#sort").val(data.sort);
-                        $("#remark").val(data.remark);
+                        editSite = retData.data;
+                        editSite.parentId = editSite.parentId;
+                        $("#positionName").val(editSite.positionName);
+                        $("#positionCode").val(editSite.positionCode);
+                        $("#sort").val(editSite.sort);
+                        $("#remark").val(editSite.remark);
                     }
                 }
             });
-
-
         }
     };
 
@@ -121,13 +118,8 @@ xqsight.nameSpace.reg("sys.area");
      * 初始化数据
      */
     $(document).ready(function() {
-        areaManage.init();
+        positionManage.init();
     });
 })();
 
-var areaManage = new sys.area.areaManage();
-
-
-
-
-
+var positionManage = new xqsight.cms.positionManage();

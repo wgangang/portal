@@ -2,15 +2,15 @@
  * Created by DictDetail on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.dict");
+xqsight.nameSpace.reg("sys.dict");
 
 (function(){
     sys.dict.dictMain = function(){
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
         /**
@@ -44,7 +44,7 @@ saicfc.nameSpace.reg("sys.dict");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
             /**
@@ -142,15 +142,15 @@ saicfc.nameSpace.reg("sys.dict");
          * 新增 function
          */
         this.plusFun = function(){
-            saicfc.win.show("字典新增","system/dict/dictManage.html",600,300,false);
+            xqsight.win.show("字典新增","system/dict/dictManage.html",600,300,false);
         }
         this.plusDetailFun = function(){
             var id = $("#dictList>a.active").attr("id");
             if(id == undefined || id == ""){
-                saicfc.win.alert("请选择所属字典数据");
+                xqsight.win.alert("请选择所属字典数据");
                 return;
             }
-            saicfc.win.show("字典明细新增","system/dict/dictDetailManage.html?dictId="+id,$(window).width(),500);
+            xqsight.win.show("字典明细新增","system/dict/dictDetailManage.html?dictId="+id,$(window).width(),500);
         }
 
         /**
@@ -160,18 +160,18 @@ saicfc.nameSpace.reg("sys.dict");
             var selObj = $("#dictList>a.active");
             var id = selObj.attr("id");
             if(id == undefined || id == ""){
-                saicfc.win.alert("请选择编辑的数据");
+                xqsight.win.alert("请选择编辑的数据");
                 return;
             }
-            saicfc.win.show("字典编辑","system/dict/dictManage.html?dictId=" + id,600,300,false);
+            xqsight.win.show("字典编辑","system/dict/dictManage.html?dictId=" + id,600,300,false);
         }
         this.editDetailFun = function(){
             var selRows = obj.dictDetailTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("字典明细修改","system/dict/dictDetailManage.html?dictDetailId=" + selRows[0].dictDetailId,$(window).width()-150,500);
+            xqsight.win.show("字典明细修改","system/dict/dictDetailManage.html?dictDetailId=" + selRows[0].dictDetailId,$(window).width()-150,500);
         }
 
         /**
@@ -181,10 +181,10 @@ saicfc.nameSpace.reg("sys.dict");
             var selObj = $("#dictList>a.active");
             var id = selObj.attr("id");
             if(id == undefined || id == ""){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/sys/dict/delete?date=" + new Date().getTime(),
@@ -192,7 +192,7 @@ saicfc.nameSpace.reg("sys.dict");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 selObj.remove();
                                 if(selObj.next().length > 0){
@@ -208,10 +208,10 @@ saicfc.nameSpace.reg("sys.dict");
         this.removeDetailFun = function(){
             var selRows = obj.dictDetailTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/sys/dict/deletedetail?date=" + new Date().getTime(),
@@ -219,7 +219,7 @@ saicfc.nameSpace.reg("sys.dict");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.dictDetailTable.ajax.reload();
                             }
@@ -230,14 +230,14 @@ saicfc.nameSpace.reg("sys.dict");
         }
 
         this.retweetFun = function(){
-            saicfc.win.confirm("确认同步吗？",function(btn){
+            xqsight.win.confirm("确认同步吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/sys/dict/reload?date=" + new Date().getTime(),
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                         }
                     });
                 }
@@ -270,7 +270,7 @@ saicfc.nameSpace.reg("sys.dict");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -365,7 +365,7 @@ saicfc.nameSpace.reg("sys.dict");
                         obj.dictDatas = objMsg.data;
                         obj.renderDictFun(objMsg.data);
                     }else{
-                        //saicfc.win.alert(objMsg.msg);
+                        //xqsight.win.alert(objMsg.msg);
                     }
                 }
             });

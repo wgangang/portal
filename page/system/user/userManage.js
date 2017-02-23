@@ -2,16 +2,16 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.user");
+xqsight.nameSpace.reg("sys.user");
 
 (function(){
     sys.user.userManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
         var editUser = {};
@@ -61,12 +61,12 @@ saicfc.nameSpace.reg("sys.user");
                         "url": ctxData + "/sys/login/save?date=" + new Date().getTime(),
                         "data": editUser,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                saicfc.win.alert("您的默认密码是:!password");
-                                var iframeContent = saicfc.tab.getIframeContent();
+                                xqsight.win.alert("您的默认密码是:!password");
+                                var iframeContent = xqsight.tab.getIframeContent();
                                 iframeContent.userMain.editCallBackFun({"userId" : $.getUrlParam("id")});
-                                saicfc.win.close();
+                                xqsight.win.close();
                             }
                         },
                         "dataType": "jsonp",
@@ -74,14 +74,14 @@ saicfc.nameSpace.reg("sys.user");
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**

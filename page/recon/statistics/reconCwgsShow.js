@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.reconCwgsShow = function(){
+    xqsight.pmpf.reconCwgsShow = function(){
 
-        var ctxData = saicfc.utils.getReconServerPath();
+        var ctxData = xqsight.utils.getReconServerPath();
 
         // 申明内部对象
         var obj = this;
@@ -32,7 +32,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
             var tradeTime = $.getUrlParam("tradeTime");
             var filterEqual = $.getUrlParam("filterEqual");
             $("#channelName").html(decodeURI(decodeURI(channelName)));
-            $("#tradeTime").html(saicfc.moment.formatYMD(tradeTime));
+            $("#tradeTime").html(xqsight.moment.formatYMD(tradeTime));
             $("#tradeType").html((tradType == "0" ? "消费" : "退款"));
             $("#showMethod").html((filterEqual == "0" ? "财务公司数据" : "财务公司已收银行未收"));
         }
@@ -41,7 +41,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.loadReconCwgsTableFun = function(){
             var record_table = $("#reconCwgsShow-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getDataZh_chPath()
+                    sUrl : xqsight.utils.getDataZh_chPath()
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -56,15 +56,15 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 "paging":   false,
                 "sAjaxSource": ctxData + '/statistics/cwgsdetail',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    var index = saicfc.progress.loading();
+                    var index = xqsight.progress.loading();
                     $.ajax({
                         "url": sUrl,
                         "data": aoData,
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
-                            saicfc.progress.removeLoading(index);
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                            xqsight.progress.removeLoading(index);
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -73,7 +73,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 "fnServerParams": function (aoData) {
                     aoData.push(
                         { "name": "channelCode", "value":  $.getUrlParam('channelCode') },
-                        { "name": "tradeTime", "value":   saicfc.moment.formatYMD($.getUrlParam("tradeTime"))},
+                        { "name": "tradeTime", "value":   xqsight.moment.formatYMD($.getUrlParam("tradeTime"))},
                         { "name": "tradeType", "value":  $.getUrlParam('tradeType') },
                         { "name": "filterEqual", "value":  $.getUrlParam('filterEqual') }
                     );
@@ -96,7 +96,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     sClass : "text-right",
                     render : function(value){
                         value = (value == undefined ? 0.00 : value);
-                        return saicfc.common.formatMoney(value/1000);
+                        return xqsight.common.formatMoney(value/1000);
                     }
                 }, {
                     "data": "merAccount",
@@ -126,7 +126,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
     });
 })();
 
-var reconCwgsShow = new saicfc.pmpf.reconCwgsShow();
+var reconCwgsShow = new xqsight.pmpf.reconCwgsShow();
 
 
 

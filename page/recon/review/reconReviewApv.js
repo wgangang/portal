@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.reconReviewApv = function(){
+    xqsight.pmpf.reconReviewApv = function(){
 
-        var ctxData = saicfc.utils.getReconServerPath();
+        var ctxData = xqsight.utils.getReconServerPath();
 
         // 申明内部对象
         var obj = this;
@@ -26,7 +26,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 obj.reviewApvTable.ajax.reload();
             });
             $("#btn-reset").click(function(){
-                saicfc.utils.cleanValue("searchDiv");
+                xqsight.utils.cleanValue("searchDiv");
             });
 
             obj.loadChannelInfo();
@@ -38,7 +38,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.loadStatisticsTableFun = function(){
             var record_table = $("#reconReviewApv-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getDataZh_chPath()
+                    sUrl : xqsight.utils.getDataZh_chPath()
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -51,15 +51,15 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 "bServerSide" : true,
                 "sAjaxSource": ctxData + '/review/queryreconfailuredeal',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    var index = saicfc.progress.loading();
+                    var index = xqsight.progress.loading();
                     $.ajax({
                         "url": sUrl,
                         "data": aoData,
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
-                            saicfc.progress.removeLoading(index);
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                            xqsight.progress.removeLoading(index);
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -80,7 +80,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);;
+                        return xqsight.moment.formatYMD(value);;
                     }
                 },{
                     "data": "channel_name",
@@ -99,7 +99,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     sClass : "text-right",
                     render : function(value){
                         value = (value == undefined ? 0.00 : value);
-                        return saicfc.common.formatMoney(value/1000);
+                        return xqsight.common.formatMoney(value/1000);
                     }
                 }, {
                     "data": "status",
@@ -156,18 +156,18 @@ saicfc.nameSpace.reg("saicfc.pmpf");
             });
 
             function submit(){
-                var index = saicfc.progress.show();
+                var index = xqsight.progress.show();
                 $.ajax({
                     type: "POST",
                     dataType : 'jsonp',
                     data : "resultNo=" + resultNo + "&apvType=" + apvType + "&apvStep=1&reason=" + reason,
                     url:  encodeURI(encodeURI(ctxData + "/review/savereconfailuredeal")),
                     success: function(objMsg){
-                        saicfc.progress.hide(index);
+                        xqsight.progress.hide(index);
                         if(objMsg.status == "0"){
                             obj.reviewApvTable.ajax.reload();
                         }
-                        saicfc.win.alert(objMsg.msg);
+                        xqsight.win.alert(objMsg.msg);
                     }
                 });
             }
@@ -182,7 +182,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 dataType : 'jsonp',
                 url:  encodeURI(encodeURI(ctxData + "/statistics/channelinfo")),
                 success: function(objMsg){
-                    saicfc.progress.hide();
+                    xqsight.progress.hide();
                     if(objMsg.status == "0"){
                         $.each(objMsg.data,function(index,obj){
                             var _pinyin = " ";
@@ -207,7 +207,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
     });
 })();
 
-var reconReviewApv = new saicfc.pmpf.reconReviewApv();
+var reconReviewApv = new xqsight.pmpf.reconReviewApv();
 
 
 

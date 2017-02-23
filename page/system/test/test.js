@@ -2,13 +2,13 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.test = function(){
+    xqsight.pmpf.test = function(){
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -71,7 +71,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
     });
 })();
 
-var test = new saicfc.pmpf.test();
+var test = new xqsight.pmpf.test();
 
 
 

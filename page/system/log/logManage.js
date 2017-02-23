@@ -2,16 +2,16 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.log");
+xqsight.nameSpace.reg("sys.log");
 
 (function(){
     sys.log.logManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -31,7 +31,7 @@ saicfc.nameSpace.reg("sys.log");
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**
@@ -57,7 +57,7 @@ saicfc.nameSpace.reg("sys.log");
                         $("#reqUrl").val(data.reqUrl);
                         $("#reqData").val(data.reqData);
                         $("#agentUser").val(data.agentUser);
-                        $("#createTime").val(saicfc.moment.formatYMD(data.createTime));
+                        $("#createTime").val(xqsight.moment.formatYMD(data.createTime));
                         $("#exceptions").val(data.exception);
                     }
                 }

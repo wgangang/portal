@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.reconReview = function(){
+    xqsight.pmpf.reconReview = function(){
 
-        var ctxData = saicfc.utils.getServerPath("recon");
+        var ctxData = xqsight.utils.getServerPath("recon");
 
         // 申明内部对象
         var obj = this;
@@ -49,7 +49,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
              * 重置
              */
             $("#btn-reset").click(function(){
-                saicfc.utils.cleanValue("searchDiv");
+                xqsight.utils.cleanValue("searchDiv");
             });
 
             obj.loadChannelInfo();
@@ -71,7 +71,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.loadStatisticsTableFun = function(){
             var record_table = $("#reconReview-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getDataZh_chPath()
+                    sUrl : xqsight.utils.getDataZh_chPath()
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -84,15 +84,15 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 "bServerSide" : true,
                 "sAjaxSource": ctxData + '/review/queryresultdetail',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    var index = saicfc.progress.loading();
+                    var index = xqsight.progress.loading();
                     $.ajax({
                         "url": sUrl,
                         "data": aoData,
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
-                            saicfc.progress.removeLoading(index);
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                            xqsight.progress.removeLoading(index);
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -115,7 +115,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);;
+                        return xqsight.moment.formatYMD(value);;
                     }
                 },{
                     "data": "channel_name",
@@ -138,7 +138,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     sClass : "text-right",
                     render : function(value){
                         value = (value == undefined ? 0.00 : value);
-                        return saicfc.common.formatMoney(value/1000);
+                        return xqsight.common.formatMoney(value/1000);
                     }
                 }, {
                     "data": "status",
@@ -197,18 +197,18 @@ saicfc.nameSpace.reg("saicfc.pmpf");
             layer.prompt({title: '输入备注信息,不能为空', formType: 2,offset: '50px'}, function(text,index){
                layer.close(index);
 
-               var id = saicfc.progress.show();
+               var id = xqsight.progress.show();
                 $.ajax({
                     type: "POST",
                     dataType : 'jsonp',
                     data : "resultNo=" + resultNo + "&apvType=1&apvStep=0&reason=" + text,
                     url:  encodeURI(encodeURI(ctxData + "/review/savereconfailuredeal")),
                     success: function(objMsg){
-                        saicfc.progress.hide(id);
+                        xqsight.progress.hide(id);
                         if(objMsg.status == "0"){
                             obj.reviewTable.ajax.reload();
                         }
-                        saicfc.win.alert(objMsg.msg);
+                        xqsight.win.alert(objMsg.msg);
                     }
                 });
             });
@@ -246,7 +246,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
     });
 })();
 
-var reconReview = new saicfc.pmpf.reconReview();
+var reconReview = new xqsight.pmpf.reconReview();
 
 
 

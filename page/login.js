@@ -2,12 +2,12 @@
  * Created by user on 2015/6/10.
  */
 
-saicfc.nameSpace.reg("sys");
+xqsight.nameSpace.reg("sys");
 
 (function(){
     sys.login = function(){
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         // 申明内部对象
         var obj = this;
@@ -55,7 +55,7 @@ saicfc.nameSpace.reg("sys");
             $("#loginForm").html5Validate(function() {
                 var rmb_m = $("#rmb_m").is(":checked");
                 //登录之后的跳转页面
-                var redirect = saicfc.utils.getServerPath("domain") + "/page/index.html";
+                var redirect = xqsight.utils.getServerPath("domain") + "/page/index.html";
                 //设置参数
                 var loginParam = {};
                 loginParam.vali_code = validateCode;
@@ -73,10 +73,10 @@ saicfc.nameSpace.reg("sys");
                             if(redirect !== null || redirect != undefined){
                                 window.location.href = unescape(redirect);
                             }else{
-                                window.location.href = saicfc.utils.getServerPath("domain") + "/page/index.html";
+                                window.location.href = xqsight.utils.getServerPath("domain") + "/page/index.html";
                             }
                         } else {// 提示信息
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             obj.getValidateCodeFun();
                             $("#validateCode").focus();
                             $("#validateCode").select()

@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("xqsight.cms");
+xqsight.nameSpace.reg("xqsight.cms");
 
 (function(){
     xqsight.cms.forumManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
@@ -28,7 +28,7 @@ saicfc.nameSpace.reg("xqsight.cms");
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**
@@ -56,7 +56,7 @@ saicfc.nameSpace.reg("xqsight.cms");
          * 删除 function
          */
         this.delFun = function(commentId){
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/cms/comment/delete?date=" + new Date().getTime(),
@@ -64,7 +64,7 @@ saicfc.nameSpace.reg("xqsight.cms");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.loadComentFun();
                             }
@@ -94,7 +94,7 @@ saicfc.nameSpace.reg("xqsight.cms");
                             commentHtml += '<img class="pull-left" alt="' + object.userName + '" src="' + ctxData + object.imgUrl + '">';
                             commentHtml += object.comment;
                             commentHtml += '<div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i>';
-                            commentHtml += saicfc.moment.formatYMDHms(object.createTime);
+                            commentHtml += xqsight.moment.formatYMDHms(object.createTime);
                             commentHtml += '</div></div>';
                             commentHtml += '<div class="tools action-buttons">';
                             commentHtml += '<a href="javascript:forumManage.delFun(\'' + object.commentId + '\')" class="red">';
@@ -103,7 +103,7 @@ saicfc.nameSpace.reg("xqsight.cms");
                         });
                         $("#comment").html("").html(commentHtml);
 
-                        parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         
                     }
                 }
@@ -151,9 +151,9 @@ saicfc.nameSpace.reg("xqsight.cms");
                  "cache": false,
                  "url": ctxData + "/file/manage/delete?fileId=" + fileId + "&date=" + new Date().getTime,
                  "success": function(retData){
-                	 saicfc.win.alert(retData.msg,retData.status);
+                	 xqsight.win.alert(retData.msg,retData.status);
                 	 if(retData.status == "0"){
-                		 editarticle.fileId = saicfc.utils.replaceAll(editarticle.fileId,fileId+",","");
+                		 editarticle.fileId = xqsight.utils.replaceAll(editarticle.fileId,fileId+",","");
                 		 $("#picShow #" + fileId).remove();
                 	 }
 

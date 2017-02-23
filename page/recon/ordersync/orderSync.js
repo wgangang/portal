@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.reconReview = function(){
+    xqsight.pmpf.reconReview = function(){
 
-        var ctxData = saicfc.utils.getServerPath("recon");
+        var ctxData = xqsight.utils.getServerPath("recon");
 
         // 申明内部对象
         var obj = this;
@@ -24,7 +24,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
 
             });
             $("#btn-reset").click(function(){
-                saicfc.utils.cleanValue("searchDiv");
+                xqsight.utils.cleanValue("searchDiv");
             });
         };
 
@@ -36,7 +36,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
             var startTime = $("#startTime").val();
             var endTime = $("#endTime").val();
             if(startTime == "" || endTime == ""){
-                saicfc.win.alert("开始日期和结束日期布不能为空")
+                xqsight.win.alert("开始日期和结束日期布不能为空")
                 return;
             }
             $.ajax({
@@ -45,7 +45,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 url:  encodeURI(encodeURI(ctxData + "/order/sync")),
                 data : "startTime=" + startTime +"&endTime=" + endTime,
                 success: function(objMsg){
-                    saicfc.win.alert(objMsg.msg);
+                    xqsight.win.alert(objMsg.msg);
                 }
             });
         }
@@ -59,7 +59,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
     });
 })();
 
-var reconReview = new saicfc.pmpf.reconReview();
+var reconReview = new xqsight.pmpf.reconReview();
 
 
 

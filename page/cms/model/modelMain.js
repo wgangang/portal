@@ -2,15 +2,15 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("cms.model");
+xqsight.nameSpace.reg("cms.model");
 
 (function(){
     cms.model.modelMain = function(){
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -40,7 +40,7 @@ saicfc.nameSpace.reg("cms.model");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
             /**
@@ -68,10 +68,10 @@ saicfc.nameSpace.reg("cms.model");
          */
         this.plusFun = function(){
             if(obj.curSelTree.id == undefined ){
-                saicfc.win.alert("请选择要添加的节点");
+                xqsight.win.alert("请选择要添加的节点");
                 return;
             }
-            saicfc.win.show("菜单新增","cms/model/modelManage.html?parentId=" + obj.curSelTree.id,$(window).width()-150,500);
+            xqsight.win.show("菜单新增","cms/model/modelManage.html?parentId=" + obj.curSelTree.id,$(window).width()-150,500);
         }
 
         /**
@@ -80,10 +80,10 @@ saicfc.nameSpace.reg("cms.model");
         this.editFun = function(){
             var selRows = obj.modelTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("菜单修改","cms/model/modelManage.html?modelId=" + selRows[0].modelId,$(window).width()-150,500);
+            xqsight.win.show("菜单修改","cms/model/modelManage.html?modelId=" + selRows[0].modelId,$(window).width()-150,500);
         }
 
         /**
@@ -92,10 +92,10 @@ saicfc.nameSpace.reg("cms.model");
         this.removeFun = function(){
             var selRows = obj.modelTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/cms/model/delete?date=" + new Date().getTime(),
@@ -103,7 +103,7 @@ saicfc.nameSpace.reg("cms.model");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.loadModelTreeFun();
                             }
@@ -132,7 +132,7 @@ saicfc.nameSpace.reg("cms.model");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -181,7 +181,7 @@ saicfc.nameSpace.reg("cms.model");
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 },{
                     "data": "modelId",
@@ -246,7 +246,7 @@ saicfc.nameSpace.reg("cms.model");
                         obj.modelTable.ajax.reload();
                     }
                     //渲染结束重新设置高度
-                    parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                 }
             });
         }

@@ -2,16 +2,16 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.baseInfo = function(){
+    xqsight.pmpf.baseInfo = function(){
 
-        var ctxData = saicfc.utils.getWechatServerPath();
+        var ctxData = xqsight.utils.getWechatServerPath();
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
         /**
@@ -35,7 +35,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
              * 重置
              */
             $("#btn-reset").click(function(){
-                saicfc.utils.cleanValue("searchDiv");
+                xqsight.utils.cleanValue("searchDiv");
             });
             /**
              * 新增
@@ -60,7 +60,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
          * 新增 function
          */
         this.newFun = function(){
-            saicfc.win.show("新增","wechat/baseinfo/wechatManage.html",$(window).width()-150,$(window).height());
+            xqsight.win.show("新增","wechat/baseinfo/wechatManage.html",$(window).width()-150,$(window).height());
         }
 
         /**
@@ -69,10 +69,10 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.updFun = function(){
             var selRows = obj.wechatTable.rows(".success").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("修改","wechat/baseinfo/wechatManage.html?wxId=" + selRows[0].wxId,$(window).width()-150,$(window).height());
+            xqsight.win.show("修改","wechat/baseinfo/wechatManage.html?wxId=" + selRows[0].wxId,$(window).width()-150,$(window).height());
         }
 
 
@@ -82,27 +82,27 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.delFun = function(){
             var selRows = obj.wechatTable.rows(".success").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
-                    var index = saicfc.progress.show();
+                    var index = xqsight.progress.show();
                     $.ajax({
                         "url": ctxData + "/wechat/baseinfo/delete?date=" + new Date().getTime(),
                         "data": "id=" + selRows[0].wxId,
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.progress.hide(index);
-                            saicfc.win.alert(retData.msg)
+                            xqsight.progress.hide(index);
+                            xqsight.win.alert(retData.msg)
                             if(retData.status == "0"){
                                 obj.wechatTable.ajax.reload();
                             }
                         },
                         "error" : function(retData){
-                            saicfc.progress.hide(index);
-                            saicfc.win.alert(retData.msg)
+                            xqsight.progress.hide(index);
+                            xqsight.win.alert(retData.msg)
                         }
                     });
                 }
@@ -115,7 +115,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.loadWechatTableFun = function(){
             var record_table = $("#user-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getDataZh_chPath()
+                    sUrl : xqsight.utils.getDataZh_chPath()
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -127,18 +127,18 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 "bServerSide" : true,
                 "sAjaxSource": ctxData + '/wechat/baseinfo/query',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    var index = saicfc.progress.loading();
+                    var index = xqsight.progress.loading();
                     $.ajax({
                         "url": sUrl,
                         "data": aoData,
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
-                            saicfc.progress.removeLoading(index);
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                            xqsight.progress.removeLoading(index);
                         },
                         "error" : function(){
-                            saicfc.progress.removeLoading(index);
+                            xqsight.progress.removeLoading(index);
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -241,7 +241,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         baseInfo.init();
     });
 })();
-var baseInfo = new saicfc.pmpf.baseInfo();
+var baseInfo = new xqsight.pmpf.baseInfo();
 
 
 

@@ -2,11 +2,11 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("xqsight.chronic");
+xqsight.nameSpace.reg("xqsight.chronic");
 
 (function(){
     xqsight.chronic.productMain = function(){
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
@@ -43,7 +43,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
             /**
@@ -72,7 +72,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
          * 新增 function
          */
         this.newFun = function(){
-            saicfc.win.show("产品新增","chronic/product/productManage.html",600,300,true);
+            xqsight.win.show("产品新增","chronic/product/productManage.html",600,300,true);
         }
 
         /**
@@ -81,10 +81,10 @@ saicfc.nameSpace.reg("xqsight.chronic");
         this.editFun = function(){
             var selRows = obj.productTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("产品修改","chronic/product/productManage.html?productId=" + selRows[0].productId,600,300,true);
+            xqsight.win.show("产品修改","chronic/product/productManage.html?productId=" + selRows[0].productId,600,300,true);
         }
 
         /**
@@ -93,10 +93,10 @@ saicfc.nameSpace.reg("xqsight.chronic");
         this.removeFun = function(){
             var selRows = obj.productTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/product/delete?date=" + new Date().getTime(),
@@ -104,7 +104,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.productTable.ajax.reload();
                             }
@@ -120,7 +120,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
         this.loadAppTableFun = function(){
             var record_table = $("#product-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getServerPath("dataTableLocal")
+                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -138,7 +138,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -181,7 +181,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
                     sWidth : "120",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMDHms(value);
+                        return xqsight.moment.formatYMDHms(value);
                     }
                 },{
                     "data": "productId",

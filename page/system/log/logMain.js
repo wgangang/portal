@@ -2,15 +2,15 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.log");
+xqsight.nameSpace.reg("sys.log");
 
 (function(){
     sys.log.logMain = function(){
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
         /**
@@ -48,7 +48,7 @@ saicfc.nameSpace.reg("sys.log");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
 
@@ -70,10 +70,10 @@ saicfc.nameSpace.reg("sys.log");
         this.viewFun = function(){
             var selRows = obj.logTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("日志查看","system/log/logManage.html?logId=" + selRows[0].logId);
+            xqsight.win.show("日志查看","system/log/logManage.html?logId=" + selRows[0].logId);
         }
 
         /**
@@ -82,7 +82,7 @@ saicfc.nameSpace.reg("sys.log");
         this.loadRoleTableFun = function(){
             var record_table = $("#data-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getServerPath("dataTableLocal")
+                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
                 "sScrollX": "100%",
                 "sScrollXInner": "100%",
@@ -103,7 +103,7 @@ saicfc.nameSpace.reg("sys.log");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -159,7 +159,7 @@ saicfc.nameSpace.reg("sys.log");
                     sWidth : "100",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 },{
                     data: "createOprId",

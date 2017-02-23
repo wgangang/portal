@@ -17,6 +17,7 @@
 
     <!-- page specific plugin styles -->
     <link rel="stylesheet" href="../../../static/bootstrap-select/css/bootstrap-select.css" />
+    <link rel="stylesheet" href="../../../static/wdtree/tree.css" />
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../../static/ace/css/ace-part2.css" class="ace-main-stylesheet"/>
@@ -43,6 +44,14 @@
                 <div class="row no-margin">
                     <form id="officeForm" name="officeForm">
                         <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="areaId" class="col-xs-2 control-label">归属区域</label>
+                                <div class="col-xs-9">
+                                    <div id="areaId" type="selectTree" class="ui-select">
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 red">*</div>
+                            </div>
                             <div class="form-group">
                                 <label for="officeName" class="col-xs-2 control-label">机构名称</label>
                                 <div class="col-xs-9">
@@ -163,6 +172,7 @@
 
 <!-- page specific plugin scripts -->
 <script src="../../../static/bootstrap-select/js/bootstrap-select.js"></script>
+<script src="../../../static/wdtree/tree.js"></script>
 <script src="../../../static/validator/jquery-html5Validate.js"></script>
 
 <script src="officeManage.js"></script>

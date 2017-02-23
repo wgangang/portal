@@ -2,16 +2,16 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.role");
+xqsight.nameSpace.reg("sys.role");
 
 (function(){
     sys.role.addUser = function(){
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -69,27 +69,27 @@ saicfc.nameSpace.reg("sys.role");
             var callback = function(btn){
                 if(btn == "yes"){
                     var url = ctxData + "/sys/auth/saveuserrole?date=" + new Date().getTime();
-                    var index = saicfc.progress.loading();
+                    var index = xqsight.progress.loading();
                     $.ajax({
                         "url": url ,
                         "data":  obj.setParamFun(),
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
-                            saicfc.progress.removeLoading(index);
+                            xqsight.win.alert(retData.msg,retData.status);
+                            xqsight.progress.removeLoading(index);
                         },
                         "dataType": "jsonp",
                         "cache": false
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**

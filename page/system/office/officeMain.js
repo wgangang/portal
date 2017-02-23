@@ -2,15 +2,15 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.office");
+xqsight.nameSpace.reg("sys.office");
 
 (function(){
     sys.office.officeMain = function(){
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -40,7 +40,7 @@ saicfc.nameSpace.reg("sys.office");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
             /**
@@ -68,10 +68,10 @@ saicfc.nameSpace.reg("sys.office");
          */
         this.plusFun = function(){
             if(obj.curSelTree.id == undefined ){
-                saicfc.win.alert("请选择要添加的节点");
+                xqsight.win.alert("请选择要添加的节点");
                 return;
             }
-            saicfc.win.show("机构新增","system/office/officeManage.html?parentId=" + obj.curSelTree.id,$(window).width()-150,500);
+            xqsight.win.show("机构新增","system/office/officeManage.html?parentId=" + obj.curSelTree.id,$(window).width()-150,500);
         }
 
         /**
@@ -80,10 +80,10 @@ saicfc.nameSpace.reg("sys.office");
         this.editFun = function(){
             var selRows = obj.officeTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("机构修改","system/office/officeManage.html?officeId=" + selRows[0].officeId,$(window).width()-150,500);
+            xqsight.win.show("机构修改","system/office/officeManage.html?officeId=" + selRows[0].officeId,$(window).width()-150,500);
         }
 
         /**
@@ -92,16 +92,16 @@ saicfc.nameSpace.reg("sys.office");
         this.removeFun = function(){
             var selRows = obj.officeTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         url: ctxData + "/sys/office/delete?date=" + new Date().getTime(),
                         data: {officeId : selRows[0].officeId },
                         success: function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.loadOfficeTreeFun();
                             }
@@ -130,7 +130,7 @@ saicfc.nameSpace.reg("sys.office");
                         success: function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         }
                     });
                 },
@@ -198,7 +198,7 @@ saicfc.nameSpace.reg("sys.office");
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 },{
                     data: "officeId",
@@ -234,6 +234,11 @@ saicfc.nameSpace.reg("sys.office");
                 url: ctxData + "/sys/office/querytree?date="+new Date().getTime(),
                 success: function(retData){
                     if(retData.status == 0){
+                        var treeRoot = [{
+                            name : "系统机构",
+                            id : 0,
+                            children : retData.data
+                        }];
                         $.fn.zTree.init($("#officeTree"),{
                             check: {
                                 enable: false,
@@ -251,7 +256,7 @@ saicfc.nameSpace.reg("sys.office");
                                     return false;
                                 }
                             }
-                        }, retData.data);
+                        }, treeRoot);
 
                         obj.officeTree = $.fn.zTree.getZTreeObj("officeTree");
 
@@ -270,7 +275,7 @@ saicfc.nameSpace.reg("sys.office");
                         obj.officeTable.ajax.reload();
                     }
                     //渲染结束重新设置高度
-                    parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                 }
             });
         }

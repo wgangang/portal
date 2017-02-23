@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("xqsight.chronic");
+xqsight.nameSpace.reg("xqsight.chronic");
 
 (function(){
     xqsight.chronic.beautyManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
@@ -38,7 +38,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
 
             $("#fileId").on("fileuploaded", function (event, data, previewId, index) {
                 var retData = data.response;
-                saicfc.win.alert(retData.msg,retData.status);
+                xqsight.win.alert(retData.msg,retData.status);
                 if(retData.status == "0"){
                 	if(editbeauty.fileId == undefined)
             			editbeauty.fileId ="";
@@ -116,11 +116,11 @@ saicfc.nameSpace.reg("xqsight.chronic");
                         "data": editbeauty,
                         "method" : "post",
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                var iframeContent = saicfc.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getIframeContent();
                                 iframeContent.beautyMain.editCallBackFun({"beautyId" : $.getUrlParam("id")});
-                                saicfc.win.close();
+                                xqsight.win.close();
                             }
                         },
                         "dataType": "jsonp",
@@ -128,14 +128,14 @@ saicfc.nameSpace.reg("xqsight.chronic");
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**
@@ -211,9 +211,9 @@ saicfc.nameSpace.reg("xqsight.chronic");
                  "cache": false,
                  "url": ctxData + "/file/manage/delete?fileId=" + fileId + "&date=" + new Date().getTime,
                  "success": function(retData){
-                	 saicfc.win.alert(retData.msg,retData.status);
+                	 xqsight.win.alert(retData.msg,retData.status);
                 	 if(retData.status == "0"){
-                		 editbeauty.fileId = saicfc.utils.replaceAll(editbeauty.fileId,fileId+",","");
+                		 editbeauty.fileId = xqsight.utils.replaceAll(editbeauty.fileId,fileId+",","");
                 		 $("#picShow #" + fileId).remove();
                 	 }
                 	 

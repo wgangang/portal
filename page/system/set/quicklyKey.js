@@ -2,16 +2,16 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.set");
+xqsight.nameSpace.reg("sys.set");
 
 (function(){
     sys.set.quicklyKeySet = function(){
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -67,14 +67,14 @@ saicfc.nameSpace.reg("sys.set");
                         "url": ctxData + "/sys/quickkey/save?date=" + new Date().getTime() ,
                         "data": obj.setParamFun(),
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                         },
                         "dataType": "jsonp",
                         "cache": false
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         }
 
         /**

@@ -166,8 +166,8 @@
             } else {
                 this.expand();
             }
-            //äÖÈ¾½áÊøÖØÐÂÉèÖÃ¸ß¶È
-            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+            //ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ß¶ï¿½
+            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
             return this;
         };
 
@@ -476,7 +476,7 @@
 }).call(this);
 
 
-//äÖÈ¾
+//ï¿½ï¿½È¾
 jQuery.TreeTable = function (tree_id, heads, tNodes) {
     if ($("#" + tree_id).length > 0) {
         var newNodes = [];

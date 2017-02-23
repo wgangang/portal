@@ -3,15 +3,15 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.user");
+xqsight.nameSpace.reg("sys.user");
 
 (function(){
     sys.user.userMain = function(){
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
         this.orgTree = {};
@@ -37,7 +37,7 @@ saicfc.nameSpace.reg("sys.user");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
             /**
              * 新增
@@ -64,10 +64,10 @@ saicfc.nameSpace.reg("sys.user");
          */
         this.plusFun = function(){
             if(obj.curSelTree.id == undefined ){
-                saicfc.win.alert("请选择要添加的节点");
+                xqsight.win.alert("请选择要添加的节点");
                 return;
             }
-            saicfc.win.show("登录用户新增","system/user/userManage.html?orgId=" + obj.curSelTree.id,$(window).width(),500);
+            xqsight.win.show("登录用户新增","system/user/userManage.html?orgId=" + obj.curSelTree.id,$(window).width(),500);
         }
 
         /**
@@ -76,10 +76,10 @@ saicfc.nameSpace.reg("sys.user");
         this.editFun = function(){
             var selRows = obj.userTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("修改","system/user/userManage.html?id=" + selRows[0].id,$(window).width()-150,$(window).height());
+            xqsight.win.show("修改","system/user/userManage.html?id=" + selRows[0].id,$(window).width()-150,$(window).height());
         }
 
 
@@ -89,10 +89,10 @@ saicfc.nameSpace.reg("sys.user");
         this.removeFun = function(){
             var selRows = obj.userTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/sys/login/delete?date=" + new Date().getTime(),
@@ -100,7 +100,7 @@ saicfc.nameSpace.reg("sys.user");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.userTable.ajax.reload();
                             }
@@ -116,7 +116,7 @@ saicfc.nameSpace.reg("sys.user");
         this.loadUserTableFun = function(){
             var record_table = $("#user-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getServerPath("dataTableLocal")
+                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -134,7 +134,7 @@ saicfc.nameSpace.reg("sys.user");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -193,7 +193,7 @@ saicfc.nameSpace.reg("sys.user");
                     render : function(value){
                         if(value == undefined || value == "")
                             return "";
-                        return "<a href=\"javascript:saicfc.win.imgShow('" + value + "');\">查看</a>";
+                        return "<a href=\"javascript:xqsight.win.imgShow('" + value + "');\">查看</a>";
                     }
                 },{
                     data : "locked",
@@ -207,7 +207,7 @@ saicfc.nameSpace.reg("sys.user");
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 },{
                     data : "id",
@@ -253,7 +253,7 @@ saicfc.nameSpace.reg("sys.user");
          * @param id
          */
         this.resetPwdFun = function(id){
-            saicfc.win.confirm("确认重置密码吗？",function(btn){
+            xqsight.win.confirm("确认重置密码吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/sys/login/resetpwd?date=" + new Date().getTime(),
@@ -261,7 +261,7 @@ saicfc.nameSpace.reg("sys.user");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                         }
                     });
                 }
@@ -311,7 +311,7 @@ saicfc.nameSpace.reg("sys.user");
                         obj.userTable.ajax.reload();
                     }
                     //渲染结束重新设置高度
-                    parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                 }
             });
         }

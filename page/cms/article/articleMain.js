@@ -2,11 +2,11 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("xqsight.cms");
+xqsight.nameSpace.reg("xqsight.cms");
 
 (function(){
     xqsight.cms.articleMain = function(){
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
         var appId= $.getUrlParam("appId");
         /**
          * 申明内部对象 
@@ -43,7 +43,7 @@ saicfc.nameSpace.reg("xqsight.cms");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
             /**
@@ -71,7 +71,7 @@ saicfc.nameSpace.reg("xqsight.cms");
          * 新增 function
          */
         this.newFun = function(){
-            saicfc.win.show("新增文章","cms/article/articleManage.html?appId=" + appId,600,300,true);
+            xqsight.win.show("新增文章","cms/article/articleManage.html?appId=" + appId,600,300,true);
         }
 
         /**
@@ -80,10 +80,10 @@ saicfc.nameSpace.reg("xqsight.cms");
         this.editFun = function(){
             var selRows = obj.artilceTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("修改文章","cms/article/articleManage.html?appId=" + appId + "&articleId=" + selRows[0].articleId,600,300,true);
+            xqsight.win.show("修改文章","cms/article/articleManage.html?appId=" + appId + "&articleId=" + selRows[0].articleId,600,300,true);
         }
 
         /**
@@ -92,10 +92,10 @@ saicfc.nameSpace.reg("xqsight.cms");
         this.removeFun = function(){
             var selRows = obj.artilceTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/cms/article/delete?date=" + new Date().getTime(),
@@ -103,7 +103,7 @@ saicfc.nameSpace.reg("xqsight.cms");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.artilceTable.ajax.reload();
                             }
@@ -119,7 +119,7 @@ saicfc.nameSpace.reg("xqsight.cms");
         this.loadArtilceTableFun = function(){
             var record_table = $("#article-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getServerPath("dataTableLocal")
+                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -137,7 +137,7 @@ saicfc.nameSpace.reg("xqsight.cms");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -171,14 +171,14 @@ saicfc.nameSpace.reg("xqsight.cms");
                     sWidth : "200",
                     sClass : "text-left",
                     render : function(value){
-                        return saicfc.win.tipShow(value,400,100);
+                        return xqsight.win.tipShow(value,400,100);
                     }
                 },{
                     data: "createTime",
                     sWidth : "200",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMDHms(value);
+                        return xqsight.moment.formatYMDHms(value);
                     }
                 },{
                     "data": "articleId",

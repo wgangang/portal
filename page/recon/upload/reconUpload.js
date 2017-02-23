@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.reconUpload = function(){
+    xqsight.pmpf.reconUpload = function(){
 
-        var ctxData = saicfc.utils.getReconServerPath();
+        var ctxData = xqsight.utils.getReconServerPath();
 
         // 申明内部对象
         var obj = this;
@@ -26,7 +26,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
             $("#btn-fileUpload").bind("click",obj.fileUploadFun);
 
             $("#btn-reset").click(function(){
-                saicfc.utils.cleanValue("searchDiv");
+                xqsight.utils.cleanValue("searchDiv");
             });
 
             //加载表
@@ -46,10 +46,10 @@ saicfc.nameSpace.reg("saicfc.pmpf");
             var name = $("#fileShow").val();
             var ext = name.substr(name.lastIndexOf(".") +1);
             if(ext == "" || ext == undefined || (ext != "rar" && ext != "zip")){
-                saicfc.win.alert("上传文件必须是zip或rar格式的文件");
+                xqsight.win.alert("上传文件必须是zip或rar格式的文件");
                 return;
             }
-            saicfc.progress.show();
+            xqsight.progress.show();
             $.ajaxFileUpload
             ({
                 url:ctxData + "/recon/fileupload",
@@ -59,12 +59,12 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 success: function (){
                     $("#fileShow").val("");
                     $("#fileToUpload").val("");
-                    saicfc.progress.hide();
+                    xqsight.progress.hide();
                     obj.reconManageTable.ajax.reload();
                 },
                 error: function (){
                     obj.reconManageTable.ajax.reload();
-                    saicfc.progress.hide();
+                    xqsight.progress.hide();
                     $("#fileShow").val("");
                     $("#fileToUpload").val("");
                 }
@@ -76,7 +76,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
             var numNo = 1;
             var record_table = $("#reconUpload-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getDataZh_chPath()
+                    sUrl : xqsight.utils.getDataZh_chPath()
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -90,7 +90,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 "bServerSide" : true,
                 "sAjaxSource": ctxData + '/recon/query',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    var index = saicfc.progress.loading();
+                    var index = xqsight.progress.loading();
                     $.ajax({
                         "url": sUrl,
                         "data": aoData,
@@ -98,8 +98,8 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                             numNo = 1;
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
-                            saicfc.progress.removeLoading(index);
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                            xqsight.progress.removeLoading(index);
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -124,7 +124,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     sWidth : "200",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMDHms(value);
+                        return xqsight.moment.formatYMDHms(value);
                     }
                 }, {
                     "data": "fileName",
@@ -191,17 +191,17 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.reconHandlerFun = function(reconNo,handlerType){
             var callback = function(btn){
                 if(btn == "yes"){
-                    var index = saicfc.progress.show();
+                    var index = xqsight.progress.show();
                     $.ajax({
                         type: "POST",
                         dataType : 'jsonp',
                         url:  encodeURI(encodeURI(ctxData + url + "&date=" + new Date())),
                         success: function(objMsg){
-                            saicfc.progress.hide(index);
+                            xqsight.progress.hide(index);
                             if(objMsg.status == "0"){
                                 obj.reconManageTable.ajax.reload();
                             }
-                            saicfc.win.alert(objMsg.msg)
+                            xqsight.win.alert(objMsg.msg)
                         }
                     });
                 }
@@ -225,13 +225,13 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 obj.downLoadFun(reconNo);
                 return;
             }
-            saicfc.win.confirm("确认" + msg + "吗？",callback);
+            xqsight.win.confirm("确认" + msg + "吗？",callback);
         }
 
         //下载
         this.downLoadFun = function(reconNo){
             var url = "/recon/download?reconNo=" + reconNo
-            saicfc.utils.createFromAndSubmit(ctxData + url);
+            xqsight.utils.createFromAndSubmit(ctxData + url);
         }
 
     };
@@ -242,7 +242,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
     });
 })();
 
-var reconUpload = new saicfc.pmpf.reconUpload();
+var reconUpload = new xqsight.pmpf.reconUpload();
 
 
 

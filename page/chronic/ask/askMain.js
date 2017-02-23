@@ -2,11 +2,11 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("xqsight.chronic");
+xqsight.nameSpace.reg("xqsight.chronic");
 
 (function(){
     xqsight.chronic.askMain = function(){
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
@@ -43,7 +43,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
             $("#btn-reply").on("click",obj.forumFun);
@@ -60,7 +60,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
         this.forumFun = function(){
             var selRows = obj.askTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择回复的数据");
+                xqsight.win.alert("请选择回复的数据");
                 return;
             }
         	var href=ctxData + "/page/chronic/ask/askManage.html?articleId=" + selRows[0].articleId;
@@ -73,7 +73,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
         this.loadAskTableFun = function(){
             var record_table = $("#ask-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getServerPath("dataTableLocal")
+                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -91,7 +91,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -129,7 +129,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
                     sWidth : "120",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMDHms(value);
+                        return xqsight.moment.formatYMDHms(value);
                     }
                 },{
                     data: "articleId",

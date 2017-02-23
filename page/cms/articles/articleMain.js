@@ -2,11 +2,11 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("cms.article");
+xqsight.nameSpace.reg("cms.article");
 
 (function(){
     cms.article.articleMain = function(){
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
         var appId= $.getUrlParam("appId");
         /**
          * 申明内部对象 
@@ -36,7 +36,7 @@ saicfc.nameSpace.reg("cms.article");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".searchDiv");
+                xqsight.utils.cleanValue(".searchDiv");
             });
             /**
              * 新增
@@ -61,10 +61,10 @@ saicfc.nameSpace.reg("cms.article");
          */
         this.plusFun = function(){
             if(obj.curSelTree.id == undefined ){
-                saicfc.win.alert("请选择要添加的节点");
+                xqsight.win.alert("请选择要添加的节点");
                 return;
             }
-            saicfc.win.show("新增文章","cms/articles/articleManage.html?modelId=" + obj.curSelTree.id,600,300,true);
+            xqsight.win.show("新增文章","cms/articles/articleManage.html?modelId=" + obj.curSelTree.id,600,300,true);
         }
 
         /**
@@ -73,10 +73,10 @@ saicfc.nameSpace.reg("cms.article");
         this.editFun = function(){
             var selRows = obj.artilceTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("修改文章","cms/articles/articleManage.html",600,300,true);
+            xqsight.win.show("修改文章","cms/articles/articleManage.html",600,300,true);
         }
 
         /**
@@ -85,10 +85,10 @@ saicfc.nameSpace.reg("cms.article");
         this.removeFun = function(){
             var selRows = obj.artilceTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/cms/article/delete?date=" + new Date().getTime(),
@@ -96,7 +96,7 @@ saicfc.nameSpace.reg("cms.article");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg)
+                            xqsight.win.alert(retData.msg)
                             if(retData.status == "0"){
                                 obj.artilceTable.ajax.reload();
                             }
@@ -112,7 +112,7 @@ saicfc.nameSpace.reg("cms.article");
         this.loadArtilceTableFun = function(){
             var record_table = $("#article-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getServerPath("dataTableLocal")
+                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -130,7 +130,7 @@ saicfc.nameSpace.reg("cms.article");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -158,14 +158,14 @@ saicfc.nameSpace.reg("cms.article");
                     sWidth : "200",
                     sClass : "text-left",
                     render : function(value){
-                        return saicfc.win.tipShow(value,400,100);
+                        return xqsight.win.tipShow(value,400,100);
                     }
                 },{
                     data: "createTime",
                     sWidth : "200",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 }]
             });
@@ -221,7 +221,7 @@ saicfc.nameSpace.reg("cms.article");
                         obj.artilceTable.ajax.reload();
                     }
                     //渲染结束重新设置高度
-                    parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                 }
             });
         }

@@ -1,23 +1,22 @@
 (function ($) {
-    var _progress_index=0;
+    var _progress_index = 0;
     $.ajaxSetup({
-        beforeSend : function(){
-            _progress_index = saicfc.progress.show();
+        beforeSend: function () {
+            _progress_index = xqsight.progress.show();
         },
-        complete : function(xhr) {
-            saicfc.progress.hide(_progress_index);
+        complete: function (xhr) {
+            xqsight.progress.hide(_progress_index);
             if (xhr.status == 302) {
                 window.location.reload(true);
             }
-            if( xhr.responseJSON != undefined && xhr.responseJSON.errCode == "ERR_MSG_0001"){
-                //saicfc.win.alert(xhr.responseJSON.msg);
+            if (xhr.responseJSON != undefined && xhr.responseJSON.errCode == "ERR_MSG_0001") {
+                xqsight.win.alert(xhr.responseJSON.msg);
             }
-
         },
-        error : function(data){
-        	saicfc.progress.hide(_progress_index);
+        error: function (data) {
+            xqsight.progress.hide(_progress_index);
             /*if(data.status != 404)
-                window.location.reload(true);*/
+             window.location.reload(true);*/
         },
         dataType: "json",
         cache: false
@@ -26,20 +25,21 @@
     $.getUrlParam = function (name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]); return null;
+        if (r != null) return unescape(r[2]);
+        return null;
     }
 
-    $('.tipshow [data-rel=tooltip]').tooltip({show:{delay:0}});
+    $('.tipshow [data-rel=tooltip]').tooltip({show: {delay: 0}});
 })(jQuery);
 
-var saicfc = saicfc || {};
+var xqsight = xqsight || {};
 
-saicfc.iframeId = "iframeId";
+xqsight.iframeId = "iframeId";
 
-saicfc.common = {
-    // 金额格式化，三位一瞥
-    formatMoney : function(amt, pre) {
-        if(amt == undefined)
+xqsight.common = {
+    /** 金额格式化，三位一瞥 **/
+    formatMoney: function (amt, pre) {
+        if (amt == undefined)
             return "0.00";
         var isfu = false;
         if (parseFloat(amt) < 0) {
@@ -63,8 +63,8 @@ saicfc.common = {
 
     },
 
-    // 金额去格式化
-    unFormatMoney : function(money) {
+    /** 金额去格式化 **/
+    unFormatMoney: function (money) {
         money = new String(money);
         while (money.indexOf(',', 0) != -1) {
             money = money.replace(',', '');
@@ -72,38 +72,38 @@ saicfc.common = {
         return money;
     },
 
-    //只输入数字
-    NumberText :function() {
-        if(!(event.keyCode==46)&&!(event.keyCode==8)&&!(event.keyCode==37)&&!(event.keyCode==39)&&!(event.keyCode==190))
-            if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105)))
-                event.returnValue=false;
+    /** 只输入数字 **/
+    NumberText: function () {
+        if (!(event.keyCode == 46) && !(event.keyCode == 8) && !(event.keyCode == 37) && !(event.keyCode == 39) && !(event.keyCode == 190))
+            if (!((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105)))
+                event.returnValue = false;
     },
 
-    //设置iframe 高度  date：2015-12-20
-    setIframeHeight : function(iframeId){
+    /** 设置iframe 高度  **/
+    setIframeHeight: function (iframeId) {
         var iframe = $("#" + iframeId);
-        var winHeight = $(window).height() - 2*($("#navbar").height() + $("#portal_tabs").height());
+        var winHeight = $(window).height() - 2 * ($("#navbar").height() + $("#portal_tabs").height());
         var iframeHeight = $(iframe.contents()).find("body").height();
-        iframe.height(Math.max(winHeight,iframeHeight));
+        iframe.height(Math.max(winHeight, iframeHeight));
     },
 
-    //设置所有Iframe的宽度 date：2015-12-20
-    setAllIframeWidth : function(){
+    /** 设置所有Iframe的宽度 **/
+    setAllIframeWidth: function () {
         var iframes = document.getElementsByTagName("iframe");
-        for(var i=0;i < iframes.length;i++){
+        for (var i = 0; i < iframes.length; i++) {
             var iframe = $("#" + iframes[i].id);
             var width = $(window).width() - $("#sidebar").width();
             $(iframe).width(width - 5);
             $(iframe.body).width(width);
             //设置高度
-            var winHeight = $(window).height() - 2*($("#navbar").height() + $("#portal_tabs").height());
+            var winHeight = $(window).height() - 2 * ($("#navbar").height() + $("#portal_tabs").height());
             var iframeHeight = $(iframe.contents()).find("body").height();
-            iframe.height(Math.max(winHeight,iframeHeight));
+            iframe.height(Math.max(winHeight, iframeHeight));
         }
     },
 
-    //本地时钟
-     localClock : function(){
+    /** 本地时钟 **/
+    localClock: function () {
         var now = new Date();
         var year = now.getFullYear(); // getFullYear getYear
         var month = now.getMonth();
@@ -127,99 +127,134 @@ saicfc.common = {
         var arr_week = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
         week = arr_week[day];
 
-         return year + "年" + month + "月" + date + "日" + " " + hour + ":" + minu + ":" + sec + " " + week;
+        return year + "年" + month + "月" + date + "日" + " " + hour + ":" + minu + ":" + sec + " " + week;
     }
 };
 
-/**
- * 日期格式化
- * @type {{formatYMDHms: Function, formatYMD: Function}}
- */
-saicfc.moment = {
-    formatYMDHms :function(value){
+/** 日期格式化 */
+xqsight.moment = {
+    formatYMDHms: function (value) {
         return window.top.moment(value).format("YYYY-MM-DD HH:mm:ss");
     },
-    formatYMD :function(value){
+    formatYMD: function (value) {
         return window.top.moment(value).format("YYYY-MM-DD");
     }
 }
 
-saicfc.utils = {
-	/**
-	 * 替换所有字符串
-	 * @param str
-	 * @param oldVal
-	 * @param newVal
-	 * @returns
-	 */
-	replaceAll : function(str,oldVal,newVal){
-		return str.replace(new RegExp(oldVal,"gm"),newVal); 
-	},
-    /**
-     * 创建from表单并提交，一般用于下载
-     * @param action
-     * @param method
-     * @param target
-     */
-    createFromAndSubmit : function(action,method,target){
-        var form = $('<form></form>');
-        form.attr('action', action);
-        form.attr('method', method == undefined ? "post" : method);
-        // _self -> 当前页面 _blank -> 新页面
-        form.attr('target', method == undefined ? "_blank" : target);
-        form.submit();
+xqsight.utils = {
+    /** 全屏处理  **/
+    handleFullScreen: function () {
+        var de = document.documentElement;
+        if (de.requestFullscreen) {
+            de.requestFullscreen();
+        } else if (de.mozRequestFullScreen) {
+            de.mozRequestFullScreen();
+        } else if (de.webkitRequestFullScreen) {
+            de.webkitRequestFullScreen();
+        } else if (de.msRequestFullscreen) {
+            de.msRequestFullscreen();
+        } else {
+            alert("当前浏览器不支持全屏！");
+        }
     },
 
-    /**
-     * 清除查询的值
-     * @param id
-     */
-    cleanValue :function(element){
-        $(element +" input").val("");
-        $(element +" select option:first").prop("selected", 'selected');
+    /** 退出全屏 **/
+    exitFullscreen: function () {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
     },
 
-    /**
-     * 获取请求的服务
-     * @param reqType
-     * @returns {string}
-     */
-    getServerPath : function(reqType){
+    browserName : function () {
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        var isOpera = userAgent.indexOf("Opera") > -1;
+        if (isOpera) {
+            return "Opera";
+        }; //判断是否Opera浏览器
+        if (userAgent.indexOf("Firefox") > -1) {
+            return "FF";
+        } //判断是否Firefox浏览器
+        if (userAgent.indexOf("Chrome") > -1) {
+            if (window.navigator.webkitPersistentStorage.toString().indexOf("DeprecatedStorageQuota") > -1) {
+                return "Chrome";
+            } else {
+                return "360";
+            }
+        } //判断是否Chrome浏览器//360浏览器
+        if (userAgent.indexOf("Safari") > -1) {
+            return "Safari";
+        } //判断是否Safari浏览器
+        if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+            return "IE";
+        }; //判断是否IE浏览器
+    },
+
+    /** 替换所有字符串 */
+    replaceAll: function (str, oldVal, newVal) {
+        return str.replace(new RegExp(oldVal, "gm"), newVal);
+    },
+
+    /** 创建from表单并提交，一般用于下载 */
+    createFromAndSubmit: function (url, data, method) {
+        if (url && data) {
+            data = typeof data == "string" ? data : jQuery.param(data);
+            var inputs = "";
+            $.each(data.split("&"), function () {
+                var pair = this.split("=");
+                inputs += "<input type=\"hidden\" name=\"" + pair[0] + "\" value=\"" + pair[1] + "\" />";
+            });
+            $("<form action=\"" + url + "\" method=\"" + (method || "post") + "\">" + inputs + "</form>").appendTo("body").submit().remove();
+        };
+    },
+
+    /** 清除查询的值 **/
+    cleanValue: function (elementObj) {
+        $(elementObj + " input").val("");
+        $(elementObj + " select option:first").prop("selected", 'selected');
+    },
+
+    /** 获取请求的服务 **/
+    getServerPath: function (reqType) {
         var serverPath = "";
-        switch (reqType){
+        switch (reqType) {
             case "system" :  //系统管理
-                serverPath = "http://localhost:8080/portal";//saicfc.utils.getContextPath();
+                serverPath = "http://localhost:8080/portal";//xqsight.utils.getContextPath();
                 break;
             case "anti" :
-                serverPath = saicfc.utils.getContextPath();
+                serverPath = xqsight.utils.getContextPath();
                 break;
             case "dataTableLocal" :
-                serverPath = saicfc.utils.getContextPath() + "/static/ace/js/dataTables/language/zn_ch.json";
+                serverPath = xqsight.utils.getContextPath() + "/static/ace/js/dataTables/language/zn_ch.json";
                 break;
             default:
-        serverPath = saicfc.utils.getContextPath();
-    }
+                serverPath = xqsight.utils.getContextPath();
+        }
         return serverPath;
     },
-    getContextPath : function() {
+
+    /** 获取服务的根 **/
+    getContextPath: function () {
         var contextPath = document.location.pathname;
-        var index =contextPath.substr(1).indexOf("/"); //这个地方可能有问题，要根据具体项目适当修改
-        contextPath = contextPath.substr(0,index+1);
+        var index = contextPath.substr(1).indexOf("/"); //这个地方可能有问题，要根据具体项目适当修改
+        contextPath = contextPath.substr(0, index + 1);
         return contextPath == "/page" ? "" : contextPath;
     }
 
 };
 
-saicfc.tab = {
-    getIframeContent : function(){
-       return window.top.$("#portal_tab_content .active > iframe")[0].contentWindow;
+xqsight.tab = {
+    getIframeContent: function () {
+        return window.top.$("#portal_tab_content .active > iframe")[0].contentWindow;
     }
 };
 
-
-saicfc.win = {
+xqsight.win = {
     /** 显示对话框 **/
-    show : function(title,url,width,height,fit){
+    show: function (title, url, width, height, fit) {
         //获取宽度和高度
         var leftWidth = window.top.$("#sidebar").width(),
             topHeight = (window.top.$("#navbar").height() + window.top.$("#portal_tabs").height()),
@@ -227,10 +262,10 @@ saicfc.win = {
             windowHeight = window.screen.availHeight;//$(window).height();
 
         fit = fit == undefined ? true : fit;
-        var offset = fit ? [topHeight + "px",leftWidth + "px"] : "100px";
+        var offset = fit ? [topHeight + "px", leftWidth + "px"] : "100px";
 
         width = fit ? windowWidth - 10 : (width == undefined ? 600 : width);
-        height = fit ? (windowHeight - 3*topHeight) : (height == undefined ? 400 : height);
+        height = fit ? (windowHeight - 3 * topHeight) : (height == undefined ? 400 : height);
 
         window.top.layer.open({
             type: 2,
@@ -238,8 +273,8 @@ saicfc.win = {
             shadeClose: false,
             shade: 0.2,
             shift: 1,
-            skin : "layui-layer-molv",
-            moveOut : true,
+            skin: "layui-layer-molv",
+            moveOut: true,
             offset: offset,
             maxmin: true, //开启最大化最小化按钮
             area: [width + 'px', height + 'px'],
@@ -248,44 +283,45 @@ saicfc.win = {
 
     },
 
-    close : function(){
+    close: function () {
         var index = window.top.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         window.top.layer.close(index); //再执行关闭
     },
 
     /** 提示框 **/
-    alert : function(msg,type){
-       if(type == 0){
-           window.top.layer.msg(msg, {icon: 1,offset: 100, shift: 6});
-       }else if(type == -1){
-           window.top.layer.msg(msg, {icon: 5,offset: 100, shift: 6});
-       }else {
-           window.top.layer.alert(msg, { title:'温馨提示',skin : "layui-layer-molv",icon: 0});
-       }
+    alert: function (msg, type) {
+        if (type == 0) {
+            window.top.layer.msg(msg, {icon: 1, offset: 100, shift: 6});
+        } else if (type == -1) {
+            window.top.layer.msg(msg, {icon: 5, offset: 100, shift: 6});
+        } else {
+            window.top.layer.alert(msg, {title: '温馨提示', skin: "layui-layer-molv", icon: 0});
+        }
     },
 
     /** 确认对话框 **/
-    confirm : function(msg,callbackFun){
-        window.top.layer.confirm(msg, {icon: 3, title:'温馨提示', skin : "layui-layer-molv",
-            btn: ['确认','取消'] //按钮
-        }, function(index){
+    confirm: function (msg, callbackFun) {
+        window.top.layer.confirm(msg, {
+            icon: 3, title: '温馨提示', skin: "layui-layer-molv",
+            btn: ['确认', '取消'] //按钮
+        }, function (index) {
             window.top.layer.close(index)
             callbackFun("yes");
-        }, function(index){
+        }, function (index) {
             window.top.layer.close(index)
             callbackFun("cancel");
         });
     },
 
     // 提示层
-    tipShow : function(text,maxWidth,maxHeight){
+    tipShow: function (text, maxWidth, maxHeight) {
         return "<div class='tipshow'>" +
-            "<div data-rel='tooltip' style='overflow: hidden;max-width:" +maxWidth + "px;max-height:" + maxHeight + "px;' " +
-            "title='" + text + "'>" + text +"</div></div>"
+            "<div data-rel='tooltip' style='overflow: hidden;max-width:" + maxWidth + "px;max-height:" + maxHeight + "px;' " +
+            "title='" + text + "'>" + text + "</div></div>"
     },
 
     // 图片展示层
-    imgShow : function (url) {
+    imgShow: function (url) {
         window.top.layer.open({
             type: 1,
             title: false,
@@ -298,53 +334,71 @@ saicfc.win = {
 
 };
 
-saicfc.progress = {
-    loading : function(){
-       return  window.top.layer.load(0,{
-            shade: [0.1,'#000'],
+xqsight.progress = {
+    loading: function () {
+        return window.top.layer.load(0, {
+            shade: [0.1, '#000'],
             time: 5000
         });
     },
-    removeLoading : function(index){
+
+    removeLoading: function (index) {
         window.top.layer.close(index);
     },
-    show : function(){
-        return  window.top.layer.load(0,{
-            shade: [0.1,'#000'],
+
+    startPageLoading: function (options) {
+        if (options && options.animate) {
+            $('.page-spinner-bar').remove();
+            $('body').append('<div class="page-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
+        } else {
+            $('.page-loading').remove();
+            $('body').append('<div class="page-loading"><img src="' + this.getGlobalImgPath() + 'loading-spinner-blue.gif"/>&nbsp;&nbsp;<span>' + (options && options.message ? options.message : 'Loading...') + '</span></div>');
+        }
+    },
+
+    stopPageLoading: function () {
+        $('.page-loading, .page-spinner-bar').remove();
+    },
+
+    show: function () {
+        return window.top.layer.load(0, {
+            shade: [0.1, '#000'],
             time: 5000
         });
     },
-    hide : function(index){
+
+    hide: function (index) {
         window.top.layer.close(index);
     }
+
 
 }
 
 //命名空间
-saicfc.nameSpace = {
-    reg : function(s){
+xqsight.nameSpace = {
+    reg: function (s) {
         var arr = s.split('.');
         var namespace = window;
 
-        for(var i=0,k=arr.length;i<k;i++){
-            if(typeof namespace[arr[i]] == 'undefined'){
+        for (var i = 0, k = arr.length; i < k; i++) {
+            if (typeof namespace[arr[i]] == 'undefined') {
                 namespace[arr[i]] = {};
             }
             namespace = namespace[arr[i]];
         }
     },
 
-    del : function(s){
+    del: function (s) {
         var arr = s.split('.');
         var namespace = window;
 
-        for(var i=0,k=arr.length;i<k;i++){
-            if(typeof namespace[arr[i]] == 'undefined'){
+        for (var i = 0, k = arr.length; i < k; i++) {
+            if (typeof namespace[arr[i]] == 'undefined') {
                 return;
-            }else if( k == i+1 ){
+            } else if (k == i + 1) {
                 delete  namespace[arr[i]];
                 return;
-            }else{
+            } else {
                 namespace = namespace[arr[i]];
             }
         }
@@ -352,30 +406,34 @@ saicfc.nameSpace = {
 };
 
 
-saicfc.validata = {
+xqsight.validata = {
     //前后去空格
-    strTrim : function(str){
-        return str.replace(/(^\s*)|(\s*$)/g,'');
+    strTrim: function (str) {
+        return str.replace(/(^\s*)|(\s*$)/g, '');
     },
 
     //去所有空格
-    strTrimAll : function(str){
-        return str.replace(/\s/ig,'');
+    strTrimAll: function (str) {
+        return str.replace(/\s/ig, '');
     },
 
     //是不是手机号码
-    isPhone : function(str){
+    isPhone: function (str) {
         var reg = /^1\d{10}$/;
         return reg.test(str);
     },
 
-    isEmail : function(str){
+    isEmail: function (str) {
         var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         return reg.test(str);
     },
     //15位和18位身份证号码的基本校验
-    isUserIdentity : function(str){
+    isUserIdentity: function (str) {
         var reg = /^\d{15}|(\d{17}(\d|x|X))$/;
         return reg.test(str);
     }
 };
+
+
+
+

@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("xqsight.cms");
+xqsight.nameSpace.reg("xqsight.cms");
 
 (function(){
     xqsight.cms.modelManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
@@ -73,11 +73,11 @@ saicfc.nameSpace.reg("xqsight.cms");
                         "url": url ,
                         "data": editmodel,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                var iframeContent = saicfc.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getIframeContent();
                                 iframeContent.modelMain.editCallBackFun({"modelId" : $.getUrlParam("id")});
-                                saicfc.win.close();
+                                xqsight.win.close();
                             }
                         },
                         "dataType": "jsonp",
@@ -85,14 +85,14 @@ saicfc.nameSpace.reg("xqsight.cms");
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**

@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.office");
+xqsight.nameSpace.reg("sys.office");
 
 (function(){
     sys.office.officeManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
@@ -25,6 +25,13 @@ saicfc.nameSpace.reg("sys.office");
             $("#btn_save").bind("click",obj.validateFun);
             $("#btn_cancel").bind("click",obj.cancelFun);
 
+            //上级
+            $("#areaId").ComboBoxTree({
+                url: ctxData + "/sys/area/querytree?date="+new Date().getTime(),
+                description: "==请选择==",
+                height: "195px",
+                allowSearch: false
+            });
             obj.formSetValue();
         };
 
@@ -36,6 +43,7 @@ saicfc.nameSpace.reg("sys.office");
             editOffice.officeName = $("#officeName").val();
             editOffice.officeCode = $("#officeCode").val();
             editOffice.officeType = $("#officeType").val();
+            editOffice.areaId = $("#areaId").attr("data-value");
             editOffice.master = $("#master").val();
             editOffice.phone = $("#phone").val();
             editOffice.email = $("#email").val();
@@ -76,24 +84,24 @@ saicfc.nameSpace.reg("sys.office");
                         url: url ,
                         data: editOffice,
                         success: function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                var iframeContent = saicfc.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getIframeContent();
                                 iframeContent.officeMain.editCallBackFun({"officeId" : $.getUrlParam("officeId")});
-                                saicfc.win.close();
+                                xqsight.win.close();
                             }
                         }
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**
@@ -124,6 +132,7 @@ saicfc.nameSpace.reg("sys.office");
                         $("#address").val(data.address);
                         $("#sort").val(data.sort);
                         $("#remark").val(data.remark);
+                        $("#areaId").ComboBoxTreeSetValue(data.areaId);
                     }
                 }
             });

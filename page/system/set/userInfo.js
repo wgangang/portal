@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.set");
+xqsight.nameSpace.reg("sys.set");
 
 (function() {
     sys.set.userInfo = function () {
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         // 申明内部对象
         var obj = this;
@@ -25,7 +25,7 @@ saicfc.nameSpace.reg("sys.set");
 
             $("#fileId").on("fileuploaded", function (event, data, previewId, index) {
                 var retData = data.response;
-                saicfc.win.alert(retData.msg,retData.status);
+                xqsight.win.alert(retData.msg,retData.status);
                 if (retData.status == "0") {
                     $("#imgUrl").attr("src", retData.data).fadeIn();
                 }
@@ -60,7 +60,7 @@ saicfc.nameSpace.reg("sys.set");
                         return;
                     $("#userName").html(retData.data.userName);
                     $("#loginName").html(retData.data.loginId);
-                    $("#createTime").html(saicfc.moment.formatYMD(retData.data.createTime));
+                    $("#createTime").html(xqsight.moment.formatYMD(retData.data.createTime));
                     if (retData.data.imgUrl != "" && retData.data.imgUrl != undefined)
                         $("#imgUrl").attr("src", retData.data.imgUrl).fadeIn();
                     obj.updUserFun();
@@ -82,14 +82,14 @@ saicfc.nameSpace.reg("sys.set");
                 success: function (response, newValue) {
                     if (newValue != "") {
                         if (newValue == "") {
-                            saicfc.win.alert("用户名不能为空！");
+                            xqsight.win.alert("用户名不能为空！");
                             return false;
                         }
                         $.ajax({
                             "url": ctxData + "/sys/login/updusername?date=" + new Date().getTime(),
                             "data": "userName=" + newValue,
                             "success": function (retData) {
-                                saicfc.win.alert(retData.msg,retData.status);
+                                xqsight.win.alert(retData.msg,retData.status);
                             },
                             "dataType": "jsonp",
                             "cache": false
@@ -110,7 +110,7 @@ saicfc.nameSpace.reg("sys.set");
                         "url": url,
                         "data": "password=" + $("#password").val(),
                         "success": function (retData) {
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -119,14 +119,14 @@ saicfc.nameSpace.reg("sys.set");
             };
 
             $("#updForm").html5Validate(function () {
-                saicfc.win.confirm("确认修改吗？", callback);
+                xqsight.win.confirm("确认修改吗？", callback);
             }, {
                 validate: function () {
-                    if (saicfc.validata.strTrim($("#password").val()) == "") {
+                    if (xqsight.validata.strTrim($("#password").val()) == "") {
                         $("#password").testRemind("新密码不能为空");
                         $(window).scrollTop($("#password").offset().top - 50);
                         return false;
-                    } else if (saicfc.validata.strTrim($("#password").val()) != saicfc.validata.strTrim($("#repassword").val())) {
+                    } else if (xqsight.validata.strTrim($("#password").val()) != xqsight.validata.strTrim($("#repassword").val())) {
                         $("#repassword").testRemind("新密码和确认密码不一致");
                         $(window).scrollTop($("#repassword").offset().top - 50);
                         return false;

@@ -2,11 +2,11 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("xqsight.cms");
+xqsight.nameSpace.reg("xqsight.cms");
 
 (function(){
     xqsight.cms.forumMain = function(){
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
@@ -43,7 +43,7 @@ saicfc.nameSpace.reg("xqsight.cms");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
             /**
@@ -69,7 +69,7 @@ saicfc.nameSpace.reg("xqsight.cms");
         this.forumDetailFun = function(articleId){
             var selRows = obj.forumTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择查看的数据");
+                xqsight.win.alert("请选择查看的数据");
                 return;
             }
         	var href= ctxData + "/page/cms/forum/forumManage.html?articleId=" + selRows[0].articleId;
@@ -82,10 +82,10 @@ saicfc.nameSpace.reg("xqsight.cms");
         this.removeFun = function(){
             var selRows = obj.forumTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         url: ctxData + "/cms/article/delete?date=" + new Date().getTime(),
@@ -93,7 +93,7 @@ saicfc.nameSpace.reg("xqsight.cms");
                         dataType: "jsonp",
                         cache: false,
                         success: function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.forumTable.ajax.reload();
                             }
@@ -109,7 +109,7 @@ saicfc.nameSpace.reg("xqsight.cms");
         this.loadForumTableFun = function(){
             var record_table = $("#ask-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getServerPath("dataTableLocal")
+                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -127,7 +127,7 @@ saicfc.nameSpace.reg("xqsight.cms");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -165,7 +165,7 @@ saicfc.nameSpace.reg("xqsight.cms");
                     sWidth : "120",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMDHms(value);
+                        return xqsight.moment.formatYMDHms(value);
                     }
                 },{
                     data: "articleId",

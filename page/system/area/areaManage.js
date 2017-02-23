@@ -2,18 +2,18 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.area");
+xqsight.nameSpace.reg("sys.area");
 
 (function(){
     sys.area.areaManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         var editMenu = {};
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -68,24 +68,24 @@ saicfc.nameSpace.reg("sys.area");
                         url: url,
                         data: editMenu,
                         success: function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                var iframeContent = saicfc.tab.getIframeContent();
+                                var iframeContent = xqsight.tab.getIframeContent();
                                 iframeContent.areaMain.editCallBackFun({"areaId" : $.getUrlParam("id")});
-                                saicfc.win.close();
+                                xqsight.win.close();
                             }
                         }
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**

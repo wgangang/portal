@@ -2,15 +2,15 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("sys.area");
+xqsight.nameSpace.reg("sys.area");
 
 (function(){
     sys.area.areaMain = function(){
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -40,7 +40,7 @@ saicfc.nameSpace.reg("sys.area");
              * 重置
              */
             $("#btn-reset").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
             /**
@@ -69,10 +69,10 @@ saicfc.nameSpace.reg("sys.area");
          */
         this.plusFun = function(){
            if(obj.curSelTree.id == undefined ){
-                saicfc.win.alert("请选择要添加的节点");
+                xqsight.win.alert("请选择要添加的节点");
                 return;
             }
-            saicfc.win.show("区域新增","system/area/areaManage.html?parentId=" + obj.curSelTree.id,700,400,false);
+            xqsight.win.show("区域新增","system/area/areaManage.html?parentId=" + obj.curSelTree.id,700,400,false);
         }
 
         /**
@@ -81,10 +81,10 @@ saicfc.nameSpace.reg("sys.area");
         this.editFun = function(){
             var selRows = obj.areaTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.show("区域修改","system/area/areaManage.html?areaId=" + selRows[0].areaId,700,400,false);
+            xqsight.win.show("区域修改","system/area/areaManage.html?areaId=" + selRows[0].areaId,700,400,false);
         }
 
         /**
@@ -93,16 +93,16 @@ saicfc.nameSpace.reg("sys.area");
         this.removeFun = function(){
             var selRows = obj.areaTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择修改的数据");
+                xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         url: ctxData + "/sys/area/delete?date=" + new Date().getTime(),
                         data: {areaId : selRows[0].areaId },
                         success: function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                obj.loadAreaTreeFun();
                             }
@@ -131,7 +131,7 @@ saicfc.nameSpace.reg("sys.area");
                         success: function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         }
                     });
                 },
@@ -175,7 +175,7 @@ saicfc.nameSpace.reg("sys.area");
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 },{
                     data: "areaId",
@@ -211,6 +211,11 @@ saicfc.nameSpace.reg("sys.area");
                 url: ctxData + "/sys/area/querytree?date="+new Date().getTime(),
                 success: function(retData){
                     if(retData.status == 0){
+                        var treeRoot = [{
+                            name : "系统区域",
+                            id : 0,
+                            children : retData.data
+                        }];
                         $.fn.zTree.init($("#areaTree"),{
                             check: {
                                 enable: false,
@@ -229,7 +234,7 @@ saicfc.nameSpace.reg("sys.area");
                                     return false;
                                 }
                             }
-                        }, retData.data);
+                        }, treeRoot);
 
                         obj.areaTree = $.fn.zTree.getZTreeObj("areaTree");
 
@@ -248,7 +253,7 @@ saicfc.nameSpace.reg("sys.area");
                         obj.areaTable.ajax.reload();
                     }
                     //渲染结束重新设置高度
-                    parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                 }
             });
         }

@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.reconStatistics = function(){
+    xqsight.pmpf.reconStatistics = function(){
 
-        var ctxData = saicfc.utils.getReconServerPath();
+        var ctxData = xqsight.utils.getReconServerPath();
 
         // 申明内部对象
         var obj = this;
@@ -23,7 +23,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 obj.statisticsTable.ajax.reload();
             });
             $("#btn-reset").click(function(){
-                saicfc.utils.cleanValue("searchDiv");
+                xqsight.utils.cleanValue("searchDiv");
             });
 
             obj.loadChannelInfo();
@@ -36,7 +36,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.loadStatisticsTableFun = function(){
             var record_table = $("#statistics-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getDataZh_chPath()
+                    sUrl : xqsight.utils.getDataZh_chPath()
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -49,15 +49,15 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                 "bServerSide" : true,
                 "sAjaxSource": ctxData + '/statistics/result',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    var index = saicfc.progress.loading();
+                    var index = xqsight.progress.loading();
                     $.ajax({
                         "url": sUrl,
                         "data": aoData,
                         "success":  function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
-                            saicfc.progress.removeLoading(index);
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                            xqsight.progress.removeLoading(index);
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -77,7 +77,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     sWidth : "100",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 },{
                     "data": "channelName",
@@ -100,7 +100,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     sClass : "text-right",
                     render : function(value){
                         value = (value == undefined ? 0.00 : value);
-                        return saicfc.common.formatMoney(value/1000);
+                        return xqsight.common.formatMoney(value/1000);
                     }
                 }, {
                     "data": "bankTotalCount",
@@ -113,7 +113,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     bSortable : false,
                     render : function(value,type,row){
                         value = (value == undefined ? 0.00 : value);
-                        return saicfc.common.formatMoney(value/1000);
+                        return xqsight.common.formatMoney(value/1000);
                     }
                 }, {
                     "data": "cwgsExist",
@@ -126,7 +126,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     bSortable : false,
                     render : function(value,type,row){
                         value = (value == undefined ? 0.00 : value);
-                        return saicfc.common.formatMoney(value/1000);
+                        return xqsight.common.formatMoney(value/1000);
                     }
                 }, {
                     "data": "bankExist",
@@ -139,7 +139,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
                     bSortable : false,
                     render : function(value,type,row){
                         value = (value == undefined ? 0.00 : value);
-                        return saicfc.common.formatMoney(value/1000);
+                        return xqsight.common.formatMoney(value/1000);
                     }
                 }]
             });
@@ -255,7 +255,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
     });
 })();
 
-var reconStatistics = new saicfc.pmpf.reconStatistics();
+var reconStatistics = new xqsight.pmpf.reconStatistics();
 
 
 

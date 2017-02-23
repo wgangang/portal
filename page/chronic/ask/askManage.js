@@ -2,12 +2,12 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("xqsight.chronic");
+xqsight.nameSpace.reg("xqsight.chronic");
 
 (function(){
     xqsight.chronic.askManage = function(){
 
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
@@ -53,7 +53,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
          */
         this.validateFun = function(){
             if(askEditor.html().length < 1){
-                saicfc.win.alert("恢复内容不能为空");
+                xqsight.win.alert("恢复内容不能为空");
                 return false;
             }
             obj.saveFun();
@@ -71,7 +71,7 @@ saicfc.nameSpace.reg("xqsight.chronic");
                         "url": url ,
                         "data": editComent,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status);
+                            xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == 0)
                                 obj.loadComentFun();
                         },
@@ -80,14 +80,14 @@ saicfc.nameSpace.reg("xqsight.chronic");
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**
@@ -132,12 +132,12 @@ saicfc.nameSpace.reg("xqsight.chronic");
                             commentHtml += '<img class="pull-left" alt="' + object.userName + '" src="' + object.imgUrl + '">';
                             commentHtml += object.comment;
                             commentHtml += '<div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i>';
-                            commentHtml += saicfc.moment.formatYMDHms(object.createTime);
+                            commentHtml += xqsight.moment.formatYMDHms(object.createTime);
                             commentHtml += '</div></div></div>';
                         });
                         $("#comment").html("").html(commentHtml);
 
-                        parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                     }
                 }
             });
@@ -189,9 +189,9 @@ saicfc.nameSpace.reg("xqsight.chronic");
                  "cache": false,
                  "url": ctxData + "/file/manage/delete?fileId=" + fileId + "&date=" + new Date().getTime,
                  "success": function(retData){
-                	 saicfc.win.alert(retData.msg);
+                	 xqsight.win.alert(retData.msg);
                 	 if(retData.status == "0"){
-                		 editarticle.fileId = saicfc.utils.replaceAll(editarticle.fileId,fileId+",","");
+                		 editarticle.fileId = xqsight.utils.replaceAll(editarticle.fileId,fileId+",","");
                 		 $("#picShow #" + fileId).remove();
                 	 }
                 	 

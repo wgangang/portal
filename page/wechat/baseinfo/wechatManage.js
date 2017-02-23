@@ -2,16 +2,16 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("saicfc.pmpf");
+xqsight.nameSpace.reg("xqsight.pmpf");
 
 (function(){
-    saicfc.pmpf.userManage = function(){
+    xqsight.pmpf.userManage = function(){
 
-        var ctxData = saicfc.utils.getSysServerPath();
+        var ctxData = xqsight.utils.getSysServerPath();
 
         /**
          * 申明内部对象
-         * @type {saicfc.pmpf}
+         * @type {xqsight.pmpf}
          */
         var obj = this;
 
@@ -57,37 +57,37 @@ saicfc.nameSpace.reg("saicfc.pmpf");
         this.saveFun = function(){
             var callback = function(btn){
                 if(btn == "yes"){
-                    var index = saicfc.progress.loading();
+                    var index = xqsight.progress.loading();
                     $.ajax({
                         "url": ctxData + "/sys/login/save?date=" + new Date().getTime(),
                         "data": obj.setParamFun(),
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg);
-                            saicfc.progress.removeLoading(index)
+                            xqsight.win.alert(retData.msg);
+                            xqsight.progress.removeLoading(index)
                             if(retData.status == "0"){
-                                saicfc.win.alert("您的默认密码是:!password");
-                                var iframeContent = saicfc.tab.getIframeContent();
+                                xqsight.win.alert("您的默认密码是:!password");
+                                var iframeContent = xqsight.tab.getIframeContent();
                                 iframeContent.userMain.editCallBackFun({"userId" : $.getUrlParam("id")});
-                                saicfc.win.close();
+                                xqsight.win.close();
                             }
                         },
                         "error" : function(data){
-                            saisaicfc.win.alert(data);
-                            saicfc.progress.removeLoading(index);
+                            saixqsight.win.alert(data);
+                            xqsight.progress.removeLoading(index);
                         },
                         "dataType": "jsonp",
                         "cache": false
                     });
                 }
             };
-            saicfc.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？",callback);
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function(){
-            saicfc.win.close();
+            xqsight.win.close();
         };
 
         /**
@@ -113,7 +113,7 @@ saicfc.nameSpace.reg("saicfc.pmpf");
     });
 })();
 
-var userManage = new saicfc.pmpf.userManage();
+var userManage = new xqsight.pmpf.userManage();
 
 
 

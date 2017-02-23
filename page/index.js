@@ -1,12 +1,12 @@
 /**
  * Created by wangganggang on 15/12/11.
  */
-saicfc.nameSpace.reg("sys");
+xqsight.nameSpace.reg("sys");
 
 (function(){
     sys.index = function() {
 
-        var ctxData = saicfc.utils.getServerPath("system");
+        var ctxData = xqsight.utils.getServerPath("system");
 
         // 申明内部对象
         var obj = this;
@@ -59,7 +59,7 @@ saicfc.nameSpace.reg("sys");
 
         /** 本地时间 */
         this.setLocalLock = function(){
-            $('#localClock').html(saicfc.common.localClock());
+            $('#localClock').html(xqsight.common.localClock());
             setTimeout("index.setLocalLock()", 200);
         };
 
@@ -141,7 +141,7 @@ saicfc.nameSpace.reg("sys");
         this.closeCurrentTab = function(currentSelectedTab){
 
             if($(currentSelectedTab).attr("id") == "tab_home"){
-                saicfc.win.alert("首页不能关闭");
+                xqsight.win.alert("首页不能关闭");
                 obj.tabToolsFun("hide");
                 return false;
             }
@@ -233,7 +233,7 @@ saicfc.nameSpace.reg("sys");
         this.addTabContentFun = function(id,href){
             var tabContent = '<div class="tab-pane active" id="tab_content_' + id + '">';
             tabContent += '<iframe src="' + href + '" scrolling="auto" class="no-border" frameborder="0px;" width="100%" ';
-            tabContent += ' id="iframe_' + id + '" onload="saicfc.common.setIframeHeight(this.id);"></iframe> </div>';
+            tabContent += ' id="iframe_' + id + '" onload="xqsight.common.setIframeHeight(this.id);"></iframe> </div>';
 
             $("#portal_tab_content").append(tabContent);
         }

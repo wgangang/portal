@@ -2,11 +2,11 @@
  * Created by user on 2015/12/14.
  */
 
-saicfc.nameSpace.reg("cms.report");
+xqsight.nameSpace.reg("cms.report");
 
 (function(){
     cms.report.reportMain = function(){
-        var ctxData = saicfc.utils.getServerPath("cms");
+        var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
          * 申明内部对象
@@ -41,7 +41,7 @@ saicfc.nameSpace.reg("cms.report");
              * 重置
              */
             $("#btn-undo").click(function(){
-                saicfc.utils.cleanValue(".filter");
+                xqsight.utils.cleanValue(".filter");
             });
 
 
@@ -73,16 +73,16 @@ saicfc.nameSpace.reg("cms.report");
         this.viewFun = function(){
             var selRows = obj.dataTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择查看的数据");
+                xqsight.win.alert("请选择查看的数据");
                 return;
             }
-            //saicfc.win.show("举报查看","cms/report/reportManage.html?reportId=" + selRows[0].reportId,600,300,true);
+            //xqsight.win.show("举报查看","cms/report/reportManage.html?reportId=" + selRows[0].reportId,600,300,true);
         }
 
         this.viewArticleFun = function(){
             var selRows = obj.dataTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择查看的数据");
+                xqsight.win.alert("请选择查看的数据");
                 return;
             }
             var href= ctxData + "/page/cms/forum/forumManage.html?articleId=" + selRows[0].articleId;
@@ -92,15 +92,15 @@ saicfc.nameSpace.reg("cms.report");
         this.dealFun = function(){
             var selRows = obj.dataTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择处理的数据");
+                xqsight.win.alert("请选择处理的数据");
                 return;
             }
 
             if(selRows[0].dealStatus == "0"){
-                saicfc.win.alert("该投诉已经处理");
+                xqsight.win.alert("该投诉已经处理");
                 return;
             }
-            saicfc.win.confirm("确认处理吗？",function(btn){
+            xqsight.win.confirm("确认处理吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/cms/article/report/update?date=" + new Date().getTime(),
@@ -108,7 +108,7 @@ saicfc.nameSpace.reg("cms.report");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status)
+                            xqsight.win.alert(retData.msg,retData.status)
                             if(retData.status == "0"){
                                 obj.dataTable.ajax.reload();
                             }
@@ -124,10 +124,10 @@ saicfc.nameSpace.reg("cms.report");
         this.removeFun = function(){
             var selRows = obj.dataTable.rows(".info").data();
             if(selRows.length < 1){
-                saicfc.win.alert("请选择删除的数据");
+                xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            saicfc.win.confirm("确认删除吗？",function(btn){
+            xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
                         "url": ctxData + "/cms/article/report/delete?date=" + new Date().getTime(),
@@ -135,7 +135,7 @@ saicfc.nameSpace.reg("cms.report");
                         "dataType": "jsonp",
                         "cache": false,
                         "success": function(retData){
-                            saicfc.win.alert(retData.msg,retData.status)
+                            xqsight.win.alert(retData.msg,retData.status)
                             if(retData.status == "0"){
                                 obj.dataTable.ajax.reload();
                             }
@@ -151,7 +151,7 @@ saicfc.nameSpace.reg("cms.report");
         this.loaddataTableFun = function(){
             var record_table = $("#data-table").DataTable({
                 "oLanguage" : { // 汉化
-                    sUrl : saicfc.utils.getServerPath("dataTableLocal")
+                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
@@ -169,7 +169,7 @@ saicfc.nameSpace.reg("cms.report");
                         "success": function(data){
                             fnCallback(data);
                             //渲染结束重新设置高度
-                            parent.saicfc.common.setIframeHeight($.getUrlParam(saicfc.iframeId));
+                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                         },
                         "dataType": "jsonp",
                         "cache": false
@@ -221,7 +221,7 @@ saicfc.nameSpace.reg("cms.report");
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return saicfc.moment.formatYMD(value);
+                        return xqsight.moment.formatYMD(value);
                     }
                 },{
                     data: "reportId",

@@ -55,8 +55,8 @@ xqsight.nameSpace.reg("cms.article");
          * 新增 function
          */
         this.plusFun = function(){
-            window.top.index.addTabPageFun("article","新增文章","cms/article/articleManage.html");
-           //xqsight.win.show("新增文章","cms/article/articleManage.html",600,300,true);
+            //window.top.index.addTabPageFun("article","新增文章","cms/article/articleManage.html");
+           xqsight.win.show("新增文章","cms/article/articleManage.html",600,300,true);
         }
 
         /**

@@ -36,11 +36,14 @@ xqsight.nameSpace.reg("cms.article");
         this.Editor = function(){
             KindEditor.ready(function(K) {
                 artileEditor = K.create('#articleContent', {
-                    uploadJson :ctxData+ '/file/manage/uploadftp',
+                    uploadJson :ctxData+ '/files/core/editor?action=keditor&CKEditor=true&callBackFun=articleManage.callback',
                     //  fileManagerJson :ctxData+ '/cms/article/query', //图片空间获取图片
-                    allowFileManager : true,
+                    allowFileManager : false,
                     fillDescAfterUploadImage : true , //图片上传完后编辑图片
                     afterBlur: function(){this.sync();},
+                    afterUpload : function(url) {//获取上传图片的路径
+                       alert(url);
+                    },
                     allowImageRemote: true,//隐藏网络上传图片
                     pasteType : 1 ,//纯文本粘贴
                     width:"100%",height:"400px",
@@ -79,6 +82,10 @@ xqsight.nameSpace.reg("cms.article");
             });
         };
 
+        this.callback =function(a){
+          alert(a);
+        };
+
         /**
          * 保存 function
          */
@@ -115,8 +122,9 @@ xqsight.nameSpace.reg("cms.article");
          * 取消 function
          */
         this.cancelFun = function(){
-            xqsight.tab.getCurrentIframeContent($.getUrlParam(xqsight.iframeId)).articleMain.artilceTable.ajax.reload()
-            window.top.index.closeCurrentTab(window.top.$("#tab_article"));
+           // xqsight.tab.getCurrentIframeContent($.getUrlParam(xqsight.iframeId)).articleMain.artilceTable.ajax.reload()
+            //window.top.index.closeCurrentTab(window.top.$("#tab_article"));
+            xqsight.win.close();
         };
 
         /**

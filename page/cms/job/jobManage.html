@@ -3,10 +3,10 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>文章管理</title>
+    <title>模块管理</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <!-- bootstrap & fonts -->
+    <!-- bootstrap & fonts  -->
     <link rel="stylesheet" href="../../../static/ace/css/bootstrap.css" />
     <link rel="stylesheet" href="../../../static/ace/css/font-awesome.css" />
 
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="../../../static/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
     <link rel="stylesheet" href="../../../static/ace/css/ace-fonts.css" />
     <link rel="stylesheet" href="../../../static/css/common.css"/>
-    <link rel="stylesheet" href="../../../static/wangEditor/css/wangEditor.css" />
+    <link rel="stylesheet" href="../../../static/wangEditor/css/wangEditor.css" />>
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../../static/ace/css/ace-part2.css" class="ace-main-stylesheet"/>
@@ -30,7 +30,6 @@
     <!--[if lte IE 8]>
     <script src="../../../static/ace/js/html5shiv.js"></script>
     <script src="../../../static/ace/js/respond.js"></script>
-
     <![endif]-->
 </head>
 <body class="no-skin">
@@ -43,57 +42,62 @@
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row no-margin">
-                    <form id="articleForm" name="articleForm" class="form-auto">
+                    <form id="modelForm" name="modelForm">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label for="articleTitle" class="col-sm-1 control-label">标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="articleTitle" placeholder="标题" required >
+                                <label for="jobName" class="col-xs-2 control-label">招聘名称</label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" id="jobName" placeholder="招聘名称" required>
                                 </div>
-                                <div class="col-sm-1 red">*</div>
-
-                                <label for="publishTime" class="col-sm-1 control-label">发布时间</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="publishTime" placeholder="发布时间" required >
-                                </div>
-                                <div class="col-sm-1 red">*</div>
+                                <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
-                                <label for="articleAuthor" class="col-sm-1 control-label">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="articleAuthor" placeholder="作者">
+                                <label for="jobStartTime" class="col-xs-2 control-label">开始时间</label>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" id="jobStartTime" placeholder="开始时间" >
                                 </div>
-                                <div class="col-sm-1 red"></div>
-
-                                <label for="articleHit" class="col-sm-1 control-label">是否显示</label>
-                                <div class="col-sm-4">
-                                    <select id="articleHit" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="是否显示" required>
-                                        <option value="0" selected>显示</option>
-                                        <option value="-1">隐藏</option>
+                                <div class="col-xs-1 red"></div>
+                                <label for="jobEndTime" class="col-xs-1 control-label">结束时间</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" id="jobEndTime" placeholder="结束时间" >
+                                </div>
+                                <div class="col-xs-1 red"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="jobPhone" class="col-xs-2 control-label">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话</label>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" id="jobPhone" placeholder="电话" >
+                                </div>
+                                <div class="col-xs-1 red"></div>
+                                <label for="status" class="col-xs-1 control-label">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>
+                                <div class="col-xs-4">
+                                    <select id="status" class="form-control selectpicker" data-live-search="false"  data-style="btn-white" data-width="100%" title="状态">
+                                        <option value="1" selected>正常</option>
+                                        <option value="2">结束</option>
                                     </select>
                                 </div>
-                                <div class="col-sm-1"></div>
+                                <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
-                                <label for="articleDesp" class="col-sm-1 control-label">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="articleDesp" placeholder="描述" >
+                                <label for="jobContent" class="col-xs-2 control-label">内&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;容</label>
+                                <div class="col-xs-9">
+                                    <textarea id="jobContent"  style="height:300px;"></textarea>
                                 </div>
-                                <div class="col-sm-1 "></div>
+                                <div class="col-xs-1 red"></div>
                             </div>
                             <div class="form-group">
-                                <label for="articleContent" class="col-sm-1 control-label">内&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;容</label>
-                                <div class="col-sm-10">
-                                    <textarea id="articleContent" style="height:400px;"></textarea>
+                                <label for="jobAddress" class="col-xs-2 control-label">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点</label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" id="jobAddress" placeholder="地点">
                                 </div>
-                                <div class="col-sm-1 red"></div>
+                                <div class="col-xs-1 red"></div>
                             </div>
                             <div class="form-group">
-                                <label for="articleSource" class="col-sm-1 control-label">来&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="articleSource" placeholder="来源" >
+                                <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
+                                <div class="col-xs-9">
+                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
                                 </div>
-                                <div class="col-sm-1 "></div>
+                                <div class="col-xs-1"></div>
                             </div>
                         </div>
                     </form>
@@ -136,9 +140,8 @@
 <script src="../../../static/layer/laydate/laydate.dev.js"></script>
 <script src="../../../static/bootstrap-select/js/bootstrap-select.js"></script>
 <script src="../../../static/wangEditor/js/wangEditor.js"></script>
-
 <script src="../../../static/validator/jquery-html5Validate.js"></script>
-
-<script src="articleManage.js"></script>
+<script src="jobManage.js"></script>
 </body>
+</html>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>模块管理</title>
+    <title>banner管理</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <!-- bootstrap & fonts -->
@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../../../static/ace/css/font-awesome.css" />
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="../../../static/ztree/css/metroStyle/metroStyle.css"/>
 
     <!-- ace styles & fonts & common-->
     <link rel="stylesheet" href="../../../static/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
@@ -37,26 +36,7 @@
     <script type="text/javascript">
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
-    <div class="sidebar widget-box widget-color-green" style="width: 230px;">
-        <div class="widget-header widget-header-flat">
-            <h4 class="widget-title">
-                <i class="ace-icon fa fa-filter"></i>
-                站点树
-            </h4>
-        </div>
-        <div class="widget-body">
-            <div class="widget-main no-padding">
-                <!-- start condition -->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <ul id="siteTree" class="ztree"></ul>
-                    </div>
-                </div>
-                <!-- end condition -->
-            </div><!-- /.widget-main -->
-        </div><!-- /.widget-body -->
-    </div>
-    <div class="main-content" style="margin-left: 230px;">
+    <div class="main-content">
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row">
@@ -89,13 +69,9 @@
                                     <div class="row filter">
                                         <div class="col-sm-12 filter-item">
                                             <ul class="list-unstyled list-inline">
-                                                <span>模块名称:</span>
+                                                <span>名称:</span>
                                                 <li>
-                                                    <input type="text" class="input-xlarge" id="modelName" placeholder="模块名称"/>
-                                                </li>
-                                                <span>模块编号:</span>
-                                                <li>
-                                                    <input type="text" class="input-xlarge" id="modelCode" placeholder="模块编号"/>
+                                                    <input type="text" class="input-xlarge" id="adName" placeholder="名称"/>
                                                 </li>
                                             </ul>
                                         </div>
@@ -141,7 +117,7 @@
                             </div>
                             <div class="widget-body">
                                 <div class="widget-main no-padding">
-                                    <table id="model-table" class="table table-striped table-bordered table-hover">
+                                    <table id="ad-table" class="table table-striped table-bordered table-hover">
                                         <thead>
                                         <th class="left">
                                             <label class="pos-rel">
@@ -149,9 +125,10 @@
                                                 <span class="lbl"></span>
                                             </label>
                                         </th>
-                                        <th class="center">模块名称</th>
-                                        <th class="center">模块编号</th>
-                                        <th class="center">创建时间</th>
+                                        <th class="center">名称</th>
+                                        <th class="center">开始时间</th>
+                                        <th class="center">结束时间</th>
+                                        <th class="center">排序</th>
                                         <th class="center">操作</th>
                                         </thead>
                                     </table>
@@ -179,13 +156,11 @@
 <script src="../../../static/js/pub.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="../../../static/ztree/js/jquery.ztree.all-3.5.js"></script>
-
 <!--datatables组件-->
 <script src="../../../static/ace/js/dataTables/jquery.dataTables.js"></script>
 <script src="../../../static/ace/js/dataTables/jquery.dataTables.bootstrap.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="modelMain.js"></script>
+<script src="adMain.js"></script>
 </body>
 </html>

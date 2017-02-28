@@ -4,9 +4,8 @@
 
 xqsight.nameSpace.reg("xqsight.cms");
 
-(function(){
-    xqsight.cms.modelManage = function(){
-
+(function () {
+    xqsight.cms.modelManage = function () {
         var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
@@ -15,42 +14,36 @@ xqsight.nameSpace.reg("xqsight.cms");
          */
         var obj = this;
 
-        var editmodel = {};
+        var editModel = {};
 
         /**
          * 初始化调用 function
          */
-        this.init = function() {
+        this.init = function () {
             //绑定事件
-            $("#btn_save").bind("click",obj.validateFun);
-            $("#btn_cancel").bind("click",obj.cancelFun);
-
-            obj.loadAppDataFun();
+            $("#btn_save").bind("click", obj.validateFun);
+            $("#btn_cancel").bind("click", obj.cancelFun);
+            obj.formSetValue();
         };
 
         /**
          * 设置参数 function
          * @returns {string}
          */
-        this.setParamFun = function(){
-            editmodel.modelTitle = $("#modelTitle").val();
-            editmodel.modelCode = $("#modelCode").val();
-            editmodel.appId = $("#appId").val();
-            editmodel.modelClass = $("#modelClass").val();
-            editmodel.modelThumbnails = $("#modelThumbnails").val();
-            editmodel.modelSort = $("#modelSort").val();
-            editmodel.modelDescription = $("#modelDescription").val();
-            editmodel.remark = $("#remark").val();
+        this.setParamFun = function () {
+            editModel.modelName = $("#modelName").val();
+            editModel.modelCode = $("#modelCode").val();
+            editModel.remark = $("#remark").val();
         };
 
         /**
          * 验证 function
          */
-        this.validateFun = function(){
-            $("#modelForm").html5Validate(function() {
+        this.validateFun = function () {
+            $("#modelForm").html5Validate(function () {
                 obj.saveFun();
             }, {
-                validate : function() {
+                validate: function () {
                     return true;
                 }
             });
@@ -59,98 +52,71 @@ xqsight.nameSpace.reg("xqsight.cms");
         /**
          * 保存 function
          */
-        this.saveFun = function(){
-            var callback = function(btn){
-                if(btn == "yes"){
+        this.saveFun = function () {
+            var callback = function (btn) {
+                if (btn == "yes") {
                     obj.setParamFun();
                     var url = "";
-                    if($.getUrlParam("modelId")== undefined || $.getUrlParam("modelId") =="" ){
+                    if ($.getUrlParam("modelId") == undefined || $.getUrlParam("modelId") == "") {
                         url = ctxData + "/cms/model/save?date=" + new Date().getTime();
-                    }else{
+                    } else {
                         url = ctxData + "/cms/model/update?date=" + new Date().getTime();
                     }
                     $.ajax({
-                        "url": url ,
-                        "data": editmodel,
-                        "success": function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
+                        url: url,
+                        data: editModel,
+                        success: function (retData) {
+                            xqsight.win.alert(retData.msg, retData.status);
+                            if (retData.status == "0") {
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.modelMain.editCallBackFun({"modelId" : $.getUrlParam("id")});
+                                iframeContent.modelMain.editCallBackFun({"modelId": $.getUrlParam("id")});
                                 xqsight.win.close();
                             }
-                        },
-                        "dataType": "jsonp",
-                        "cache": false
+                        }
                     });
                 }
             };
-            xqsight.win.confirm("确认提交吗？",callback);
+            xqsight.win.confirm("确认提交吗？", callback);
         };
 
         /**
          * 取消 function
          */
-        this.cancelFun = function(){
+        this.cancelFun = function () {
             xqsight.win.close();
         };
 
         /**
          * form 表单初始化数据
          */
-        this.formSetValue = function(){
+        this.formSetValue = function () {
             var modelId = $.getUrlParam("modelId");
-            if(modelId== undefined || modelId =="" ){
-                editmodel.parentId = $.getUrlParam("parentId");
+            if (modelId == undefined || modelId == "") {
+                editModel.siteId = $.getUrlParam("siteId");
                 return;
             }
             $.ajax({
-                "dataType": "jsonp",
-                "cache": false,
-                "url": ctxData + "/cms/model/querybyid?modelId=" + modelId + "&date=" + new Date().getTime,
-                "success": function(retData){
-                    if(retData.status == "0"){
+                url: ctxData + "/cms/model/querybyid?date=" + new Date().getTime,
+                data: {"modelId": modelId},
+                success: function (retData) {
+                    if (retData.status == "0") {
                         var data = retData.data;
-                        editmodel.modelId = data.modelId;
-                        editmodel.parentId = data.parentId;
+                        editModel.modelId = data.modelId;
+                        editModel.siteId = data.siteId;
 
-                        $("#modelTitle").val(data.modelTitle);
-                        $("#appId").val(data.appId);
+                        $("#modelName").val(data.modelName);
                         $("#modelCode").val(data.modelCode);
-                        $("#modelClass").val(data.modelClass);
-                        $("#modelThumbnails").val(data.modelThumbnails);
-                        $("#modelSort").val(data.modelSort);
-                        $("#modelDescription").val(data.modelDescription);
                         $("#remark").val(data.remark);
                     }
                 }
             });
         };
-
-        /**
-         * 加载 app
-         */
-        this.loadAppDataFun = function(){
-            $.ajax({
-                "dataType": "jsonp",
-                "cache": false,
-                "url": ctxData + "/cms/app/queryall?date=" + new Date().getTime,
-                "success": function(retData){
-                    if(retData.status == "0"){
-                        $.each(retData.data,function(index,object){
-                            $("#appId").append("<option value=" + object.appId + ">" + object.appName + "</option>");
-                        });
-                    }
-                    obj.formSetValue();
-                }
-            });
-        }
     };
 
     /**
      * 初始化数据
      */
-    $(document).ready(function() {
+    $(document).ready(function () {
         modelManage.init();
     });
 })();

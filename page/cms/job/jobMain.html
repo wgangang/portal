@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>模块管理</title>
+    <title>招聘管理</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <!-- bootstrap & fonts -->
@@ -41,7 +41,7 @@
         <div class="widget-header widget-header-flat">
             <h4 class="widget-title">
                 <i class="ace-icon fa fa-filter"></i>
-                站点树
+                职位树
             </h4>
         </div>
         <div class="widget-body">
@@ -49,7 +49,7 @@
                 <!-- start condition -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <ul id="siteTree" class="ztree"></ul>
+                        <ul id="positionTree" class="ztree"></ul>
                     </div>
                 </div>
                 <!-- end condition -->
@@ -89,13 +89,9 @@
                                     <div class="row filter">
                                         <div class="col-sm-12 filter-item">
                                             <ul class="list-unstyled list-inline">
-                                                <span>模块名称:</span>
+                                                <span>招聘名称:</span>
                                                 <li>
-                                                    <input type="text" class="input-xlarge" id="modelName" placeholder="模块名称"/>
-                                                </li>
-                                                <span>模块编号:</span>
-                                                <li>
-                                                    <input type="text" class="input-xlarge" id="modelCode" placeholder="模块编号"/>
+                                                    <input type="text" class="input-xlarge" id="jobName" placeholder="招聘名称"/>
                                                 </li>
                                             </ul>
                                         </div>
@@ -141,7 +137,7 @@
                             </div>
                             <div class="widget-body">
                                 <div class="widget-main no-padding">
-                                    <table id="model-table" class="table table-striped table-bordered table-hover">
+                                    <table id="job-table" class="table table-striped table-bordered table-hover">
                                         <thead>
                                         <th class="left">
                                             <label class="pos-rel">
@@ -149,9 +145,11 @@
                                                 <span class="lbl"></span>
                                             </label>
                                         </th>
-                                        <th class="center">模块名称</th>
-                                        <th class="center">模块编号</th>
-                                        <th class="center">创建时间</th>
+                                        <th class="center">招聘名称</th>
+                                        <th class="center">招聘开始时间</th>
+                                        <th class="center">招聘结束时间</th>
+                                        <th class="center">电话</th>
+                                        <th class="center">状态</th>
                                         <th class="center">操作</th>
                                         </thead>
                                     </table>
@@ -186,6 +184,6 @@
 <script src="../../../static/ace/js/dataTables/jquery.dataTables.bootstrap.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="modelMain.js"></script>
+<script src="jobMain.js"></script>
 </body>
 </html>

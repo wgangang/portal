@@ -17,46 +17,34 @@ xqsight.nameSpace.reg("cms.article");
         var editArticle = {};
 
         var artileEditor = {};
-        /**
-         * 存放所有的图片
-         */
-        var img = [];
 
-        /**
-         * 初始化调用 function
-         */
+
+        /**  初始化调用 function **/
         this.init = function() {
+            laydate({elem: '#publishTime',  format: 'YYYY-MM-DD'});
             //绑定事件
             $("#btn_save").bind("click",obj.validateFun);
             $("#btn_cancel").bind("click",obj.cancelFun);
 
             obj.Editor();
+            obj.formSetValue();
         };
 
         this.Editor = function(){
-            KindEditor.ready(function(K) {
-                artileEditor = K.create('#articleContent', {
-                    uploadJson :ctxData+ '/files/core/editor?action=keditor&CKEditor=true&callBackFun=articleManage.callback',
-                    //  fileManagerJson :ctxData+ '/cms/article/query', //图片空间获取图片
-                    allowFileManager : false,
-                    fillDescAfterUploadImage : true , //图片上传完后编辑图片
-                    afterBlur: function(){this.sync();},
-                    afterUpload : function(url) {//获取上传图片的路径
-                       alert(url);
-                    },
-                    allowImageRemote: true,//隐藏网络上传图片
-                    pasteType : 1 ,//纯文本粘贴
-                    width:"100%",height:"400px",
-                    items: ['source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy',
-                        'paste','plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-                        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-                        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen',
-                        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-                        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
-                        'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
-                        'anchor', 'link', 'unlink', '|', 'about']
-                });
-            });
+            artileEditor = new wangEditor('articleContent');
+            // 上传图片
+            artileEditor.config.uploadImgUrl = ctxData + '/files/core/editor';
+            artileEditor.config.withCredentials = false;
+            artileEditor.config.hideLinkImg = true;
+            artileEditor.config.printLog = false;
+            artileEditor.config.uploadParams = {
+                "wangEditor": 'wangEditor'
+            };
+            artileEditor.config.uploadImgFns.onload = function (resultText, xhr) {
+                artileEditor.command(null, 'InsertImage', resultText);
+            };
+
+            artileEditor.create();
         }
 
         /**
@@ -65,13 +53,15 @@ xqsight.nameSpace.reg("cms.article");
          */
         this.setParamFun = function(){
             editArticle.articleTitle = $("#articleTitle").val();
-            editArticle.articleDescription = $("#articleDescription").val();
-            editArticle.articleContent=artileEditor.html();
+            editArticle.articleDesp = $("#articleDesp").val();
+            editArticle.articleAuthor = $("#articleAuthor").val();
+            editArticle.articleSource = $("#articleSource").val();
+            editArticle.articleHit = $("#articleHit").val();
+            editArticle.publishTime = $("#publishTime").val();
+            editArticle.articleContent= artileEditor.$txt.html();
         };
 
-        /**
-         * 验证 function
-         */
+        /**  验证 function */
         this.validateFun = function(){
             $("#articleForm").html5Validate(function() {
                 obj.saveFun();
@@ -82,13 +72,7 @@ xqsight.nameSpace.reg("cms.article");
             });
         };
 
-        this.callback =function(a){
-          alert(a);
-        };
-
-        /**
-         * 保存 function
-         */
+        /**  保存 function */
         this.saveFun = function(){
             var callback = function(btn){
                 if(btn == "yes"){
@@ -101,7 +85,7 @@ xqsight.nameSpace.reg("cms.article");
                     }
 
                     $.ajax({
-                        "url": url +"?img="+img,
+                        "url": url ,
                         "data": editArticle,
                         "type":"POST",
                         "success": function(retData){
@@ -133,7 +117,6 @@ xqsight.nameSpace.reg("cms.article");
         this.formSetValue = function(){
             var articleId = $.getUrlParam("articleId");
             if(articleId== undefined || articleId =="" ){
-                editArticle.modelId = $.getUrlParam("modelId");
                 return;
             }
             $.ajax({
@@ -141,12 +124,14 @@ xqsight.nameSpace.reg("cms.article");
                 success : function(retData){
                     if(retData.status == "0"){
                         var data = retData.data;
-                        editArticle.articleId = data.cmsArticld;
-
+                        editArticle.articleId = data.articleId;
                         $("#articleTitle").val(data.articleTitle);
-                        $("#articleDescription").val(data.articleDescription);
-                        artileEditor.html(data.articleContent);
-                        artileEditor.sync();
+                        $("#articleDesp").val(data.articleDesp);
+                        $("#articleAuthor").val(data.articleAuthor);
+                        $("#articleSource").val(data.articleSource);
+                        $("#publishTime").val(data.publishTime);
+                        $("#articleHit").selectpicker('articleHit', data.articleHit);
+                        artileEditor.$txt.html(data.articleContent);
                     }
                 }
             });

@@ -136,24 +136,37 @@ xqsight.nameSpace.reg("cms.article");
                     }
                 ],
                 "aoColumns": [{
+                    data : "articleId",
+                    sWidth : "2",
+                    render : function(value){
+                        return '<label class="pos-rel"><input id="' + value + '" type="checkbox" class="ace" /><span class="lbl"></span></label>';
+                    }
+                },{
                     data: "articleTitle",
-                    sWidth : "250",
+                    sWidth : "100",
                     sClass : "text-center",
                     sSort : false
                 },{
                     data: "articleAuthor",
-                    sWidth : "250",
+                    sWidth : "80",
                     sClass : "text-center",
                     sSort : false
                 },{
-                    data: "articleDescription",
-                    sWidth : "250",
+                    data: "articleDesp",
+                    sWidth : "120",
                     sClass : "text-left",
                     render : function(value){
                         return xqsight.win.tipShow(value,400,100);
                     }
                 },{
-                    data: "createTime",
+                    data: "articleHit",
+                    sWidth : "120",
+                    sClass : "text-left",
+                    render : function(value){
+                        return value == 0 ? "是" : "否";
+                    }
+                },{
+                    data: "publishTime",
                     sWidth : "100",
                     sClass : "text-center",
                     render : function(value){

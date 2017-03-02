@@ -2,10 +2,17 @@
     var _progress_index = 0;
     $.ajaxSetup({
         beforeSend: function () {
+            if(_progress_index > 0){
+                console.debug("ajax before close progress index : " + _progress_index);
+                xqsight.progress.hide(_progress_index);
+                _progress_index = 0;
+            }
             _progress_index = xqsight.progress.show();
+            console.debug("ajax before start progress index :" + _progress_index);
         },
         complete: function (xhr) {
             xqsight.progress.hide(_progress_index);
+            console.debug("ajax complete close progress index : " + _progress_index);
             if (xhr.status == 302) {
                 window.location.reload(true);
             }
@@ -14,6 +21,7 @@
             }
         },
         error: function (data) {
+            console.debug("ajax error close progress index : " + _progress_index);
             xqsight.progress.hide(_progress_index);
             /*if(data.status != 404)
              window.location.reload(true);*/

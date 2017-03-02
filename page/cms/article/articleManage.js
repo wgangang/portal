@@ -26,11 +26,11 @@ xqsight.nameSpace.reg("cms.article");
             $("#btn_save").bind("click",obj.validateFun);
             $("#btn_cancel").bind("click",obj.cancelFun);
 
-            obj.Editor();
+            obj.editorFun();
             obj.formSetValue();
         };
 
-        this.Editor = function(){
+        this.editorFun = function(){
             artileEditor = new wangEditor('articleContent');
             // 上传图片
             artileEditor.config.uploadImgUrl = ctxData + '/files/core/editor';
@@ -58,7 +58,7 @@ xqsight.nameSpace.reg("cms.article");
             editArticle.articleSource = $("#articleSource").val();
             editArticle.articleHit = $("#articleHit").val();
             editArticle.publishTime = $("#publishTime").val();
-            editArticle.articleContent= artileEditor.$txt.html();
+            editArticle.articleContent= encodeURIComponent(artileEditor.$txt.html());
         };
 
         /**  验证 function */

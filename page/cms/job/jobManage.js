@@ -26,11 +26,11 @@ xqsight.nameSpace.reg("xqsight.cms");
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
-            obj.Editor();
+            obj.editorFun();
             obj.formSetValue();
         };
 
-        this.Editor = function () {
+        this.editorFun = function () {
             jobEditor = new wangEditor('jobContent');
             // 上传图片
             jobEditor.config.uploadImgUrl = ctxData + '/files/core/editor';
@@ -57,7 +57,7 @@ xqsight.nameSpace.reg("xqsight.cms");
             editJob.jobPhone = $("#jobPhone").val();
             editJob.status = $("#status").val();
             editJob.jobAddress = $("#jobAddress").val();
-            editJob.jobContent = jobEditor.$txt.html();
+            editJob.jobContent = encodeURIComponent(jobEditor.$txt.html());
             editJob.remark = $("#remark").val();
         };
 

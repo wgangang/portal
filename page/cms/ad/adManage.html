@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
     <title>banner管理</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <!-- bootstrap & fonts  -->
-    <link rel="stylesheet" href="../../../static/ace/css/bootstrap.css" />
-    <link rel="stylesheet" href="../../../static/ace/css/font-awesome.css" />
+    <link rel="stylesheet" href="../../../static/ace/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../../static/ace/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="../../../static/bootstrap-select/css/bootstrap-select.css" />
-    <link rel="stylesheet" href="../../../static/cropper/cropper.css"/>
+    <link rel="stylesheet" href="../../../static/bootstrap-select/css/bootstrap-select.css"/>
 
     <!-- ace styles & fonts & common-->
-    <link rel="stylesheet" href="../../../static/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
-    <link rel="stylesheet" href="../../../static/ace/css/ace-fonts.css" />
+    <link rel="stylesheet" href="../../../static/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+    <link rel="stylesheet" href="../../../static/ace/css/ace-fonts.css"/>
     <link rel="stylesheet" href="../../../static/css/common.css"/>
+    <link rel="stylesheet" href="../../../static/wangEditor/css/wangEditor.css"/>
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../../static/ace/css/ace-part2.css" class="ace-main-stylesheet"/>
@@ -35,7 +35,10 @@
 <body class="no-skin">
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
     <!-- /section:basics/sidebar -->
     <div class="main-content">
@@ -45,15 +48,13 @@
                     <form id="modelForm" name="modelForm">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label for="fileId" class="col-xs-2 control-label">图片选择</label>
-                                <div class="col-xs-9">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-12 center">
-                                            <img id="imgUrl" width="100%" height="300" src="http://localhost/cms/juhua.jpg">
-                                        </div><!-- /.col -->
-                                    </div>
-                                    <input id="fileId" name="fileId" type="file" class="file">
-                                </div>
+                                <label class="col-xs-2 control-label">图&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;片</label>
+                                <div class="col-xs-6">
+                                    <span class="input-icon input-icon-right">
+                                        <input type="text" id="adImage" class="input-xxlarge" disabled >
+                                        <i class="ace-icon fa fa-file-photo-o blue" id="addPic"></i>
+                                    </span>
+                                    <span id="btn-preview" class="help-button" data-rel="popover" data-trigger="hover" data-placement="left" title="" data-original-title="查看图片"> <i class="ace-icon fa fa-eye red"></i></span>                              </div>
                                 <div class="col-xs-1 red"></div>
                             </div>
                             <div class="form-group">
@@ -63,22 +64,19 @@
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
+
                             <div class="form-group">
-                                <label for="adBeginTime" class="col-xs-2 control-label">开始时间</label>
-                                <div class="col-xs-3">
-                                    <input type="text" class="form-control" id="adBeginTime" placeholder="开始时间" >
+                                <label for="adText" class="col-xs-2 control-label">展示内容</label>
+                                <div class="col-xs-9">
+                                    <textarea id="adText" style="height:200px;"></textarea>
                                 </div>
                                 <div class="col-xs-1 red"></div>
-                                <label for="adEndTime" class="col-xs-1 control-label">结束时间</label>
-                                <div class="col-xs-4">
-                                    <input type="text" class="form-control" id="adEndTime" placeholder="结束时间" >
-                                </div>
-                                <div class="col-xs-1 red"> </div>
                             </div>
                             <div class="form-group">
                                 <label for="type" class="col-xs-2 control-label">类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型</label>
                                 <div class="col-xs-3">
-                                    <select id="type" class="form-control selectpicker" data-live-search="false"  data-style="btn-white" data-width="100%" title="类型">
+                                    <select id="type" class="form-control selectpicker" data-live-search="false"
+                                            data-style="btn-white" data-width="100%" title="类型">
                                         <option value="1" selected>banner</option>
                                         <option value="2">server</option>
                                     </select>
@@ -86,21 +84,26 @@
                                 <div class="col-xs-1 red"></div>
                                 <label for="sort" class="col-xs-1 control-label">排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序</label>
                                 <div class="col-xs-4">
-                                    <input type="number" class="form-control" id="sort" value="1" placeholder="排序" >
+                                    <input type="number" class="form-control" id="sort" value="1" placeholder="排序">
+                                </div>
+                                <div class="col-xs-1 red"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="adBeginTime" class="col-xs-2 control-label">开始时间</label>
+                                <div class="col-xs-3">
+                                    <input type="text" class="form-control" id="adBeginTime" placeholder="开始时间">
+                                </div>
+                                <div class="col-xs-1 red"></div>
+                                <label for="adEndTime" class="col-xs-1 control-label">结束时间</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" id="adEndTime" placeholder="结束时间">
                                 </div>
                                 <div class="col-xs-1 red"></div>
                             </div>
                             <div class="form-group">
                                 <label for="adUrl" class="col-xs-2 control-label">连接地址</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="adUrl" placeholder="连接地址" >
-                                </div>
-                                <div class="col-xs-1 red"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="adText" class="col-xs-2 control-label">展示内容</label>
-                                <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="adText" placeholder="展示内容">
+                                    <input type="text" class="form-control" id="adUrl" placeholder="连接地址">
                                 </div>
                                 <div class="col-xs-1 red"></div>
                             </div>
@@ -116,7 +119,7 @@
                 </div><!-- /.col -->
 
                 <div class="navbar-fixed-bottom">
-                    <div class="clearfix form-actions no-margin" >
+                    <div class="clearfix form-actions no-margin">
                         <div class="center">
                             <button class="btn btn-white btn-default btn-round" type="button" id="btn_save">
                                 <i class="ace-icon fa fa-check "></i>
@@ -149,8 +152,9 @@
 <script src="../../../static/js/pub.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="../../../static/cropper/cropper.js"></script>
+<script src="../../../static/wangEditor/js/wangEditor.js"></script>
 <script src="../../../static/layer/laydate/laydate.dev.js"></script>
+<script src="../../../static/layer/layer/layer.dev.js"></script>
 <script src="../../../static/bootstrap-select/js/bootstrap-select.js"></script>
 <script src="../../../static/validator/jquery-html5Validate.js"></script>
 

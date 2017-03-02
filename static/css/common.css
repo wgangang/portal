@@ -1,5 +1,5 @@
 /** tab close css **/
-.portal-nav li>a{
+.portal-nav li > a {
     height: 40px !important;
     line-height: 20px !important;
 }
@@ -34,21 +34,23 @@
     margin: 0 5px;
     display: inline-block;
 }
-.dropdown-preview  > .dropdown-menu {
+
+.dropdown-preview > .dropdown-menu {
     display: block;
     position: static;
     margin-bottom: 5px;
 }
-.dropdown-menu > li > a{
+
+.dropdown-menu > li > a {
     padding: 0px 20px !important;
 }
 
-.dropdown-menu > li.divider{
+.dropdown-menu > li.divider {
     margin: 1px !important;
 }
 
 /** upload file css **/
-.div1{
+.div1 {
     float: left;
     height: 35px;
     background: #E7E7E7;
@@ -56,38 +58,39 @@
     position: relative;
     margin-left: 10px;
 }
-.div2{
-    text-align:center;
-    padding-top:5px;
-    font-size:15px;
-    font-weight:800
+
+.div2 {
+    text-align: center;
+    padding-top: 5px;
+    font-size: 15px;
+    font-weight: 800
 }
-.inputstyle{
+
+.inputstyle {
     width: 144px;
     height: 41px;
     cursor: pointer;
     font-size: 30px;
     outline: medium none;
     position: absolute;
-    filter:alpha(opacity=0);
-    -moz-opacity:0;
-    opacity:0;
-    left:0px;
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    opacity: 0;
+    left: 0px;
     top: 0px;
 }
 
 /** form bottom css **/
-.form-auto{
+.form-auto {
     margin-bottom: 63px;
 }
 
-
 /** filter query css  **/
-.filter-item>ul{
+.filter-item > ul {
     margin: 0px;
 }
 
-.filter-item>li {
+.filter-item > li {
     display: inline-block;
     padding-right: 5px;
     padding-left: 5px;
@@ -111,10 +114,9 @@
 }
 
 /** IE tab not  in line **/
-#portal_tabs li{
+#portal_tabs li {
     display: inline;
 }
-
 
 /** tree select css */
 .ui-select[disabled], fieldset[disabled] .ui-select {
@@ -221,3 +223,5 @@
     position: absolute;
     z-index: 100;
 }
+
+

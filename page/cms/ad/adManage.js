@@ -109,6 +109,7 @@ var layIndex;
                     $.ajax({
                         url: url,
                         data: editAd,
+                        method : "post",
                         success: function (retData) {
                             xqsight.win.alert(retData.msg, retData.status);
                             if (retData.status == "0") {

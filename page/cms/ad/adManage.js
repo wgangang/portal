@@ -24,8 +24,8 @@ var layIndex;
          * 初始化调用 function
          */
         this.init = function () {
-            laydate({elem: '#adBeginTime', format: 'YYYY-MM-DD'});
-            laydate({elem: '#adEndTime', format: 'YYYY-MM-DD'});
+            /*laydate({elem: '#adBeginTime', format: 'YYYY-MM-DD'});
+            laydate({elem: '#adEndTime', format: 'YYYY-MM-DD'});*/
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
@@ -173,3 +173,8 @@ var layIndex;
 })();
 
 var adManage = new xqsight.cms.adManage();
+
+var _imgCallBack = function(data){
+    $("#adImage").val(data)
+    layer.close(layIndex)
+}

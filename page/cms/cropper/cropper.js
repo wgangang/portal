@@ -125,8 +125,7 @@ $(function () {
                 try {
                     var obj = JSON.parse(data);
                     if (obj.status == "0") {
-                        window.parent.$("#adImage").val(obj.fileUrl);
-                        window.parent.layer.close(window.parent.layIndex)
+                        window.parent._imgCallBack(obj.fileUrl);
                     }
                 } catch (e) {
                     console.log(e.message);

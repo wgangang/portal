@@ -2819,9 +2819,10 @@
 					//programmatically add a new
 					var $tag_obj = $('#form-field-tags').data('tag');
 					$tag_obj.add('Programmatically Added');
-				}
+            }
 				catch(e) {
 					//display a textarea for old IE, because it doesn't support this plugin or another one I tried!
+					alert();
 					tag_input.after('<textarea id="'+tag_input.attr('id')+'" name="'+tag_input.attr('name')+'" rows="3">'+tag_input.val()+'</textarea>').remove();
 					//$('#form-field-tags').autosize({append: "\n"});
 				}

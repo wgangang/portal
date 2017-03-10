@@ -87,7 +87,7 @@ var layIndex;
 
             ];
             artileEditor.config.uploadParams = {
-                "wangEditor": 'wangEditor'
+                "editor": 'wangeditor'
             };
             artileEditor.config.uploadImgFns.onload = function (resultText, xhr) {
                 artileEditor.command(null, 'InsertImage', resultText);

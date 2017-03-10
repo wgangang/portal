@@ -1,0 +1,291 @@
+/*颜色*/
+/*宽度*/
+/*$bg-url: /dist/imgs;*/
+/*线上环境*/
+/*$bg-url:/webapp/yaok/static/imgs;*/
+.artile-bottom{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    height: 75px;
+    border-top: 1px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    margin-bottom: 60px;
+}
+.artile-bottom01, .artile-bottom02{
+    display: block;
+    color: #333;
+}
+.artile-bottom .i-border-arrow{
+    position: relative;
+    width: 7px;
+    height: 7px;
+}
+.artile-bottom .i-border-arrow::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 10px;
+    height: 1px;
+    background: currentColor;
+}
+.artile-bottom01 .i-border-arrow{
+    -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+    margin-left: 1px;
+    margin-right: 20px;
+}
+.artile-bottom01 .i-border-arrow::after{
+    -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+}
+.artile-bottom02 .i-border-arrow{
+    -webkit-transform: rotate(220deg);
+        -ms-transform: rotate(220deg);
+            transform: rotate(220deg);
+    margin-right: 1px;
+    margin-left: 20px;
+}
+.artile-bottom02 .i-border-arrow::after{
+    -webkit-transform: rotate(-220deg);
+        -ms-transform: rotate(-220deg);
+            transform: rotate(-220deg);
+}
+.artile-bottom01 .text-normal{
+    margin-left: 10px;
+}
+.artile-bottom .text-normal{
+    margin-left: 10px;
+}
+/*颜色*/
+/*宽度*/
+/*$bg-url: /dist/imgs;*/
+/*线上环境*/
+/*$bg-url:/webapp/yaok/static/imgs;*/
+.article-title01 h2{
+    font-size: 34px;
+    color: #333;
+    line-height: 48px;
+    margin-bottom: 10px;
+}
+.article-title01-from{
+    margin-bottom: 18px;
+}
+.article-title01-from > a{
+    color: #4285F4;
+    vertical-align: middle;
+}
+.article-title01-time .i-clock{
+    vertical-align: top;
+    margin-right: 11px;
+}
+.article-title01-time{
+    margin-left: 42px;
+}
+.article-title01-tag{
+    font-size: 0;
+    letter-spacing: -0.5em;
+}
+.article-title01-tag .i-tag{
+    letter-spacing: normal;
+    font-size: 12px;
+    background-color: #fff;
+    padding-left: 7px;
+    padding-right: 16px;
+    margin-right: 20px;
+}
+/*颜色*/
+/*宽度*/
+/*$bg-url: /dist/imgs;*/
+/*线上环境*/
+/*$bg-url:/webapp/yaok/static/imgs;*/
+.breadcrumb span, .breadcrumb a{
+    font-size: 12px;
+    color: #333;
+}
+.breadcrumb a:hover{
+    color: #333;
+}
+/*颜色*/
+/*宽度*/
+/*$bg-url: /dist/imgs;*/
+/*线上环境*/
+/*$bg-url:/webapp/yaok/static/imgs;*/
+.navbar{
+    background: #263238;
+}
+.navbar-inner{
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    /*position: relative;*/
+    width: 1200px;
+    margin: 0 auto;
+    height: 90px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+.navbar-inner .logo{
+    font-size: 24px;
+    color: #fff;
+}
+.navbar-list > li{
+    float: left;
+}
+.navbar-list > li > a{
+    font-size: 17px;
+    margin-left: 60px;
+}
+.navbar-list .i-border-arrow{
+    vertical-align: top;
+    -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    margin-top: 6px;
+    margin-left: 5px;
+    border-width: 2px;
+}
+.navbar-menu{
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 90px;
+    background-color: rgba(4,16,22,0.8);
+    min-width: 1200px;
+}
+.navbar-menu-inner{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 40px 0 22px 120px;
+    width: 1200px;
+    margin: 0 auto;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.navbar-menu01{
+    padding-right: 28px;
+    border-right: 1px solid #6B6F71;
+}
+.navbar-menu01 a, .navbar-menu02 a{
+    font-size: 17px;
+    color: #6b6f71;
+}
+.navbar-menu02 a:hover, .navbar-menu01 a:hover{
+    color: #fff;
+}
+.navbar-menu01 li:first-child{
+    margin-bottom: 20px;
+}
+.navbar-menu01 li{
+    line-height: 24px;
+    margin-bottom: 10px;
+}
+.navbar-menu02{
+    padding-left: 30px;
+    padding-right: 62px;
+}
+.navbar-menu02 a{
+    line-height: 30px;
+}
+.navbar-menu02 dt{
+    margin-bottom: 24px;
+}
+.navbar-menu02 dt a{
+    font-size: 34px;
+}
+.navbar-menu02 dd{
+    margin-bottom: 7px;
+}
+.navbar-menu03{
+    width: 603px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    border: rgba(3,3,3,0.52);
+    background-color: rgba(38,50,56,0.5);
+    padding: 13px 25px 20px;
+}
+.navbar-menu03-title{
+    color: #fff;
+    margin-bottom: 25px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+.navbar-menu03-title h2{
+    font-size: 22px;
+    height: 30px;
+    line-height: 30px;
+}
+.navbar-menu03-img{
+    width: 550px;
+    height: 240px;
+    margin-bottom: 18px;
+}
+.navbar-menu03-img img{
+    width: 100%;
+}
+.navbar-menu03 p{
+    font-size: 12px;
+    line-height: 1.3;
+    margin-bottom: 18px;
+}
+.navbar-menu03-btn{
+    text-align: right;
+}
+.navbar-menu03-btn .btn{
+    display: inline-block;
+    width: 140px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid #979797;
+    font-size: 12px;
+}
+.page-article .breadcrumb{
+    margin: 35px 0;
+}
+.page-article .article-title{
+    margin-bottom: 40px;
+}
+.article-ct-banner img{
+    width: 1200px;
+    margin-bottom: 35px;
+    height: 340px;
+}
+.article-ct-p p{
+    line-height: 1.8;
+    margin-bottom: 20px;
+}

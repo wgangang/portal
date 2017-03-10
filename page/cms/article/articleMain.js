@@ -159,11 +159,11 @@ xqsight.nameSpace.reg("cms.article");
                         return xqsight.win.tipShow(value,400,100);
                     }
                 },{
-                    data: "articleHit",
+                    data: "articleUrl",
                     sWidth : "120",
                     sClass : "text-left",
                     render : function(value){
-                        return value == 0 ? "是" : "否";
+                        return "<a href=" + value + " target='_blank'>预览</a>";
                     }
                 },{
                     data: "publishTime",

@@ -33,6 +33,8 @@ $(function () {
     var originalImageURL = $image.attr('src');
     var uploadedImageURL;
 
+    var fileName;
+
 
     // Tooltip
     $('[data-toggle="tooltip"]').tooltip();
@@ -101,11 +103,12 @@ $(function () {
         return new Blob(byteArrays, {type: mime});
     }
 
+
     function uploadImg(data) {
         var base64ImageContent = data.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
         var blob = base64ToBlob(base64ImageContent, 'image/png');
         var formData = new FormData();
-        formData.append("uploadFile", blob);
+        formData.append("uploadFile", blob,fileName);
         $.support.cors = true;
         var _progress_index = 0;
         $.ajax({
@@ -253,7 +256,7 @@ $(function () {
 
             if (files && files.length) {
                 file = files[0];
-
+                fileName = file.name;
                 if (/^image\/\w+$/.test(file.type)) {
                     if (uploadedImageURL) {
                         URL.revokeObjectURL(uploadedImageURL);

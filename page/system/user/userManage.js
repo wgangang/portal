@@ -4,6 +4,8 @@
 
 xqsight.nameSpace.reg("sys.user");
 
+var layIndex;
+
 (function(){
     sys.user.userManage = function(){
 
@@ -19,10 +21,39 @@ xqsight.nameSpace.reg("sys.user");
          * 初始化调用 function
          */
         this.init = function() {
+            laydate({elem: '#userBorn', format: 'YYYY-MM-DD'});
             //绑定事件
             $("#btn_save").bind("click",obj.validateFun);
             $("#btn_cancel").bind("click",obj.cancelFun);
-
+            //归属区域
+            $("#companyId").ComboBoxTree({
+                url: ctxData + "/sys/area/querytree?date="+new Date().getTime(),
+                description: "==请选择==",
+                height: "195px",
+                allowSearch: false
+            });
+            //归属区域
+            $("#departmentId").ComboBoxTree({
+                url: ctxData + "/sys/area/querytree?date="+new Date().getTime(),
+                description: "==请选择==",
+                height: "195px",
+                allowSearch: false
+            });
+            $("#btn-upload-pic").on("click",function(){
+                layIndex = layer.open({
+                    type: 2,
+                    title: '<i class="ace-icon fa fa-edit"></i>  选择图片',
+                    shadeClose: false,
+                    shade: 0.2,
+                    shift: 1,
+                    skin: "layui-layer-molv",
+                    moveOut: true,
+                    offset: "10px",
+                    maxmin: true, //开启最大化最小化按钮
+                    area: [$(window).width()-500 + 'px', $(window).height()-100 + 'px'],
+                    content: "../../component/cropper/cropper.html"
+                })
+            });
             obj.formSetValue();
         };
 
@@ -124,7 +155,11 @@ xqsight.nameSpace.reg("sys.user");
 
 var userManage = new sys.user.userManage();
 
-
+var _imgCallBack = function(data){
+    $("#userImage").val(data);
+    $("#imgUrl").attr("src",data);
+    layer.close(layIndex)
+}
 
 
 

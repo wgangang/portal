@@ -24,8 +24,6 @@ var layIndex;
          * 初始化调用 function
          */
         this.init = function () {
-            /*laydate({elem: '#adBeginTime', format: 'YYYY-MM-DD'});
-            laydate({elem: '#adEndTime', format: 'YYYY-MM-DD'});*/
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
@@ -41,7 +39,7 @@ var layIndex;
                     offset: "10px",
                     maxmin: true, //开启最大化最小化按钮
                     area: [$(window).width()-500 + 'px', $(window).height()-100 + 'px'],
-                    content: "../cropper/cropper.html"
+                    content: "../../component/cropper/cropper.html"
                 });
             });
             $("#btn-preview").on("click",function(){

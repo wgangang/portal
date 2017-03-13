@@ -23,6 +23,15 @@ xqsight.nameSpace.reg("xqsight.cms");
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
+
+            //归属站点
+            $("#siteId").ComboBoxTree({
+                url: ctxData + "/cms/site/querytree?date="+new Date().getTime(),
+                description: "==请选择==",
+                height: "195px",
+                allowSearch: false
+            });
+
             obj.formSetValue();
         };
 
@@ -33,6 +42,7 @@ xqsight.nameSpace.reg("xqsight.cms");
         this.setParamFun = function () {
             editModel.modelName = $("#modelName").val();
             editModel.modelCode = $("#modelCode").val();
+            editModel.siteId= $("#siteId").attr("data-value");
             editModel.remark = $("#remark").val();
         };
 
@@ -92,7 +102,7 @@ xqsight.nameSpace.reg("xqsight.cms");
         this.formSetValue = function () {
             var modelId = $.getUrlParam("modelId");
             if (modelId == undefined || modelId == "") {
-                editModel.siteId = $.getUrlParam("siteId");
+                editModel.parentId = $.getUrlParam("parentId");
                 return;
             }
             $.ajax({
@@ -102,11 +112,12 @@ xqsight.nameSpace.reg("xqsight.cms");
                     if (retData.status == "0") {
                         var data = retData.data;
                         editModel.modelId = data.modelId;
-                        editModel.siteId = data.siteId;
+                        editModel.parentId = data.parentId;
 
                         $("#modelName").val(data.modelName);
                         $("#modelCode").val(data.modelCode);
                         $("#remark").val(data.remark);
+                        $("#siteId").ComboBoxTreeSetValue(data.siteId);
                     }
                 }
             });

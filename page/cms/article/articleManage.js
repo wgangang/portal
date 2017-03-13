@@ -39,7 +39,7 @@ var layIndex;
                     offset: "10px",
                     maxmin: true, //开启最大化最小化按钮
                     area: [$(window).width()-500 + 'px', $(window).height()-100 + 'px'],
-                    content: "../cropper/cropper.html"
+                    content: "../../component/cropper/cropper.html"
                 })
             });
             obj.editorFun();
@@ -108,6 +108,7 @@ var layIndex;
             editArticle.articleHit = $("#articleHit").val();
             editArticle.publishTime = $("#publishTime").val();
             editArticle.articleImg = $("#articleImg").val();
+            editArticle.department = $("#department").val();
             editArticle.articleContent = encodeURIComponent(artileEditor.$txt.html());
             editArticle.tags = $("#tags").val();
         };
@@ -182,6 +183,7 @@ var layIndex;
                         $("#articleSource").val(data.articleSource);
                         $("#publishTime").val(data.publishTime);
                         $("#articleImg").val(data.articleImg);
+                        $("#department").val(data.department);
                         $("#imgUrl").attr("src",data.articleImg);
                         $("#articleHit").selectpicker('articleHit', data.articleHit);
                         $.each(data.tags,function(index,object){

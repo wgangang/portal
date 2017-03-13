@@ -15,7 +15,7 @@ xqsight.nameSpace.reg("cms.model");
         var obj = this;
 
         this.modelTable = {};
-        this.siteTree = {};
+        this.modelTree = {};
         this.curSelTree = {};
 
         /**
@@ -58,7 +58,7 @@ xqsight.nameSpace.reg("cms.model");
              */
             $("#btn-remove").on("click", obj.removeFun);
 
-            obj.loadSiteTreeFun();
+            obj.loadModelTreeFun();
             obj.loadModelTableFun();
         };
 
@@ -71,7 +71,7 @@ xqsight.nameSpace.reg("cms.model");
                 xqsight.win.alert("请选择要添加的节点");
                 return;
             }
-            xqsight.win.show("模块新增", "cms/model/modelManage.html?siteId=" + obj.curSelTree.id, 700, 400,false);
+            xqsight.win.show("模块新增", "cms/model/modelManage.html?parentId=" + obj.curSelTree.id, 700, 400, false);
         }
 
         /**
@@ -83,7 +83,7 @@ xqsight.nameSpace.reg("cms.model");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.show("模块修改", "cms/model/modelManage.html?modelId=" + selRows[0].modelId,700, 400,false);
+            xqsight.win.show("模块修改", "cms/model/modelManage.html?modelId=" + selRows[0].modelId, 700, 400, false);
         }
 
         /**
@@ -103,7 +103,7 @@ xqsight.nameSpace.reg("cms.model");
                         success: function (retData) {
                             xqsight.win.alert(retData.msg, retData.status);
                             if (retData.status == "0") {
-                                obj.modelTable.ajax.reload();
+                                obj.loadModelTreeFun();
                             }
                         }
                     });
@@ -135,14 +135,14 @@ xqsight.nameSpace.reg("cms.model");
                     });
                 },
                 "fnServerParams": function (aoData) {
-                    var siteId = 0;
+                    var parentId = 0;
                     if (obj.curSelTree.id != undefined) {
-                        siteId = obj.curSelTree.id;
+                        parentId = obj.curSelTree.id;
                     }
                     aoData.push(
                         {"name": "modelName", "value": $("#modelName").val()},
-                        //{ "name": "modelCode", "value": $("#modelCode").val() },
-                        {"name": "siteId", "value": siteId}
+                        {"name": "modelCode", "value": $("#modelCode").val()},
+                        {"name": "parentId", "value": parentId}
                     );
                 },
                 "aoColumnDefs": [
@@ -200,13 +200,19 @@ xqsight.nameSpace.reg("cms.model");
             });
         }
 
-        /*** 加载 tree **/
-        this.loadSiteTreeFun = function () {
+        /*** 加载 model tree **/
+        this.loadModelTreeFun = function () {
             $.ajax({
-                url: ctxData + "/cms/site/querytree?date=" + new Date().getTime(),
+                url: ctxData + "/cms/model/querytree?date=" + new Date().getTime(),
                 success: function (retData) {
                     if (retData.status == 0) {
-                        $.fn.zTree.init($("#siteTree"), {
+                        var treeRoot = [{
+                            name: "系统模块",
+                            id: 0,
+                            children: retData.data
+                        }];
+
+                        $.fn.zTree.init($("#modelTree"), {
                             check: {
                                 enable: false,
                             },
@@ -217,27 +223,27 @@ xqsight.nameSpace.reg("cms.model");
                             },
                             callback: {
                                 onClick: function onClick(e, treeId, treeNode) {
-                                    obj.siteTree.selectNode(treeNode);
+                                    obj.modelTree.selectNode(treeNode);
                                     obj.curSelTree = treeNode;
                                     obj.modelTable.ajax.reload();
                                     return false;
                                 }
                             }
-                        }, retData.data);
+                        }, treeRoot);
 
-                        obj.siteTree = $.fn.zTree.getZTreeObj("siteTree");
+                        obj.modelTree = $.fn.zTree.getZTreeObj("modelTree");
 
                         if (obj.curSelTree.id != undefined) {
-                            obj.siteTree.selectNode(obj.curSelTree);
+                            obj.modelTree.selectNode(obj.curSelTree);
                         } else {
-                            var nodes = obj.siteTree.getNodes();
+                            var nodes = obj.modelTree.getNodes();
                             if (nodes.length > 0) {
-                                obj.siteTree.selectNode(nodes[0]);
+                                obj.modelTree.selectNode(nodes[0]);
                                 obj.curSelTree = nodes[0];
                             }
                         }
 
-                        obj.siteTree.expandAll(true);
+                        obj.modelTree.expandAll(true);
 
                         obj.modelTable.ajax.reload();
                     }
@@ -247,6 +253,7 @@ xqsight.nameSpace.reg("cms.model");
             });
         }
 
+
         /**
          *
          * 新增编辑回调函数
@@ -254,7 +261,7 @@ xqsight.nameSpace.reg("cms.model");
          */
         this.editCallBackFun = function (params) {
             //加载数据
-            obj.modelTable.ajax.reload();
+            obj.loadModelTreeFun();
             if (params.modelId == undefined || params.modelId == "") {
                 return;
             }

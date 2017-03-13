@@ -14,8 +14,7 @@ xqsight.nameSpace.reg("sys.user");
          * @type {xqsight.pmpf}
          */
         var obj = this;
-        this.orgTree = {};
-        this.curSelTree = {};
+
         /**
          * 列表对象
          *
@@ -56,18 +55,13 @@ xqsight.nameSpace.reg("sys.user");
              * 加载列表
              */
             obj.loadUserTableFun();
-            obj.loadOrgTreeFun();
         };
 
         /**
          * 新增 function
          */
         this.plusFun = function(){
-            if(obj.curSelTree.id == undefined ){
-                xqsight.win.alert("请选择要添加的节点");
-                return;
-            }
-            xqsight.win.show("登录用户新增","system/user/userManage.html?orgId=" + obj.curSelTree.id,$(window).width(),500);
+            xqsight.win.show("登录用户新增","system/user/userManage.html?",$(window).width(),500);
         }
 
         /**
@@ -95,7 +89,7 @@ xqsight.nameSpace.reg("sys.user");
             xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
-                        "url": ctxData + "/sys/login/delete?date=" + new Date().getTime(),
+                        "url": ctxData + "/sys/user/delete?date=" + new Date().getTime(),
                         "data": "id=" + selRows[0].id,
                         "dataType": "jsonp",
                         "cache": false,
@@ -126,7 +120,7 @@ xqsight.nameSpace.reg("sys.user");
                 "bInfo" : true,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "sPaginationType" : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
                 "bServerSide" : true,
-                "sAjaxSource": ctxData + '/sys/login/query',
+                "sAjaxSource": ctxData + '/sys/user/query',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         "url": sUrl,
@@ -135,16 +129,10 @@ xqsight.nameSpace.reg("sys.user");
                             fnCallback(data);
                             //渲染结束重新设置高度
                             parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        },
-                        "dataType": "jsonp",
-                        "cache": false
+                        }
                     });
                 },
                 "fnServerParams": function (aoData) {
-                    var orgId = 1;
-                    if(obj.curSelTree.id != undefined ){
-                        orgId = obj.curSelTree.id;
-                    }
                     aoData.push(
                         { "name": "loginId", "value": $("#loginId").val() }
                     );
@@ -167,48 +155,34 @@ xqsight.nameSpace.reg("sys.user");
                     sClass : "text-center",
                     sSort : false
                 },{
-                    data: "loginId",
+                    data: "companyName",
                     sWidth : "120",
                     sClass : "text-center",
                     sSort : false
                 },{
-                    data: "loginType",
+                    data: "departmentName",
                     sWidth : "80",
                     sClass : "text-center",
-                    sSort : false,
-                    render : function(value){
-                        if(value == "1"){
-                            return "编号";
-                        }else if(value == "2"){
-                            return "邮箱";
-                        }else if(value == "3"){
-                            return "电话";
-                        }
-                    }
+                    sSort : false
                 },{
-                    data : "imgUrl",
+                    data : "userCode",
                     sWidth : "60",
-                    sClass : "text-center",
-                    sSort : false,
-                    render : function(value){
-                        if(value == undefined || value == "")
-                            return "";
-                        return "<a href=\"javascript:xqsight.win.imgShow('" + value + "');\">查看</a>";
-                    }
+                    sClass : "text-center"
                 },{
-                    data : "locked",
+                    data : "sex",
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return value == "0" ? "未锁定" : "锁定";
+                        return value == "0" ? "男" : "女";
                     }
                 },{
-                    data : "createTime",
+                    data : "cellphone",
                     sWidth : "80",
-                    sClass : "text-center",
-                    render : function(value){
-                        return xqsight.moment.formatYMD(value);
-                    }
+                    sClass : "text-center"
+                },{
+                    data : "email",
+                    sWidth : "80",
+                    sClass : "text-center"
                 },{
                     data : "id",
                     sWidth : "80",
@@ -264,54 +238,6 @@ xqsight.nameSpace.reg("sys.user");
                             xqsight.win.alert(retData.msg,retData.status);
                         }
                     });
-                }
-            });
-        }
-
-        /*** 加载 tree **/
-        this.loadOrgTreeFun = function () {
-            $.ajax({
-                url: ctxData + "/sys/org/querytree?date="+new Date().getTime(),
-                dataType: "jsonp",
-                success: function(retData){
-                    if(retData.status == 0){
-                        $.fn.zTree.init($("#orgTree"),{
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.orgTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.userTable.ajax.reload();
-                                    return false;
-                                }
-                            }
-                        }, retData.data);
-
-                        obj.orgTree = $.fn.zTree.getZTreeObj("orgTree");
-
-                        if(obj.curSelTree.id != undefined ){
-                            obj.orgTree.selectNode(obj.curSelTree);
-                        }else{
-                            var nodes = obj.orgTree.getNodes();
-                            if (nodes.length>0) {
-                                obj.orgTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
-                        }
-
-                        obj.orgTree.expandAll(true);
-
-                        obj.userTable.ajax.reload();
-                    }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                 }
             });
         }

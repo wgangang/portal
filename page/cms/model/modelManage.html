@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="../../../static/ace/css/ace-fonts.css" />
     <link rel="stylesheet" href="../../../static/css/common.css"/>
 
+    <link rel="stylesheet" href="../../../static/wdtree/tree.css" />
+
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../../static/ace/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
@@ -39,6 +41,15 @@
                 <div class="row no-margin">
                     <form id="modelForm" name="modelForm">
                         <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="siteId" class="col-xs-2 control-label">所属站点</label>
+                                <div class="col-xs-9">
+                                    <div id="siteId" type="selectTree" class="ui-select">
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 red">*</div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="modelName" class="col-xs-2 control-label">模块名称</label>
                                 <div class="col-xs-9">
@@ -96,6 +107,8 @@
 <script src="../../../static/ace/js/bootstrap.js"></script>
 <script src="../../../static/ace/js/ace.js"></script>
 <script src="../../../static/js/pub.js"></script>
+
+<script src="../../../static/wdtree/tree.js"></script>
 
 <!-- page specific plugin scripts -->
 <script src="../../../static/validator/jquery-html5Validate.js"></script>

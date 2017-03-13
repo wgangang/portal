@@ -12,6 +12,7 @@
 
     <!-- page specific plugin styles -->
     <link rel="stylesheet" href="../../../static/bootstrap-select/css/bootstrap-select.css" />
+    <link rel="stylesheet" href="../../../static/wdtree/tree.css" />
 
     <!-- ace styles & fonts & common-->
     <link rel="stylesheet" href="../../../static/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
@@ -42,43 +43,101 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="userForm" name="userForm" class="form-auto">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label for="userName" class="col-sm-2 control-label">用户名称</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="userName" placeholder="用户名称" required>
-                                </div>
-                                <div class="col-sm-1 red">*</div>
-                            </div>
+                        <div class="col-xs-9 no-margin no-padding">
+                            <div class="form-horizontal">
 
-                            <div class="form-group">
-                                <label for="loginId" class="col-sm-2 control-label">登录名称</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="loginId" placeholder="登录名/电话/邮箱" required>
+                                <div class="form-group">
+                                    <label for="companyId" class="col-sm-1 control-label">归属公司</label>
+                                    <div class="col-sm-10">
+                                        <div id="companyId" type="selectTree" class="ui-select">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1 red">*</div>
                                 </div>
-                                <div class="col-sm-1 red">*</div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="locked" class="col-sm-2 control-label">是否锁定</label>
-                                <div class="col-sm-9">
-                                    <select id="locked" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="请选择" required>
-                                        <option value="0" selected>未锁定</option>
-                                        <option value="-1">锁定</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="departmentId" class="col-sm-1 control-label">归属部门</label>
+                                    <div class="col-sm-10">
+                                        <div id="departmentId" type="selectTree" class="ui-select">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1 red">*</div>
                                 </div>
-                                <div class="col-sm-1 red">*</div>
 
-                            </div>
-                            <div class="form-group">
-                                <label for="remark" class="col-sm-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="remark" placeholder="备注">
+                                <div class="form-group">
+                                    <label for="departmentId" class="col-sm-1 control-label">用户编号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="userCode" placeholder="用户编号">
+                                    </div>
+                                    <div class="col-sm-1 red">*</div>
                                 </div>
-                                <div class="col-sm-1"></div>
-                            </div>
 
+                                <div class="form-group">
+                                    <label for="userName" class="col-sm-1 control-label">用&nbsp;&nbsp;户&nbsp;&nbsp;名</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="userName" placeholder="用户名">
+                                    </div>
+                                    <div class="col-sm-1 red">*</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="userBorn" class="col-sm-1 control-label">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="userBorn" placeholder="生日">
+                                    </div>
+                                    <div class="col-sm-1 red"></div>
+
+                                    <label for="sex" class="col-sm-1 control-label">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                                    <div class="col-sm-4">
+                                        <select id="sex" class="form-control selectpicker" data-style="btn-white"
+                                                data-width="100%" title="性别" required>
+                                            <option value="0" selected>男</option>
+                                            <option value="1">女</option>
+                                            <option value="2">未知</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-1 red"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cellphone" class="col-sm-1 control-label">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="cellphone" placeholder="电话">
+                                    </div>
+                                    <div class="col-sm-1 red">*</div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="email" class="col-sm-1 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="email" placeholder="邮箱">
+                                    </div>
+                                    <div class="col-sm-1 red">*</div>
+                                </div>
+
+                            </div>
                         </div>
+                        <div class="col-xs-3">
+                            <div>
+                                <label for="imgUrl">图片</label>
+                                <div class=" center">
+                                    <ul class="ace-thumbnails clearfix">
+                                        <!-- #section:pages/gallery -->
+                                        <li>
+                                            <img id="imgUrl" width="150" height="150" alt="150x150" src="http://placehold.it/150x150">
+                                            <div class="tools tools-bottom">
+                                                <a href="javascript:void(0);" id="btn-upload-pic">
+                                                    <i class="ace-icon fa fa-pencil "></i>
+                                                </a>
+                                            </div>
+                                            <input type="hidden" id="userImage"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                     </form>
                 </div><!-- /.col -->
 
@@ -116,12 +175,13 @@
 <script src="../../../static/js/pub.js"></script>
 
 <!--下拉框选择组件-->
+<script src="../../../static/layer/laydate/laydate.dev.js"></script>
+<script src="../../../static/layer/layer/layer.dev.js"></script>
 <script src="../../../static/bootstrap-select/js/bootstrap-select.js"></script>
-
+<script src="../../../static/wdtree/tree.js"></script>
 <!-- page specific plugin scripts -->
 <script src="../../../static/validator/jquery-html5Validate.js"></script>
 
 <script src="userManage.js"></script>
 </body>
-</html>
 </html>

@@ -2,10 +2,10 @@
  * Created by user on 2015/12/14.
  */
 
-xqsight.nameSpace.reg("cms.ad");
+xqsight.nameSpace.reg("cms.event");
 
 (function () {
-    cms.ad.adMain = function () {
+    cms.event.eventMain = function () {
         var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
@@ -14,19 +14,19 @@ xqsight.nameSpace.reg("cms.ad");
          */
         var obj = this;
 
-        this.adTable = {};
+        this.eventTable = {};
 
         /** 初始化调用 function **/
         this.init = function () {
             /**  查询 **/
             $(".btn-search").click(function () {
-                obj.adTable.ajax.reload();
+                obj.eventTable.ajax.reload();
             });
             $(document).bind("keydown", ".filter input", function (e) {
                 var theEvent = window.event || e;
                 var code = theEvent.keyCode || theEvent.which;
                 if (code == 13) {
-                    obj.adTable.ajax.reload();
+                    obj.eventTable.ajax.reload();
                 }
             });
 
@@ -44,28 +44,28 @@ xqsight.nameSpace.reg("cms.ad");
             /** 删除 **/
             $("#btn-remove").on("click", obj.removeFun);
 
-            obj.loadAdTableFun();
+            obj.loadtAdTableFun();
         };
 
 
         /**  新增 function **/
         this.plusFun = function () {
-            xqsight.win.show("banner新增", "cms/ad/adManage.html", 700, 400,true);
+            xqsight.win.show("事件新增", "cms/event/eventManage.html", 700, 400,true);
         }
 
         /**  修改 function **/
         this.editFun = function () {
-            var selRows = obj.adTable.rows(".info").data();
+            var selRows = obj.eventTable.rows(".info").data();
             if (selRows.length < 1) {
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.show("banner修改", "cms/ad/adManage.html?adId=" + selRows[0].adId,700, 400,true);
+            xqsight.win.show("事件修改", "cms/event/eventManage.html?adId=" + selRows[0].adId,700, 400,true);
         }
 
         /**  删除 function **/
         this.removeFun = function () {
-            var selRows = obj.adTable.rows(".info").data();
+            var selRows = obj.eventTable.rows(".info").data();
             if (selRows.length < 1) {
                 xqsight.win.alert("请选择修改的数据");
                 return;
@@ -78,7 +78,7 @@ xqsight.nameSpace.reg("cms.ad");
                         success: function (retData) {
                             xqsight.win.alert(retData.msg, retData.status);
                             if (retData.status == "0") {
-                                obj.adTable.ajax.reload();
+                                obj.eventTable.ajax.reload();
                             }
                         }
                     });
@@ -87,8 +87,8 @@ xqsight.nameSpace.reg("cms.ad");
         }
 
         /**  加载数据表 function  **/
-        this.loadAdTableFun = function () {
-            var record_table = $("#ad-table").DataTable({
+        this.loadtAdTableFun = function () {
+            var record_table = $("#event-table").DataTable({
                 "oLanguage" : { // 汉化
                     sUrl : xqsight.utils.getServerPath("dataTableLocal")
                 },
@@ -100,7 +100,7 @@ xqsight.nameSpace.reg("cms.ad");
                 "bInfo" : true,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "sPaginationType" : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
                 "bServerSide" : true,
-                "sAjaxSource": ctxData + '/cms/ad/query?type=1',
+                "sAjaxSource": ctxData + '/cms/ad/query',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         url : sUrl,
@@ -134,40 +134,48 @@ xqsight.nameSpace.reg("cms.ad");
                     sWidth: "100",
                     sClass: "text-center"
                 }, {
-                    data: "adImage",
+                    data: "type",
                     sWidth: "60",
                     sClass: "text-center",
                     render: function (value) {
-                        return '<a href="javascript:void(0);" onclick="xqsight.win.imgShow(\'' + value + '\')">查看</a>';
+                        return value == "2" ? "小事件" : "大事件";
                     }
                 }, {
-                    data: "sort",
+                    data: "adUrl",
+                    sWidth: "60",
+                    sClass: "text-center",
+                    render: function (value) {
+                        if(value == undefined || value == "") return "";
+                        return "<a href='" + value + "' target='_blank'>查看</a>";
+                    }
+                }, {
+                    data: "adBeginTime",
                     sWidth: "80",
                     sClass: "text-center"
                 }, {
-                    data: "adId",
+                    data: "adtId",
                     sWidth: "80",
                     sClass: "text-center",
                     render: function () {
-                        return "<div class='bolder'> <a class='red' href='javaScript:adMain.editFun()'><i class='ace-icon fa fa-edit'></i></a> | " +
-                            "<a class='red' href='javaScript:adMain.removeFun()'><i class='ace-icon fa fa-remove'></i></a></div> ";
+                        return "<div class='bolder'> <a class='red' href='javaScript:eventMain.editFun()'><i class='ace-icon fa fa-edit'></i></a> | " +
+                            "<a class='red' href='javaScript:eventMain.removeFun()'><i class='ace-icon fa fa-remove'></i></a></div> ";
                     }
                 }]
             });
 
-            obj.adTable = record_table;
+            obj.eventTable = record_table;
 
             //单选事件
-            $("#ad-table tbody").on("click", "tr", function () {
-                $.each($("#ad-table tbody").find("input[type='checkbox']"), function (index, object) {
+            $("#event-table tbody").on("click", "tr", function () {
+                $.each($("#event-table tbody").find("input[type='checkbox']"), function (index, object) {
                     object.checked = false;
                 });
                 $(this).find("input[type='checkbox']").get(0).checked = true;
-                $("#ad-table>tbody>tr").removeClass("info");
+                $("#event-table>tbody>tr").removeClass("info");
                 $(this).addClass("info");
             });
 
-            $("#ad-table tbody").on("dblclick", "tr", function () {
+            $("#event-table tbody").on("dblclick", "tr", function () {
                 obj.editFun();
             });
         }
@@ -176,8 +184,8 @@ xqsight.nameSpace.reg("cms.ad");
         /** 新增编辑回调函数 **/
         this.editCallBackFun = function (params) {
             //加载数据
-            obj.adTable.ajax.reload();
-            if (params.adId == undefined || params.adId == "") {
+            obj.eventTable.ajax.reload();
+            if (params.eventId == undefined || params.eventId == "") {
                 return;
             }
             //选中之前选中的数据
@@ -186,10 +194,10 @@ xqsight.nameSpace.reg("cms.ad");
 
     /** 初始化数据 **/
     $(document).ready(function () {
-        adMain.init();
+        eventMain.init();
     });
 })();
-var adMain = new cms.ad.adMain();
+var eventMain = new cms.event.eventMain();
 
 
 

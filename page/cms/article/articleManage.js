@@ -56,14 +56,29 @@ var layIndex;
                     source: ace.vars['US_STATES'],//defined in ace.js >> ace.enable_search_ahead
                     //or fetch data from database, fetch those that match "query"
                     source : function (query, process) {
-                        $.ajax({url: ctxData + '/cms/tag/queryall?tagName=' + encodeURIComponent(query)})
+                        $.ajax({
+                            url : ctxData + '/cms/tag/queryall?tagName=' + encodeURIComponent(query),
+                            beforeSend : function () {},
+                            success : function (result_items) {
+                                array = new Array();
+                                $.each(result_items.data,function(index,object){
+                                    array.push(object.tagName);
+                                })
+                                process(array);
+                            },
+                            complete : function () {},
+                            error : function () {}
+                        });
+                       /* $.ajax({url: ctxData + '/cms/tag/queryall?tagName=' + encodeURIComponent(query)})
+                            .beforeSend()
                             .done(function (result_items) {
                                 array = new Array();
                                 $.each(result_items.data,function(index,object){
                                     array.push(object.tagName);
                                 })
                                 process(array);
-                            });
+                            })
+                            .complete().error();*/
                     }
                 });
                 obj.formSetValue();
@@ -87,7 +102,8 @@ var layIndex;
 
             ];
             artileEditor.config.uploadParams = {
-                "editor": 'wangeditor'
+                "editor": 'wangeditor',
+                "action":"uploadimage"
             };
             artileEditor.config.uploadImgFns.onload = function (resultText, xhr) {
                 artileEditor.command(null, 'InsertImage', resultText);
@@ -185,7 +201,7 @@ var layIndex;
                         $("#articleImg").val(data.articleImg);
                         $("#department").val(data.department);
                         $("#imgUrl").attr("src",data.articleImg);
-                        $("#articleHit").selectpicker('articleHit', data.articleHit);
+                        $("#articleHit").selectpicker('val', data.articleHit);
                         $.each(data.tags,function(index,object){
                             var $tag_obj = $('#tags').data('tag');
                             $tag_obj.add(object);

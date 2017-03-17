@@ -89,11 +89,9 @@ xqsight.nameSpace.reg("sys.user");
             xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
-                        "url": ctxData + "/sys/user/delete?date=" + new Date().getTime(),
-                        "data": "id=" + selRows[0].id,
-                        "dataType": "jsonp",
-                        "cache": false,
-                        "success": function(retData){
+                        url : ctxData + "/sys/user/delete?date=" + new Date().getTime(),
+                        data : "id=" + selRows[0].id,
+                        success : function(retData){
                             xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
                                 obj.userTable.ajax.reload();
@@ -173,7 +171,9 @@ xqsight.nameSpace.reg("sys.user");
                     sWidth : "80",
                     sClass : "text-center",
                     render : function(value){
-                        return value == "0" ? "男" : "女";
+                        if(value == "1"){return "男"}
+                        else if(value == "1"){return "女"}
+                        else{return "未知"}
                     }
                 },{
                     data : "cellphone",

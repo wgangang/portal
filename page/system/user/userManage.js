@@ -33,7 +33,7 @@ var layIndex;
                 allowSearch: false
             });
             //归属区域
-            $("#departmentId").ComboBoxTree({
+            $("#officeId").ComboBoxTree({
                 url: ctxData + "/sys/area/querytree?date="+new Date().getTime(),
                 description: "==请选择==",
                 height: "195px",
@@ -62,9 +62,15 @@ var layIndex;
          * @returns {string}
          */
         this.setParamFun = function(){
+            editUser.companyId= $("#companyId").attr("data-value");
+            editUser.officeId= $("#officeId").attr("data-value");
+            editUser.userCode= $("#userCode").val();
             editUser.userName= $("#userName").val();
-            editUser.loginId= $("#loginId").val();
-            editUser.locked= $("#locked").val();
+            editUser.userBorn= $("#userBorn").val();
+            editUser.sex= $("#sex").val();
+            editUser.imgUrl= $("#userImage").val();
+            editUser.cellPhone= $("#cellPhone").val();
+            editUser.email= $("#email").val();
             editUser.remark= $("#remark").val();
         };
 
@@ -88,20 +94,30 @@ var layIndex;
             var callback = function(btn){
                 if(btn == "yes"){
                     obj.setParamFun();
+                    var url = "";
+                    var flag = true;
+                    if($.getUrlParam("id")== undefined || $.getUrlParam("id") =="" ){
+                        url = ctxData + "/sys/user/save?date=" + new Date().getTime();
+                    }else{
+                        flag = false;
+                        url = ctxData + "/sys/user/update?date=" + new Date().getTime();
+                    }
                     $.ajax({
-                        "url": ctxData + "/sys/login/save?date=" + new Date().getTime(),
-                        "data": editUser,
-                        "success": function(retData){
+                        url : url,
+                        data : editUser,
+                        type : "post",
+                        success : function(retData){
                             xqsight.win.alert(retData.msg,retData.status);
                             if(retData.status == "0"){
-                                xqsight.win.alert("您的默认密码是:!password");
+                                if(flag){
+                                    xqsight.win.alert("您的默认密码是:!password");
+                                }
+
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.userMain.editCallBackFun({"userId" : $.getUrlParam("id")});
                                 xqsight.win.close();
                             }
-                        },
-                        "dataType": "jsonp",
-                        "cache": false
+                        }
                     });
                 }
             };
@@ -121,23 +137,28 @@ var layIndex;
         this.formSetValue = function(){
             var id = $.getUrlParam("id");
             if(id == undefined || id == "" ){
-                editUser.orgId = $.getUrlParam("orgId");
                 return;
             }
             $.ajax({
-                "dataType": "jsonp",
-                "cache": false,
-                "url": ctxData + "/sys/login/querybyid?id=" + id + "&date=" + new Date().getTime,
+                "url": ctxData + "/sys/user/querybyid?id=" + id + "&date=" + new Date().getTime,
                 "success": function(retData){
                     if(retData.status == "0"){
                         var data = retData.data;
                         editUser.id = data.id;
                         editUser.orgId = data.orgId;
 
+                        $("#companyId").ComboBoxTreeSetValue(data.companyId);
+                        $("#officeId").ComboBoxTreeSetValue(data.officeId);
                         $("#userName").val(data.userName);
-                        $("#loginId").val(data.loginId);
-                        $("#locked").val(data.locked);
+                        $("#userCode").val(data.userCode);
+                        $("#userBorn").val(data.userBorn);
+                        $("#userImage").val(data.imgUrl);
+                        $("#imgUrl").attr("src",data.imgUrl)
+                        $("#cellPhone").val(data.cellPhone);
+                        $("#email").val(data.email);
+                        $("#sex").selectpicker('val',data.sex);
                         $("#remark").val(data.remark);
+
                     }
                 }
             });

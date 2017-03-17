@@ -7,7 +7,7 @@ xqsight.nameSpace.reg("xqsight.cms");
 var layIndex;
 
 (function () {
-    xqsight.cms.adManage = function () {
+    xqsight.cms.eventManage = function () {
         var ctxData = xqsight.utils.getServerPath("cms");
 
         /**
@@ -24,6 +24,7 @@ var layIndex;
          * 初始化调用 function
          */
         this.init = function () {
+            laydate({elem: '#adBeginTime', istime:true,format: 'YYYY-MM-DD  hh:mm:ss'});
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
@@ -58,10 +59,6 @@ var layIndex;
                 '|', 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright',
                 '|', 'link', 'unlink', '|', 'undo', 'redo', 'fullscreen'
             ];
-            adEditor.config.uploadParams = {
-                "editor": 'wangeditor',
-                "action":"uploadimage"
-            };
             adEditor.config.withCredentials = false;
             adEditor.config.hideLinkImg = true;
             adEditor.config.printLog = false;
@@ -75,8 +72,8 @@ var layIndex;
         this.setParamFun = function () {
             editAd.adImage = $("#adImage").val();
             editAd.adName = $("#adName").val();
-            editAd.type = 1;
-            editAd.sort = $("#sort").val();
+            editAd.type = $("#type").val();
+            editAd.adBeginTime = $("#adBeginTime").val();
             editAd.adUrl = $("#adUrl").val();
             editAd.adText = encodeURIComponent(adEditor.$txt.html());
         };
@@ -113,7 +110,7 @@ var layIndex;
                             xqsight.win.alert(retData.msg, retData.status);
                             if (retData.status == "0") {
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.adMain.editCallBackFun({"adId": $.getUrlParam("id")});
+                                iframeContent.eventMain.editCallBackFun({"adId": $.getUrlParam("id")});
                                 xqsight.win.close();
                             }
                         }
@@ -146,12 +143,12 @@ var layIndex;
                         var data = retData.data;
                         editAd.adId = data.adId;
                         editAd.siteId = data.siteId;
-                        editAd.type=1;
+                        $("#type").selectpicker('val',data.type);
                         $("#adImage").val(data.adImage);
                         $("#imgUrl").attr("src",data.adImage);
                         $("#adName").val(data.adName);
-                        $("#sort").val(data.sort);
                         $("#adUrl").val(data.adUrl);
+                        $("#adBeginTime").val(data.adBeginTime);
                         adEditor.$txt.html(data.adText);
                     }
                 }
@@ -163,11 +160,11 @@ var layIndex;
      * 初始化数据
      */
     $(document).ready(function () {
-        adManage.init();
+        eventManage.init();
     });
 })();
 
-var adManage = new xqsight.cms.adManage();
+var eventManage = new xqsight.cms.eventManage();
 
 var _imgCallBack = function(data){
     $("#adImage").val(data);

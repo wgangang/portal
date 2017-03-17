@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
-    <title>banner管理</title>
+    <title>事件管理</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <!-- bootstrap & fonts  -->
@@ -57,16 +57,26 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="adBeginTime" class="col-sm-1 control-label">发生日期</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="adBeginTime" placeholder="发生日期" required>
+                                    </div>
+                                    <div class="col-sm-1 red">*</div>
+
+                                    <label for="type" class="col-sm-1 control-label">事件类型</label>
+                                    <div class="col-sm-4">
+                                        <select id="type" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="选择事件类型" required>
+                                            <option value="2" selected>小事件</option>
+                                            <option value="3">大事件</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-1 red">*</div>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="adText" class="col-sm-1 control-label">展示内容</label>
                                     <div class="col-sm-10">
                                         <textarea id="adText" style="height:200px;"></textarea>
-                                    </div>
-                                    <div class="col-sm-1 red"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="sort" class="col-sm-1 control-label">排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="sort" value="1" placeholder="排序">
                                     </div>
                                     <div class="col-sm-1 red"></div>
                                 </div>
@@ -144,6 +154,6 @@
 <script src="../../../static/bootstrap-select/js/bootstrap-select.js"></script>
 <script src="../../../static/validator/jquery-html5Validate.js"></script>
 
-<script src="adManage.js"></script>
+<script src="eventManage.js"></script>
 </body>
 </html>

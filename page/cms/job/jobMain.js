@@ -58,6 +58,8 @@ xqsight.nameSpace.reg("cms.job");
              */
             $("#btn-remove").on("click", obj.removeFun);
 
+            $("#btn-stop").on("click", obj.stopFun);
+
             obj.loadPositionTreeFun();
             obj.loadJobTableFun();
         };
@@ -110,6 +112,29 @@ xqsight.nameSpace.reg("cms.job");
                 }
             });
         }
+
+        this.stopFun = function () {
+            var selRows = obj.jobTable.rows(".info").data();
+            if (selRows.length < 1) {
+                xqsight.win.alert("请选择停止的数据");
+                return;
+            }
+            xqsight.win.confirm("确认停止吗？", function (btn) {
+                if (btn == "yes") {
+                    $.ajax({
+                        url: ctxData + "/cms/job/logicDel?date=" + new Date().getTime(),
+                        data: {jobId: selRows[0].jobId},
+                        success: function (retData) {
+                            xqsight.win.alert(retData.msg, retData.status);
+                            if (retData.status == "0") {
+                                obj.jobTable.ajax.reload();
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
 
         /**
          * 加载数据表 function

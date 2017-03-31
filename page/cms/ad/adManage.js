@@ -45,7 +45,7 @@ var layIndex;
             $("#btn-preview").on("click",function(){
                 xqsight.win.imgShow($("#adImage").val());
             });
-            obj.editorFun();
+           // obj.editorFun();
             obj.formSetValue();
         };
 
@@ -78,7 +78,7 @@ var layIndex;
             editAd.type = 1;
             editAd.sort = $("#sort").val();
             editAd.adUrl = $("#adUrl").val();
-            editAd.adText = encodeURIComponent(adEditor.$txt.html());
+            editAd.adText = $("#adText").val();//encodeURIComponent(adEditor.$txt.html());
         };
 
         /**  验证 function */
@@ -152,7 +152,8 @@ var layIndex;
                         $("#adName").val(data.adName);
                         $("#sort").val(data.sort);
                         $("#adUrl").val(data.adUrl);
-                        adEditor.$txt.html(data.adText);
+                        $("#adText").val(data.adText);
+                        //adEditor.$txt.html(data.adText);
                     }
                 }
             });
@@ -170,7 +171,7 @@ var layIndex;
 var adManage = new xqsight.cms.adManage();
 
 var _imgCallBack = function(data){
-    $("#adImage").val(data);
-    $("#imgUrl").attr("src",data);
+    $("#adImage").val(data.url);
+    $("#imgUrl").attr("src",data.url);
     layer.close(layIndex)
 }

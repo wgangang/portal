@@ -9,7 +9,7 @@ $(function () {
     var URL = window.URL || window.webkitURL;
     var $image = $('#image');
     var $download = $('#download');
-    /*var $dataX = $('#dataX');
+     /*var $dataX = $('#dataX');
      var $dataY = $('#dataY');
      var $dataHeight = $('#dataHeight');
      var $dataWidth = $('#dataWidth');
@@ -17,14 +17,18 @@ $(function () {
      var $dataScaleX = $('#dataScaleX');
      var $dataScaleY = $('#dataScaleY');*/
     var options = {
-        //aspectRatio: 16 / 9,
+        aspectRatio: 16 / 9,
+        dragCrop:true,
+        movable:true,
+        resizable:true,
         preview: '.img-preview',
-        checkCrossOrigin: false
+        checkCrossOrigin: false,
+        cropBoxResizable : false
         /*crop: function (e) {
          $dataX.val(Math.round(e.x));
          $dataY.val(Math.round(e.y));
-         $dataHeight.val(Math.round(e.height));
-         $dataWidth.val(Math.round(e.width));
+         $dataHeight.val(500);
+         $dataWidth.val(1920);
          $dataRotate.val(e.rotate);
          $dataScaleX.val(e.scaleX);
          $dataScaleY.val(e.scaleY);
@@ -128,7 +132,7 @@ $(function () {
                 try {
                     var obj = JSON.parse(data);
                     if (obj.status == "0") {
-                        window.parent._imgCallBack(obj.fileUrl);
+                        window.parent._imgCallBack({"type":$.getUrlParam("type"),"url":obj.fileUrl});
                     }
                 } catch (e) {
                     console.log(e.message);

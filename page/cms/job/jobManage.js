@@ -21,12 +21,12 @@ xqsight.nameSpace.reg("xqsight.cms");
          * 初始化调用 function
          */
         this.init = function () {
-            laydate({elem: '#jobStartTime', istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
-            laydate({elem: '#jobEndTime', istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+            //laydate({elem: '#jobStartTime', istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
+            //laydate({elem: '#jobEndTime', istime: true, format: 'YYYY-MM-DD hh:mm:ss'});
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
-            obj.editorFun();
+            //obj.editorFun();
             obj.formSetValue();
         };
 
@@ -52,13 +52,16 @@ xqsight.nameSpace.reg("xqsight.cms");
          */
         this.setParamFun = function () {
             editJob.jobName = $("#jobName").val();
-            editJob.jobStartTime = $("#jobStartTime").val();
-            editJob.jobEndTime = $("#jobEndTime").val();
-            editJob.jobPhone = $("#jobPhone").val();
-            editJob.status = $("#status").val();
-            editJob.jobAddress = $("#jobAddress").val();
-            editJob.jobContent = encodeURIComponent(jobEditor.$txt.html());
-            editJob.remark = $("#remark").val();
+           // editJob.jobStartTime = $("#jobStartTime").val();
+            //editJob.jobEndTime = $("#jobEndTime").val();
+           // editJob.jobPhone = $("#jobPhone").val();
+            editJob.jobEmail = $("#jobEmail").val();
+            editJob.active = $("#active").val();
+            editJob.positionDesp = $("#positionDesp").val();
+            editJob.jobNeed = $("#jobNeed").val();
+            editJob.jobDepartment = $("#jobDepartment").val();
+            //editJob.jobContent = encodeURIComponent(jobEditor.$txt.html());
+            editJob.jobType = $("#jobType").val();
         };
 
         /**
@@ -130,14 +133,17 @@ xqsight.nameSpace.reg("xqsight.cms");
                         editJob.positionId = data.positionId;
 
                         $("#jobName").val(data.jobName);
-                        $("#jobStartTime").val(data.jobStartTime);
-                        $("#jobEndTime").val(data.jobEndTime);
-                        $("#jobPhone").val(data.jobPhone);
-                        $("#status").selectpicker('status', data.status);
-                        $("#jobAddress").val(data.jobAddress);
-                        $("#remark").val(data.remark);
+                       /* $("#jobStartTime").val(data.jobStartTime);
+                        $("#jobEndTime").val(data.jobEndTime);*/
+                        $("#jobEmail").val(data.jobEmail);
+                        $("#active").selectpicker('val', data.active);
+                        $("#jobType").selectpicker('val', data.jobType);
+                        $("#positionDesp").val(data.positionDesp);
+                        $("#jobNeed").val(data.jobNeed);
+                        $("#jobDepartment").val(data.jobDepartment);
+                        //$("#remark").val(data.remark);
 
-                        jobEditor.$txt.html(data.jobContent);
+                        //jobEditor.$txt.html(data.jobContent);
                     }
                 }
             });

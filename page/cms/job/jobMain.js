@@ -187,29 +187,26 @@ xqsight.nameSpace.reg("cms.job");
                     sWidth: "100",
                     sClass: "text-center"
                 }, {
-                    data: "jobStartTime",
-                    sWidth: "60",
+                    data: "jobDepartment",
+                    sWidth: "100",
+                    sClass: "text-center"
+                }, {
+                    data: "active",
+                    sWidth: "100",
                     sClass: "text-center",
                     render: function (value) {
-                        return xqsight.moment.formatYMDHms(value);
+                        return value == "0" ? "正常 " : "结束";
                     }
                 }, {
-                    data: "jobEndTime",
-                    sWidth: "60",
-                    sClass: "text-center",
-                    render: function (value) {
-                        return xqsight.moment.formatYMDHms(value);
-                    }
-                }, {
-                    data: "jobPhone",
+                    data: "jobEmail",
                     sWidth: "80",
                     sClass: "text-center"
                 }, {
-                    data: "status",
+                    data: "jobType",
                     sWidth: "80",
                     sClass: "text-center",
                     render: function (value) {
-                        return value == "1" ? "正常 " : "结束";
+                        return value == "0" ? "全职" : "兼职";
                     }
                 }, {
                     data: "jobId",

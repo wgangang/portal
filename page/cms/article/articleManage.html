@@ -117,14 +117,32 @@
                             </div>
                             <hr/>
                             <div>
-                                <label for="tags">图片</label>
+                                <label for="thumbnailImg">缩列图</label>
                                 <div class=" center">
                                     <ul class="ace-thumbnails clearfix">
                                         <!-- #section:pages/gallery -->
                                         <li>
-                                            <img id="imgUrl" width="150" height="150" alt="150x150" src="http://placehold.it/150x150">
+                                            <img id="imgThumbnail" width="350" height="150" alt="580x240" src="http://placehold.it/580x240">
                                             <div class="tools tools-bottom">
-                                                <a href="javascript:void(0);" id="btn-upload-pic">
+                                                <a href="javascript:void(0);" id="thumbnailImgShow">
+                                                    <i class="ace-icon fa fa-pencil "></i>
+                                                </a>
+                                            </div>
+                                            <input type="hidden" id="thumbnailImg"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="articleImg">文章图</label>
+                                <div class=" center">
+                                    <ul class="ace-thumbnails clearfix">
+                                        <!-- #section:pages/gallery -->
+                                        <li>
+                                            <img id="imgArticle" width="350" height="150" alt="900x340" src="http://placehold.it/900x340">
+                                            <div class="tools tools-bottom">
+                                                <a href="javascript:void(0);" id="articleImgShow">
                                                     <i class="ace-icon fa fa-pencil "></i>
                                                 </a>
                                             </div>

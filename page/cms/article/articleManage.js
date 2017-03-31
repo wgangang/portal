@@ -27,7 +27,7 @@ var layIndex;
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
-            $("#btn-upload-pic").on("click",function(){
+            $("#thumbnailImgShow").on("click",function(){
                 layIndex = layer.open({
                     type: 2,
                     title: '<i class="ace-icon fa fa-edit"></i>  选择图片',
@@ -39,7 +39,22 @@ var layIndex;
                     offset: "10px",
                     maxmin: true, //开启最大化最小化按钮
                     area: [$(window).width()-500 + 'px', $(window).height()-100 + 'px'],
-                    content: "../../component/cropper/cropper.html"
+                    content: "../../component/cropper/cropper.html?type=1"
+                })
+            });
+            $("#articleImgShow").on("click",function(){
+                layIndex = layer.open({
+                    type: 2,
+                    title: '<i class="ace-icon fa fa-edit"></i>  选择图片',
+                    shadeClose: false,
+                    shade: 0.2,
+                    shift: 1,
+                    skin: "layui-layer-molv",
+                    moveOut: true,
+                    offset: "10px",
+                    maxmin: true, //开启最大化最小化按钮
+                    area: [$(window).width()-500 + 'px', $(window).height()-100 + 'px'],
+                    content: "../../component/cropper/cropper.html?type=2"
                 })
             });
             obj.editorFun();
@@ -69,16 +84,6 @@ var layIndex;
                             complete : function () {},
                             error : function () {}
                         });
-                       /* $.ajax({url: ctxData + '/cms/tag/queryall?tagName=' + encodeURIComponent(query)})
-                            .beforeSend()
-                            .done(function (result_items) {
-                                array = new Array();
-                                $.each(result_items.data,function(index,object){
-                                    array.push(object.tagName);
-                                })
-                                process(array);
-                            })
-                            .complete().error();*/
                     }
                 });
                 obj.formSetValue();
@@ -95,10 +100,10 @@ var layIndex;
             artileEditor.config.hideLinkImg = true;
             artileEditor.config.printLog = false;
             artileEditor.config.menus = [
-                'bold', 'underline', 'italic',  'strikethrough', 'eraser', 'forecolor', 'bgcolor',
-                '|',  'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright',
-                '|',  'link', 'unlink',  'table', 'emotion',
-                '|', 'img',  'video', 'insertcode',  '|', 'undo', 'redo', 'fullscreen'
+                 'source','bold', 'underline', 'italic',  'strikethrough', 'eraser', 'forecolor', 'bgcolor',
+                 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright',
+                 'link', 'unlink',  'table', 'emotion',
+                 'img',  'video', 'insertcode', 'undo', 'redo', 'fullscreen'
 
             ];
             artileEditor.config.uploadParams = {
@@ -124,6 +129,7 @@ var layIndex;
             editArticle.articleHit = $("#articleHit").val();
             editArticle.publishTime = $("#publishTime").val();
             editArticle.articleImg = $("#articleImg").val();
+            editArticle.thumbnailImg = $("#thumbnailImg").val();
             editArticle.department = $("#department").val();
             editArticle.articleContent = encodeURIComponent(artileEditor.$txt.html());
             editArticle.tags = $("#tags").val();
@@ -199,8 +205,12 @@ var layIndex;
                         $("#articleSource").val(data.articleSource);
                         $("#publishTime").val(data.publishTime);
                         $("#articleImg").val(data.articleImg);
+                        $("#imgArticle").attr("src",data.articleImg);
+
+                        $("#thumbnailImg").val(data.thumbnailImg);
+                        $("#imgThumbnail").attr("src",data.thumbnailImg);
+
                         $("#department").val(data.department);
-                        $("#imgUrl").attr("src",data.articleImg);
                         $("#articleHit").selectpicker('val', data.articleHit);
                         $.each(data.tags,function(index,object){
                             var $tag_obj = $('#tags').data('tag');
@@ -224,8 +234,14 @@ var layIndex;
 
 var articleManage = new cms.article.articleManage();
 
-var _imgCallBack = function(data){
-    $("#articleImg").val(data);
-    $("#imgUrl").attr("src",data);
+var _imgCallBack = function(object){
+    if(object.type == "1"){
+        $("#thumbnailImg").val(object.url);
+        $("#imgThumbnail").attr("src",object.url);
+    }else if(object.type == "2"){
+        $("#articleImg").val(object.url);
+        $("#imgArticle").attr("src",object.url);
+    }
+
     layer.close(layIndex)
 }

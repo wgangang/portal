@@ -72,8 +72,9 @@ var layIndex;
                     //or fetch data from database, fetch those that match "query"
                     source : function (query, process) {
                         $.ajax({
-                            url : ctxData + '/cms/tag/queryall?tagName=' + encodeURIComponent(query),
+                            url : ctxData + '/cms/tag/?tagName=' + encodeURIComponent(query),
                             beforeSend : function () {},
+                            method : "get",
                             success : function (result_items) {
                                 array = new Array();
                                 $.each(result_items.data,function(index,object){
@@ -151,20 +152,13 @@ var layIndex;
             var callback = function (btn) {
                 if (btn == "yes") {
                     obj.setParamFun();
-                    var url = "";
-                    if ($.getUrlParam("articleId") == undefined || $.getUrlParam("articleId") == "") {
-                        url = ctxData + "/cms/article/save?date=" + new Date().getTime();
-                    } else {
-                        url = ctxData + "/cms/article/update?date=" + new Date().getTime();
-                    }
-
                     $.ajax({
-                        "url": url,
-                        "data": editArticle,
-                        "type": "POST",
-                        "success": function (retData) {
-                            xqsight.win.alert(retData.msg);
-                            if (retData.status == "0") {
+                        url: ctxData + "/cms/article/?date=" + new Date().getTime(),
+                        data: editArticle,
+                        method : "post",
+                        success: function (retData) {
+                            xqsight.win.alert("处理成功",retData.code);
+                            if (retData.code == "0") {
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.articleMain.editCallBackFun({"articleId": $.getUrlParam("articleId")});
                                 xqsight.win.close();
@@ -194,9 +188,10 @@ var layIndex;
                 return;
             }
             $.ajax({
-                url: ctxData + "/cms/article/querybyid?articleId=" + articleId + "&date=" + new Date().getTime(),
+                method : "get",
+                url: ctxData + "/cms/article/" + articleId + "?date=" + new Date().getTime(),
                 success: function (retData) {
-                    if (retData.status == "0") {
+                    if (retData.code == "0") {
                         var data = retData.data;
                         editArticle.articleId = data.articleId;
                         $("#articleTitle").val(data.articleTitle);
@@ -212,12 +207,12 @@ var layIndex;
 
                         $("#department").val(data.department);
                         $("#articleHit").selectpicker('val', data.articleHit);
+                        artileEditor.$txt.html(data.articleContent);
                         $.each(data.tags,function(index,object){
                             var $tag_obj = $('#tags').data('tag');
                             $tag_obj.add(object);
                         });
                         $("#tags").val(data.tags);
-                        artileEditor.$txt.html(data.articleContent);
                     }
                 }
             });

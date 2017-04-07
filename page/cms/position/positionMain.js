@@ -99,11 +99,11 @@ xqsight.nameSpace.reg("cms.position");
             xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
-                        url: ctxData + "/cms/position/delete?date=" + new Date().getTime(),
-                        data: {positionId : selRows[0].positionId },
+                        url: ctxData + "/cms/position/" + selRows[0].positionId + "?date=" + new Date().getTime(),
+                        method : "delete",
                         success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
+                            xqsight.win.alert("删除成功",retData.code);
+                            if(retData.code == "0"){
                                 obj.loadPositionTreeFun();
                             }
                         }
@@ -123,10 +123,11 @@ xqsight.nameSpace.reg("cms.position");
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/cms/position/query',
+                "sAjaxSource": ctxData + '/cms/position/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         url: sUrl,
+                        method : "get",
                         data: aoData,
                         success: function(data){
                             fnCallback(data);
@@ -208,9 +209,10 @@ xqsight.nameSpace.reg("cms.position");
         /*** 加载 tree **/
         this.loadPositionTreeFun = function () {
             $.ajax({
-                url: ctxData + "/cms/position/querytree?date="+new Date().getTime(),
+                url: ctxData + "/cms/position/tree?date="+new Date().getTime(),
+                method : "get",
                 success: function(retData){
-                    if(retData.status == 0){
+                    if(retData.code == 0){
                         var treeRoot = [{
                             name : "系统职位",
                             id : 0,

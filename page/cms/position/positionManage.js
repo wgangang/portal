@@ -35,7 +35,7 @@ xqsight.nameSpace.reg("xqsight.cms");
         this.setParamFun = function(){
             editSite.positionName = $("#positionName").val();
             editSite.positionCode = $("#positionCode").val();
-            editSite.sort = $("#sort").val();
+            //editSite.sort = $("#sort").val();
             editSite.remark = $("#remark").val();
         };
 
@@ -59,18 +59,13 @@ xqsight.nameSpace.reg("xqsight.cms");
             var callback = function(btn){
                 if(btn == "yes"){
                     obj.setParamFun();
-                    var url = "";
-                    if($.getUrlParam("positionId")== undefined || $.getUrlParam("positionId") =="" ){
-                        url = ctxData + "/cms/position/save?date=" + new Date().getTime();
-                    }else{
-                        url = ctxData + "/cms/position/update?date=" + new Date().getTime();
-                    }
                     $.ajax({
-                        url : url ,
+                        url : ctxData + "/cms/position/?date=" + new Date().getTime(),
                         data : editSite,
+                        method:"post",
                         success : function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
+                            xqsight.win.alert("处理成功",retData.code);
+                            if(retData.code == "0"){
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.positionMain.editCallBackFun({"positionId" : $.getUrlParam("id")});
                                 xqsight.win.close();
@@ -99,14 +94,15 @@ xqsight.nameSpace.reg("xqsight.cms");
                 return;
             }
             $.ajax({
-                url : ctxData + "/cms/position/querybyid?positionId=" + positionId + "&date=" + new Date().getTime,
+                url : ctxData + "/cms/position/" + positionId + "?date=" + new Date().getTime,
+                method :"get",
                 success : function(retData){
-                    if(retData.status == "0"){
+                    if(retData.code == "0"){
                         editSite = retData.data;
                         editSite.parentId = editSite.parentId;
                         $("#positionName").val(editSite.positionName);
                         $("#positionCode").val(editSite.positionCode);
-                        $("#sort").val(editSite.sort);
+                        //$("#sort").val(editSite.sort);
                         $("#remark").val(editSite.remark);
                     }
                 }

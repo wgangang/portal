@@ -100,8 +100,8 @@ xqsight.nameSpace.reg("cms.job");
             xqsight.win.confirm("确认删除吗？", function (btn) {
                 if (btn == "yes") {
                     $.ajax({
-                        url: ctxData + "/cms/job/delete?date=" + new Date().getTime(),
-                        data: {jobId: selRows[0].jobId},
+                        url: ctxData + "/cms/job/" + selRows[0].jobId + "?date=" + new Date().getTime(),
+                        method : "delete",
                         success: function (retData) {
                             xqsight.win.alert(retData.msg, retData.status);
                             if (retData.status == "0") {
@@ -122,11 +122,11 @@ xqsight.nameSpace.reg("cms.job");
             xqsight.win.confirm("确认停止吗？", function (btn) {
                 if (btn == "yes") {
                     $.ajax({
-                        url: ctxData + "/cms/job/logicDel?date=" + new Date().getTime(),
-                        data: {jobId: selRows[0].jobId},
+                        url: ctxData + "/cms/job/" + selRows[0].jobId + "?date=" + new Date().getTime(),
+                        method : "delete",
                         success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
+                            xqsight.win.alert("删除成功", retData.code);
+                            if (retData.code == "0") {
                                 obj.jobTable.ajax.reload();
                             }
                         }
@@ -147,10 +147,11 @@ xqsight.nameSpace.reg("cms.job");
                 "bInfo": false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide": true,
                 "paging": false,
-                "sAjaxSource": ctxData + '/cms/job/query',
+                "sAjaxSource": ctxData + '/cms/job/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         url: sUrl,
+                        method : "get",
                         data: aoData,
                         success: function (data) {
                             fnCallback(data);
@@ -239,9 +240,10 @@ xqsight.nameSpace.reg("cms.job");
         /*** 加载 tree **/
         this.loadPositionTreeFun = function () {
             $.ajax({
-                url: ctxData + "/cms/position/querytree?date=" + new Date().getTime(),
+                url: ctxData + "/cms/position/tree?date=" + new Date().getTime(),
+                method : "get",
                 success: function (retData) {
-                    if (retData.status == 0) {
+                    if (retData.code == 0) {
                         $.fn.zTree.init($("#positionTree"), {
                             check: {
                                 enable: false,

@@ -16,6 +16,7 @@ xqsight.nameSpace.reg("xqsight.cms");
 
         var editJob = {};
         var jobEditor = {};
+        var positionEditor = {};
 
         /**
          * 初始化调用 function
@@ -26,24 +27,26 @@ xqsight.nameSpace.reg("xqsight.cms");
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
-            //obj.editorFun();
+            obj.editorFun();
             obj.formSetValue();
         };
 
         this.editorFun = function () {
-            jobEditor = new wangEditor('jobContent');
-            // 上传图片
-            jobEditor.config.uploadImgUrl = ctxData + '/files/core/editor';
-            jobEditor.config.withCredentials = false;
-            jobEditor.config.hideLinkImg = true;
+            jobEditor = new wangEditor("jobNeed");
             jobEditor.config.printLog = false;
-            jobEditor.config.uploadParams = {
-                "wangEditor": 'wangEditor'
-            };
-            jobEditor.config.uploadImgFns.onload = function (resultText, xhr) {
-                jobEditor.command(null, 'InsertImage', resultText);
-            };
+            jobEditor.config.menus = [
+                'bold', 'underline', 'italic',  'strikethrough', 'eraser', 'quote', 'fontfamily', 'fontsize',
+                'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink'
+            ];
             jobEditor.create();
+
+            positionEditor = new wangEditor("positionDesp");
+            positionEditor.config.printLog = false;
+            positionEditor.config.menus = [
+                'bold', 'underline', 'italic',  'strikethrough', 'eraser', 'quote', 'fontfamily', 'fontsize',
+                'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink'
+            ];
+            positionEditor.create();
         }
 
         /**
@@ -57,8 +60,8 @@ xqsight.nameSpace.reg("xqsight.cms");
            // editJob.jobPhone = $("#jobPhone").val();
             editJob.jobEmail = $("#jobEmail").val();
             editJob.active = $("#active").val();
-            editJob.positionDesp = $("#positionDesp").val();
-            editJob.jobNeed = $("#jobNeed").val();
+            editJob.positionDesp =  encodeURIComponent(positionEditor.$txt.html());
+            editJob.jobNeed = encodeURIComponent(jobEditor.$txt.html());
             editJob.jobDepartment = $("#jobDepartment").val();
             //editJob.jobContent = encodeURIComponent(jobEditor.$txt.html());
             editJob.jobType = $("#jobType").val();
@@ -84,18 +87,13 @@ xqsight.nameSpace.reg("xqsight.cms");
             var callback = function (btn) {
                 if (btn == "yes") {
                     obj.setParamFun();
-                    var url = "";
-                    if ($.getUrlParam("jobId") == undefined || $.getUrlParam("jobId") == "") {
-                        url = ctxData + "/cms/job/save?date=" + new Date().getTime();
-                    } else {
-                        url = ctxData + "/cms/job/update?date=" + new Date().getTime();
-                    }
                     $.ajax({
-                        url: url,
+                        url:  ctxData + "/cms/job/?date=" + new Date().getTime(),
                         data: editJob,
+                        method : "post",
                         success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
+                            xqsight.win.alert("处理成功", retData.code);
+                            if (retData.code == "0") {
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.jobMain.editCallBackFun({"jobId": $.getUrlParam("id")});
                                 xqsight.win.close();
@@ -124,10 +122,10 @@ xqsight.nameSpace.reg("xqsight.cms");
                 return;
             }
             $.ajax({
-                url: ctxData + "/cms/job/querybyid?date=" + new Date().getTime,
-                data: {"jobId": jobId},
+                url: ctxData + "/cms/job/" + jobId + "?date=" + new Date().getTime,
+                method: "get",
                 success: function (retData) {
-                    if (retData.status == "0") {
+                    if (retData.code == "0") {
                         var data = retData.data;
                         editJob.jobId = data.jobId;
                         editJob.positionId = data.positionId;
@@ -138,12 +136,13 @@ xqsight.nameSpace.reg("xqsight.cms");
                         $("#jobEmail").val(data.jobEmail);
                         $("#active").selectpicker('val', data.active);
                         $("#jobType").selectpicker('val', data.jobType);
-                        $("#positionDesp").val(data.positionDesp);
-                        $("#jobNeed").val(data.jobNeed);
+                        //$("#positionDesp").val(data.positionDesp);
+                        //$("#jobNeed").val(data.jobNeed);
                         $("#jobDepartment").val(data.jobDepartment);
                         //$("#remark").val(data.remark);
 
-                        //jobEditor.$txt.html(data.jobContent);
+                        jobEditor.$txt.html(data.jobNeed);
+                        positionEditor.$txt.html(data.positionDesp);
                     }
                 }
             });

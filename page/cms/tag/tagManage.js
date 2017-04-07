@@ -56,15 +56,16 @@ xqsight.nameSpace.reg("xqsight.cms");
             var callback = function (btn) {
                 if (btn == "yes") {
                     obj.setParamFun();
-                    var url = "";
+                    var method = "";
                     if ($.getUrlParam("tagId") == undefined || $.getUrlParam("tagId") == "") {
-                        url = ctxData + "/cms/tag/save?date=" + new Date().getTime();
+                        method="put";
                     } else {
-                        url = ctxData + "/cms/tag/update?date=" + new Date().getTime();
+                        method="post";
                     }
                     $.ajax({
-                        url: url,
+                        url: ctxData + "/cms/tag/?date=" + new Date().getTime(),
                         data: editTag,
+                        method:method,
                         success: function (retData) {
                             xqsight.win.alert(retData.msg, retData.status);
                             if (retData.status == "0") {
@@ -95,10 +96,10 @@ xqsight.nameSpace.reg("xqsight.cms");
                 return;
             }
             $.ajax({
-                url: ctxData + "/cms/tag/querybyid?date=" + new Date().getTime,
-                data: {"tagId": tagId},
+                url: ctxData + "/cms/tag/" + tagId + "?date=" + new Date().getTime,
+                method : "get",
                 success: function (retData) {
-                    if (retData.status == "0") {
+                    if (retData.code == "0") {
                         var data = retData.data;
                         editTag.tagId = data.tagId;
                         $("#tagName").val(data.tagName);

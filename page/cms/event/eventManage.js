@@ -96,14 +96,8 @@ var layIndex;
             var callback = function (btn) {
                 if (btn == "yes") {
                     obj.setParamFun();
-                    var url = "";
-                    if ($.getUrlParam("adId") == undefined || $.getUrlParam("adId") == "") {
-                        url = ctxData + "/cms/ad/save?date=" + new Date().getTime();
-                    } else {
-                        url = ctxData + "/cms/ad/update?date=" + new Date().getTime();
-                    }
                     $.ajax({
-                        url: url,
+                        url: ctxData + "/cms/ad/?date=" + new Date().getTime(),
                         data: editAd,
                         method : "post",
                         success: function (retData) {
@@ -136,10 +130,10 @@ var layIndex;
                 return;
             }
             $.ajax({
-                url: ctxData + "/cms/ad/querybyid?date=" + new Date().getTime,
-                data: {"adId": adId},
+                url: ctxData + "/cms/ad/" + adId + "?date=" + new Date().getTime,
+                method: "get",
                 success: function (retData) {
-                    if (retData.status == "0") {
+                    if (retData.code == "0") {
                         var data = retData.data;
                         editAd.adId = data.adId;
                         editAd.siteId = data.siteId;
@@ -167,7 +161,7 @@ var layIndex;
 var eventManage = new xqsight.cms.eventManage();
 
 var _imgCallBack = function(data){
-    $("#adImage").val(data);
-    $("#imgUrl").attr("src",data);
+    $("#adImage").val(data.url);
+    $("#imgUrl").attr("src",data.url);
     layer.close(layIndex)
 }

@@ -123,9 +123,10 @@ xqsight.nameSpace.reg("sys.area");
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/sys/area/query',
+                "sAjaxSource": ctxData + '/sys/area/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
+                        method : "get",
                         url: sUrl,
                         data: aoData,
                         success: function(data){
@@ -208,9 +209,10 @@ xqsight.nameSpace.reg("sys.area");
         /*** 加载 tree **/
         this.loadAreaTreeFun = function () {
             $.ajax({
-                url: ctxData + "/sys/area/querytree?date="+new Date().getTime(),
+                method : "get",
+                url: ctxData + "/sys/area/tree?date="+new Date().getTime(),
                 success: function(retData){
-                    if(retData.status == 0){
+                    if(retData.code == 0){
                         var treeRoot = [{
                             name : "系统区域",
                             id : 0,

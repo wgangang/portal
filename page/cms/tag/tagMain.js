@@ -115,10 +115,11 @@ xqsight.nameSpace.reg("cms.tag");
                 "bInfo": false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide": true,
                 "paging": false,
-                "sAjaxSource": ctxData + '/cms/tag/queryall',
+                "sAjaxSource": ctxData + '/cms/tag/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         url: sUrl,
+                        method : "get",
                         data: aoData,
                         success: function (data) {
                             fnCallback(data);

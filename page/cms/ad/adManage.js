@@ -27,7 +27,7 @@ var layIndex;
             //绑定事件
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
-            $("#btn-upload-pic").on("click",function(){
+            $("#btn-upload-pic").on("click", function () {
                 layIndex = layer.open({
                     type: 2,
                     title: '<i class="ace-icon fa fa-edit"></i>  选择图片',
@@ -38,14 +38,14 @@ var layIndex;
                     moveOut: true,
                     offset: "10px",
                     maxmin: true, //开启最大化最小化按钮
-                    area: [$(window).width()-500 + 'px', $(window).height()-100 + 'px'],
+                    area: [$(window).width() - 500 + 'px', $(window).height() - 100 + 'px'],
                     content: "../../component/cropper/cropper.html"
                 })
             });
-            $("#btn-preview").on("click",function(){
+            $("#btn-preview").on("click", function () {
                 xqsight.win.imgShow($("#adImage").val());
             });
-           // obj.editorFun();
+            // obj.editorFun();
             obj.formSetValue();
         };
 
@@ -60,7 +60,7 @@ var layIndex;
             ];
             adEditor.config.uploadParams = {
                 "editor": 'wangeditor',
-                "action":"uploadimage"
+                "action": "uploadimage"
             };
             adEditor.config.withCredentials = false;
             adEditor.config.hideLinkImg = true;
@@ -99,19 +99,13 @@ var layIndex;
             var callback = function (btn) {
                 if (btn == "yes") {
                     obj.setParamFun();
-                    var url = "";
-                    if ($.getUrlParam("adId") == undefined || $.getUrlParam("adId") == "") {
-                        url = ctxData + "/cms/ad/save?date=" + new Date().getTime();
-                    } else {
-                        url = ctxData + "/cms/ad/update?date=" + new Date().getTime();
-                    }
                     $.ajax({
-                        url: url,
+                        url: ctxData + "/cms/ad/?date=" + new Date().getTime(),
                         data: editAd,
-                        method : "post",
+                        method: "post",
                         success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
+                            xqsight.win.alert("处理成功", retData.code);
+                            if (retData.code == "0") {
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.adMain.editCallBackFun({"adId": $.getUrlParam("id")});
                                 xqsight.win.close();
@@ -139,16 +133,16 @@ var layIndex;
                 return;
             }
             $.ajax({
-                url: ctxData + "/cms/ad/querybyid?date=" + new Date().getTime,
-                data: {"adId": adId},
+                url: ctxData + "/cms/ad/" + adId + "?date=" + new Date().getTime,
+                method: "get",
                 success: function (retData) {
-                    if (retData.status == "0") {
+                    if (retData.code == "0") {
                         var data = retData.data;
                         editAd.adId = data.adId;
                         editAd.siteId = data.siteId;
-                        editAd.type=1;
+                        editAd.type = 1;
                         $("#adImage").val(data.adImage);
-                        $("#imgUrl").attr("src",data.adImage);
+                        $("#imgUrl").attr("src", data.adImage);
                         $("#adName").val(data.adName);
                         $("#sort").val(data.sort);
                         $("#adUrl").val(data.adUrl);
@@ -170,8 +164,8 @@ var layIndex;
 
 var adManage = new xqsight.cms.adManage();
 
-var _imgCallBack = function(data){
+var _imgCallBack = function (data) {
     $("#adImage").val(data.url);
-    $("#imgUrl").attr("src",data.url);
+    $("#imgUrl").attr("src", data.url);
     layer.close(layIndex)
 }

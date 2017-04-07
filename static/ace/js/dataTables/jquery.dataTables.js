@@ -2562,6 +2562,8 @@
 		param( 'sColumns',       _pluck( columns, 'sName' ).join(',') );
 		param( 'iDisplayStart',  displayStart );
 		param( 'iDisplayLength', displayLength );
+        param( 'pageSize', displayLength );
+        param( 'pageNum', (displayStart/displayLength)+1 );
 	
 		// DataTables 1.10+ method
 		var d = {
@@ -2656,6 +2658,8 @@
 		var draw            = compat( 'sEcho',                'draw' );
 		var recordsTotal    = compat( 'iTotalRecords',        'recordsTotal' );
 		var recordsFiltered = compat( 'iTotalDisplayRecords', 'recordsFiltered' );
+        var recordsTotal    = compat( 'totalSize',        'recordsTotal' );
+        var recordsFiltered = compat( 'pageSize', 'recordsFiltered' );
 	
 		if ( draw ) {
 			// Protect against out of sequence returns

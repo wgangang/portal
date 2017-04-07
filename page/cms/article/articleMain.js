@@ -83,11 +83,11 @@ xqsight.nameSpace.reg("cms.article");
             xqsight.win.confirm("确认删除吗？",function(btn){
                 if(btn == "yes"){
                     $.ajax({
-                        url: ctxData + "/cms/article/delete?date=" + new Date().getTime(),
-                        data: {"articleId":selRows[0].articleId },
+                        url: ctxData + "/cms/article/" + selRows[0].articleId + "?date=" + new Date().getTime(),
+                        method: "delete",
                         success: function(retData){
-                            xqsight.win.alert(retData.msg)
-                            if(retData.status == "0"){
+                            xqsight.win.alert(retData.message);
+                            if(retData.code == "0"){
                                 obj.artilceTable.ajax.reload();
                             }
                         }
@@ -112,9 +112,10 @@ xqsight.nameSpace.reg("cms.article");
                 "bInfo" : true,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "sPaginationType" : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
                 "bServerSide" : true,
-                "sAjaxSource": ctxData + '/cms/article/query',
+                "sAjaxSource": ctxData + '/cms/article/page',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
+                        method : "get",
                         url : sUrl,
                         data : aoData,
                         success : function(data){

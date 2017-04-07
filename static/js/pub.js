@@ -1,6 +1,7 @@
 (function ($) {
     var _progress_index = 0;
     $.ajaxSetup({
+        method:"post",
         beforeSend: function () {
             if(_progress_index > 0){
                 console.debug("ajax before close progress index : " + _progress_index);

@@ -42,48 +42,6 @@
 })(jQuery);
 
 var xqsight = xqsight || {};
-
-xqsight = {
-    load: function (option) {
-        $.ajax({
-            url: option.url,
-            data: option.data,
-            method: "get",
-            success: function (rep) {
-                option.callFun(rep);
-            }
-        });
-    },
-    delete: function (option) {
-        var tipMsg = (option.tipMsg == undefined || option.tipMsg == "") ? "确认删除吗?" : option.tipMsg;
-        var msg = (option.msg == undefined || option.msg == "") ? "删除成功!" : option.msg;
-        xqsight._commitFun(option.url, option.data, option.callFun, "delete", tipMsg, msg);
-    },
-    put: function (option) {
-        var tipMsg = (option.tipMsg == undefined || option.tipMsg == "") ? "确认提交吗?" : option.tipMsg;
-        var msg = (option.msg == undefined || option.msg == "") ? "处理成功!" : option.msg;
-        xqsight._commitFun(option.url, option.data, option.callFun, "post", tipMsg, msg);
-    },
-    _commitFun: function (url, data, callFun, method, tipMsg, msg) {
-        xqsight.win.confirm(tipMsg, function (canSure) {
-            if (canSure == "yes") {
-                $.ajax({
-                    url: url,
-                    data: data,
-                    method: method,
-                    success: function (rep) {
-                        if (rep.code != 0) {
-                            msg = rep.message;
-                        }
-                        xqsight.win.alert(msg, rep.code);
-                        callFun(rep);
-                    }
-                });
-            }
-        });
-    }
-};
-
 xqsight.iframeId = "iframeId";
 
 xqsight.common = {
@@ -344,6 +302,51 @@ xqsight.utils = {
                         }
                         break;
                 }
+            }
+        });
+    },
+
+    /** ajax load data **/
+    load: function (option) {
+        $.ajax({
+            url: option.url,
+            data: option.data,
+            method: "get",
+            success: function (rep) {
+                option.callFun(rep);
+            }
+        });
+    },
+
+    /** ajax delete data **/
+    delete: function (option) {
+        var tipMsg = (option.tipMsg == undefined || option.tipMsg == "") ? "确认删除吗?" : option.tipMsg;
+        var msg = (option.msg == undefined || option.msg == "") ? "删除成功!" : option.msg;
+        xqsight.utils._commitFun(option.url, option.data, option.callFun, "delete", tipMsg, msg);
+    },
+
+    /** ajax save or update data **/
+    put: function (option) {
+        var tipMsg = (option.tipMsg == undefined || option.tipMsg == "") ? "确认提交吗?" : option.tipMsg;
+        var msg = (option.msg == undefined || option.msg == "") ? "处理成功!" : option.msg;
+        xqsight.utils._commitFun(option.url, option.data, option.callFun, "post", tipMsg, msg);
+    },
+
+    _commitFun: function (url, data, callFun, method, tipMsg, msg) {
+        xqsight.win.confirm(tipMsg, function (canSure) {
+            if (canSure == "yes") {
+                $.ajax({
+                    url: url,
+                    data: data,
+                    method: method,
+                    success: function (rep) {
+                        if (rep.code != 0) {
+                            msg = rep.message;
+                        }
+                        xqsight.win.alert(msg, rep.code);
+                        callFun(rep);
+                    }
+                });
             }
         });
     },

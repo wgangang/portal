@@ -82,7 +82,7 @@
                 } else {
                     msg = "修改成功!";
                 }
-                xqsight.put({
+                xqsight.utils.put({
                     url: EventManageMVC.URLs.save,
                     data: $("#eventForm").serializeArray(),
                     tipMsg: "确认提交吗？",
@@ -102,7 +102,7 @@
                 if (adId == undefined || adId == "") {
                     return;
                 }
-                xqsight.load({
+                xqsight.utils.load({
                     url: EventManageMVC.URLs.load + adId, callFun: function (rep) {
                         if (rep.code == "0") {
                             var data = rep.data;

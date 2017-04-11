@@ -67,8 +67,8 @@ xqsight.nameSpace.reg("xqsight.cms");
                         data: editTag,
                         method:method,
                         success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
+                            xqsight.win.alert("处理成功!", retData.code);
+                            if (retData.code == "0") {
                                 var iframeContent = xqsight.tab.getCurrentIframeContent();
                                 iframeContent.tagMain.editCallBackFun({"tagId": $.getUrlParam("id")});
                                 xqsight.win.close();

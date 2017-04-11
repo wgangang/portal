@@ -122,10 +122,10 @@ xqsight.nameSpace.reg("cms.job");
             xqsight.win.confirm("确认停止吗？", function (btn) {
                 if (btn == "yes") {
                     $.ajax({
-                        url: ctxData + "/cms/job/" + selRows[0].jobId + "?date=" + new Date().getTime(),
+                        url: ctxData + "/cms/job/logic/" + selRows[0].jobId + "?date=" + new Date().getTime(),
                         method : "delete",
                         success: function (retData) {
-                            xqsight.win.alert("删除成功", retData.code);
+                            xqsight.win.alert("停止成功", retData.code);
                             if (retData.code == "0") {
                                 obj.jobTable.ajax.reload();
                             }

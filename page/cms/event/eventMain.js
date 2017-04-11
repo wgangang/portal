@@ -100,7 +100,7 @@ xqsight.nameSpace.reg("cms.event");
                 "bInfo" : true,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "sPaginationType" : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
                 "bServerSide" : true,
-                "sAjaxSource": ctxData + '/cms/ad/page?filter_EQI_type=0',
+                "sAjaxSource": ctxData + '/cms/ad/page?filter_INI_type=2,3',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         url : sUrl,
@@ -140,14 +140,6 @@ xqsight.nameSpace.reg("cms.event");
                     sClass: "text-center",
                     render: function (value) {
                         return value == "2" ? "小事件" : "大事件";
-                    }
-                }, {
-                    data: "adUrl",
-                    sWidth: "60",
-                    sClass: "text-center",
-                    render: function (value) {
-                        if(value == undefined || value == "") return "";
-                        return "<a href='" + value + "' target='_blank'>查看</a>";
                     }
                 }, {
                     data: "adBeginTime",

@@ -1,167 +1,127 @@
 /**
  * Created by user on 2015/12/14.
  */
-
-xqsight.nameSpace.reg("xqsight.cms");
-
-var layIndex;
-
 (function () {
-    xqsight.cms.eventManage = function () {
-        var ctxData = xqsight.utils.getServerPath("cms");
-
-        /**
-         * 申明内部对象
-         * @type {xqsight.cms}
-         */
-        var obj = this;
-
-        var editAd = {};
-
-        var adEditor = {};
-
-        /**
-         * 初始化调用 function
-         */
-        this.init = function () {
-            laydate({elem: '#adBeginTime', istime:true,format: 'YYYY-MM-DD  hh:mm:ss'});
-            //绑定事件
-            $("#btn_save").bind("click", obj.validateFun);
-            $("#btn_cancel").bind("click", obj.cancelFun);
-            $("#btn-upload-pic").on("click",function(){
-                layIndex = layer.open({
-                    type: 2,
-                    title: '<i class="ace-icon fa fa-edit"></i>  选择图片',
-                    shadeClose: false,
-                    shade: 0.2,
-                    shift: 1,
-                    skin: "layui-layer-molv",
-                    moveOut: true,
-                    offset: "10px",
-                    maxmin: true, //开启最大化最小化按钮
-                    area: [$(window).width()-500 + 'px', $(window).height()-100 + 'px'],
-                    content: "../../component/cropper/cropper.html"
-                })
-            });
-            $("#btn-preview").on("click",function(){
-                xqsight.win.imgShow($("#adImage").val());
-            });
-            obj.editorFun();
-            obj.formSetValue();
-        };
-
-        this.editorFun = function () {
-            adEditor = new wangEditor('adText');
-            // 上传图片
-            adEditor.config.uploadImgUrl = ctxData + '/files/core/editor';
-            adEditor.config.menus = [
-                'source', '|', 'bold', 'underline', 'italic', 'strikethrough', 'eraser', 'forecolor', 'bgcolor',
-                '|', 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright',
-                '|', 'link', 'unlink', '|', 'undo', 'redo', 'fullscreen'
-            ];
-            adEditor.config.withCredentials = false;
-            adEditor.config.hideLinkImg = true;
-            adEditor.config.printLog = false;
-            adEditor.create();
+    var EventManage = {
+        init: function () {
+            EventManageMVC.View.initEditor();
+            EventManageMVC.View.initControl();
+            EventManageMVC.View.bindEvent();
+            EventManageMVC.Controller.load();
         }
-
-        /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function () {
-            editAd.adImage = $("#adImage").val();
-            editAd.adName = $("#adName").val();
-            editAd.type = $("#type").val();
-            editAd.adBeginTime = $("#adBeginTime").val();
-            editAd.adUrl = $("#adUrl").val();
-            editAd.adText = encodeURIComponent(adEditor.$txt.html());
-        };
-
-        /**  验证 function */
-        this.validateFun = function () {
-            $("#adForm").html5Validate(function () {
-                obj.saveFun();
-            }, {
-                validate: function () {
-                    return true;
-                }
-            });
-        };
-
-        /**
-         * 保存 function
-         */
-        this.saveFun = function () {
-            var callback = function (btn) {
-                if (btn == "yes") {
-                    obj.setParamFun();
-                    $.ajax({
-                        url: ctxData + "/cms/ad/?date=" + new Date().getTime(),
-                        data: editAd,
-                        method : "post",
-                        success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.eventMain.editCallBackFun({"adId": $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？", callback);
-        };
-
-        /**
-         * 取消 function
-         */
-        this.cancelFun = function () {
-            xqsight.win.close();
-        };
-
-        /**
-         * form 表单初始化数据
-         */
-        this.formSetValue = function () {
-            var adId = $.getUrlParam("adId");
-            if (adId == undefined || adId == "") {
-                return;
-            }
-            $.ajax({
-                url: ctxData + "/cms/ad/" + adId + "?date=" + new Date().getTime,
-                method: "get",
-                success: function (retData) {
-                    if (retData.code == "0") {
-                        var data = retData.data;
-                        editAd.adId = data.adId;
-                        editAd.siteId = data.siteId;
-                        $("#type").selectpicker('val',data.type);
-                        $("#adImage").val(data.adImage);
-                        $("#imgUrl").attr("src",data.adImage);
-                        $("#adName").val(data.adName);
-                        $("#adUrl").val(data.adUrl);
-                        $("#adBeginTime").val(data.adBeginTime);
-                        adEditor.$txt.html(data.adText);
-                    }
-                }
-            });
-        };
     };
 
-    /**
-     * 初始化数据
-     */
-    $(document).ready(function () {
-        eventManage.init();
-    });
-})();
+    var EventManageCommon = {
+        baseUrl: xqsight.utils.getServerPath("cms"),
+        adEditor: {}
+    };
 
-var eventManage = new xqsight.cms.eventManage();
+    var EventManageMVC = {
+        URLs: {
+            save: EventManageCommon.baseUrl + "/cms/ad/",
+            load: EventManageCommon.baseUrl + "/cms/ad/",
+            file: EventManageCommon.baseUrl + "/files/core/editor"
+        },
+        View: {
+            initControl: function () {
+                laydate({elem: '#adBeginTime', istime:true,format: 'YYYY-MM-DD hh:mm:ss'});
+                $("#btn-upload-pic").on("click",function(){
+                    layIndex = layer.open({
+                        type: 2,
+                        title: '<i class="ace-icon fa fa-edit"></i>  选择图片',
+                        shadeClose: false,
+                        shade: 0.2,
+                        shift: 1,
+                        skin: "layui-layer-molv",
+                        moveOut: true,
+                        offset: "10px",
+                        maxmin: true, //开启最大化最小化按钮
+                        area: [$(window).width()-500 + 'px', $(window).height()-100 + 'px'],
+                        content: "../../component/cropper/cropper.html"
+                    })
+                });
+                $("#btn-preview").on("click",function(){
+                    xqsight.win.imgShow($("#adImage").val());
+                });
+            },
+            initEditor: function () {
+                var adEditor = new wangEditor('adText');
+                // 上传图片
+                adEditor.config.uploadImgUrl = EventManageMVC.URLs.file;
+                adEditor.config.menus = [
+                    'source', '|', 'bold', 'underline', 'italic', 'strikethrough', 'eraser', 'forecolor', 'bgcolor',
+                    '|', 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright',
+                    '|', 'link', 'unlink', '|', 'undo', 'redo', 'fullscreen'
+                ];
+                adEditor.config.withCredentials = false;
+                adEditor.config.hideLinkImg = true;
+                adEditor.config.printLog = false;
+                adEditor.create();
+
+                EventManageCommon.adEditor = adEditor;
+            },
+            bindEvent: function () {
+                $("#btn_save").on("click", EventManageMVC.Controller.validate);
+                $("#btn_cancel").on("click", EventManageMVC.Controller.cancel);
+            }
+        },
+        Controller: {
+            validate: function () {
+                $("#eventForm").html5Validate(function () {
+                   EventManageMVC.Controller.save();
+                }, {
+                    validate: function () {
+                        return true;
+                    }
+                });
+            },
+            save: function () {
+                var msg = "处理成功!";
+                if ($.getUrlParam("adId") == undefined || $.getUrlParam("adId") == "") {
+                    msg = "保存成功!";
+                } else {
+                    msg = "修改成功!";
+                }
+                xqsight.put({
+                    url: EventManageMVC.URLs.save,
+                    data: $("#eventForm").serializeArray(),
+                    tipMsg: "确认提交吗？",
+                    msg: msg,
+                    callFun: function (rep) {
+                        var iframeContent = xqsight.tab.getCurrentIframeContent();
+                        iframeContent.eventMain.editCallBackFun({"adId": $.getUrlParam("id")});
+                        xqsight.win.close();
+                    }
+                });
+            },
+            cancel: function () {
+                xqsight.win.close();
+            },
+            load: function () {
+                var adId = $.getUrlParam("adId");
+                if (adId == undefined || adId == "") {
+                    return;
+                }
+                xqsight.load({
+                    url: EventManageMVC.URLs.load + adId, callFun: function (rep) {
+                        if (rep.code == "0") {
+                            var data = rep.data;
+                            xqsight.utils.fillForm($("#eventForm"), data);
+                            EventManageCommon.adEditor.$txt.html(data.adText);
+                            $("#imgUrl").attr("src", data.adImage);
+                        }
+                    }
+                });
+            }
+        }
+    };
+
+    EventManage.init();
+
+})();
 
 var _imgCallBack = function(data){
     $("#adImage").val(data.url);
     $("#imgUrl").attr("src",data.url);
-    layer.close(layIndex)
+    layer.close(layIndex);
 }

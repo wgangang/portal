@@ -45,13 +45,15 @@
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row no-margin">
-                    <form id="modelForm" name="modelForm">
+                    <form id="eventForm" name="eventForm">
+                        <input id="adId" name="adId" type="hidden">
+                        <input id="siteId" name="siteId" type="hidden">
                         <div class="col-xs-9">
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label for="adName" class="col-sm-1 control-label">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="adName" placeholder="名称" required>
+                                        <input type="text" class="form-control" id="adName" name="adName" placeholder="名称" required>
                                     </div>
                                     <div class="col-sm-1 red">*</div>
                                 </div>
@@ -59,13 +61,13 @@
                                 <div class="form-group">
                                     <label for="adBeginTime" class="col-sm-1 control-label">发生日期</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="adBeginTime" placeholder="发生日期" required>
+                                        <input type="text" class="form-control" id="adBeginTime" name="adBeginTime" placeholder="发生日期" required>
                                     </div>
                                     <div class="col-sm-1 red">*</div>
 
                                     <label for="type" class="col-sm-1 control-label">事件类型</label>
                                     <div class="col-sm-4">
-                                        <select id="type" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="选择事件类型" required>
+                                        <select id="type" name="type" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="选择事件类型" required>
                                             <option value="2" selected>小事件</option>
                                             <option value="3">大事件</option>
                                         </select>
@@ -76,18 +78,17 @@
                                 <div class="form-group">
                                     <label for="adText" class="col-sm-1 control-label">展示内容</label>
                                     <div class="col-sm-10">
-                                        <textarea id="adText" style="height:200px;"></textarea>
+                                        <textarea id="adText" name="adText" style="height:200px;"></textarea>
                                     </div>
                                     <div class="col-sm-1 red"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="adUrl" class="col-sm-1 control-label">连接地址</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="adUrl" placeholder="连接地址">
+                                        <input type="text" class="form-control" id="adUrl" name="adUrl" placeholder="连接地址">
                                     </div>
                                     <div class="col-sm-1 red"></div>
                                 </div>
-
                             </div>
                         </div>
 
@@ -110,7 +111,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </form>
                 </div><!-- /.col -->
 

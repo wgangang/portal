@@ -1,9 +1,9 @@
 (function ($) {
     var _progress_index = 0;
     $.ajaxSetup({
-        method:"post",
+        method: "post",
         beforeSend: function () {
-            if(_progress_index > 0){
+            if (_progress_index > 0) {
                 console.debug("ajax before close progress index : " + _progress_index);
                 xqsight.progress.hide(_progress_index);
                 _progress_index = 0;
@@ -42,6 +42,47 @@
 })(jQuery);
 
 var xqsight = xqsight || {};
+
+xqsight = {
+    load: function (option) {
+        $.ajax({
+            url: option.url,
+            data: option.data,
+            method: "get",
+            success: function (rep) {
+                option.callFun(rep);
+            }
+        });
+    },
+    delete: function (option) {
+        var tipMsg = (option.tipMsg == undefined || option.tipMsg == "") ? "确认删除吗?" : option.tipMsg;
+        var msg = (option.msg == undefined || option.msg == "") ? "删除成功!" : option.msg;
+        xqsight._commitFun(option.url, option.data, option.callFun, "delete", tipMsg, msg);
+    },
+    put: function (option) {
+        var tipMsg = (option.tipMsg == undefined || option.tipMsg == "") ? "确认提交吗?" : option.tipMsg;
+        var msg = (option.msg == undefined || option.msg == "") ? "处理成功!" : option.msg;
+        xqsight._commitFun(option.url, option.data, option.callFun, "post", tipMsg, msg);
+    },
+    _commitFun: function (url, data, callFun, method, tipMsg, msg) {
+        xqsight.win.confirm(tipMsg, function (canSure) {
+            if (canSure == "yes") {
+                $.ajax({
+                    url: url,
+                    data: data,
+                    method: method,
+                    success: function (rep) {
+                        if (rep.code != 0) {
+                            msg = rep.message;
+                        }
+                        xqsight.win.alert(msg, rep.code);
+                        callFun(rep);
+                    }
+                });
+            }
+        });
+    }
+};
 
 xqsight.iframeId = "iframeId";
 
@@ -178,12 +219,13 @@ xqsight.utils = {
         }
     },
 
-    browserName : function () {
+    browserName: function () {
         var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
         var isOpera = userAgent.indexOf("Opera") > -1;
         if (isOpera) {
             return "Opera";
-        }; //判断是否Opera浏览器
+        }
+        ; //判断是否Opera浏览器
         if (userAgent.indexOf("Firefox") > -1) {
             return "FF";
         } //判断是否Firefox浏览器
@@ -199,7 +241,8 @@ xqsight.utils = {
         } //判断是否Safari浏览器
         if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
             return "IE";
-        }; //判断是否IE浏览器
+        }
+        ; //判断是否IE浏览器
     },
 
     /** 替换所有字符串 */
@@ -217,13 +260,92 @@ xqsight.utils = {
                 inputs += "<input type=\"hidden\" name=\"" + pair[0] + "\" value=\"" + pair[1] + "\" />";
             });
             $("<form action=\"" + url + "\" method=\"" + (method || "post") + "\">" + inputs + "</form>").appendTo("body").submit().remove();
-        };
+        }
+        ;
     },
 
     /** 清除查询的值 **/
     cleanValue: function (elementObj) {
         $(elementObj + " input").val("");
         $(elementObj + " select option:first").prop("selected", 'selected');
+    },
+
+    /** json fill form **/
+    fillForm: function ($form, data) {
+        $.each(data, function (key, value) {
+            var $ctrls = $form.find('[name=' + key + ']');
+            if ($ctrls.is('select')) {
+                if($ctrls.hasClass("selectpicker")){
+                    $ctrls.selectpicker('val',value);
+                    return;
+                }
+                $('option', $ctrls).each(function () {
+                    if (this.value == value) {
+                        this.selected = true;
+                    }
+                });
+            } else if ($ctrls.is('textarea')) {
+                $ctrls.val(value);
+            } else {
+                switch ($ctrls.attr("type")) {
+                    case "text":
+                    case "hidden":
+                        $ctrls.val(value);
+                        break;
+                    case "radio":
+                        if ($ctrls.length >= 1) {
+                            $.each($ctrls, function (index) {  // every individual element
+                                var elemValue = $(this).attr("value");
+                                var elemValueInData = singleVal = value;
+                                if (elemValue === value) {
+                                    $(this).prop('checked', true);
+                                } else {
+                                    $(this).prop('checked', false);
+                                }
+                            });
+                        }
+                        break;
+                    case "checkbox":
+                        if ($ctrls.length > 1) {
+                            //console.log("$ctrls.length: " + $ctrls.length + " value.length: " + value.length);
+                            $.each($ctrls, function (index) {
+                                var elemValue = $(this).attr("value");
+                                var elemValueInData = undefined;
+                                var singleVal;
+                                for (var i = 0; i < value.length; i++) {
+                                    singleVal = value[i];
+                                    console.log("singleVal : " + singleVal + " value[i][1]" + value[i][1]);
+                                    if (singleVal === elemValue) {
+                                        elemValueInData = singleVal
+                                    }
+                                    ;
+                                }
+
+                                if (elemValueInData) {
+                                    //console.log("TRUE elemValue: " + elemValue + " value: " + value);
+                                    $(this).prop('checked', true);
+                                    //$(this).prop('value', true);
+                                }
+                                else {
+                                    //console.log("FALSE elemValue: " + elemValue + " value: " + value);
+                                    $(this).prop('checked', false);
+                                    //$(this).prop('value', false);
+                                }
+                            });
+                        } else if ($ctrls.length == 1) {
+                            $ctrl = $ctrls;
+                            if (value) {
+                                $ctrl.prop('checked', true);
+                            }
+                            else {
+                                $ctrl.prop('checked', false);
+                            }
+
+                        }
+                        break;
+                }
+            }
+        });
     },
 
     /** 获取请求的服务 **/
@@ -382,6 +504,7 @@ xqsight.progress = {
 
 
 }
+
 
 //命名空间
 xqsight.nameSpace = {

@@ -64,7 +64,7 @@ xqsight.nameSpace.reg("cms.tag");
          * 新增 function
          */
         this.plusFun = function () {
-            xqsight.win.show("标签新增", "cms/tag/tagManage.html", 700, 400,false);
+            xqsight.win.show("标签新增", "cms/tag/tagManage.html", 700, 400, false);
         }
 
         /**
@@ -76,7 +76,7 @@ xqsight.nameSpace.reg("cms.tag");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.show("标签修改", "cms/tag/tagManage.html?tagId=" + selRows[0].tagId,700, 400,false);
+            xqsight.win.show("标签修改", "cms/tag/tagManage.html?tagId=" + selRows[0].tagId, 700, 400, false);
         }
 
         /**
@@ -91,11 +91,11 @@ xqsight.nameSpace.reg("cms.tag");
             xqsight.win.confirm("确认删除吗？", function (btn) {
                 if (btn == "yes") {
                     $.ajax({
-                        url: ctxData + "/cms/tag/delete?date=" + new Date().getTime(),
-                        data: {tagId: selRows[0].tagId},
+                        url: ctxData + "/cms/tag/" + selRows[0].tagId + "?date=" + new Date().getTime(),
+                        method: "delete",
                         success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
+                            xqsight.win.alert("删除成功!", retData.code);
+                            if (retData.code == "0") {
                                 obj.tagTable.ajax.reload();
                             }
                         }
@@ -119,7 +119,7 @@ xqsight.nameSpace.reg("cms.tag");
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     $.ajax({
                         url: sUrl,
-                        method : "get",
+                        method: "get",
                         data: aoData,
                         success: function (data) {
                             fnCallback(data);
@@ -153,7 +153,7 @@ xqsight.nameSpace.reg("cms.tag");
                     data: "tagType",
                     sWidth: "60",
                     sClass: "text-center",
-                    render : function(){
+                    render: function () {
                         return "default";
                     }
                 }, {

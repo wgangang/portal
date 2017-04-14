@@ -229,7 +229,8 @@ xqsight.utils = {
     },
 
     /** json fill form **/
-    fillForm: function ($form, data) {
+    fillForm: function (_formId, data) {
+        var $form = $("#" + _formId);
         $.each(data, function (key, value) {
             var $ctrls = $form.find('[name=' + key + ']');
             if ($ctrls.is('select')) {
@@ -248,6 +249,8 @@ xqsight.utils = {
                 switch ($ctrls.attr("type")) {
                     case "text":
                     case "hidden":
+                    case "number":
+                    case "email":
                         $ctrls.val(value);
                         break;
                     case "radio":
@@ -313,7 +316,11 @@ xqsight.utils = {
             data: option.data,
             method: "get",
             success: function (rep) {
-                option.callFun(rep);
+                if (rep.code != 0) {
+                    xqsight.win.alert(rep.message, rep.code);
+                }else{
+                    option.callFun(rep);
+                }
             }
         });
     },
@@ -327,8 +334,22 @@ xqsight.utils = {
 
     /** ajax save or update data **/
     put: function (option) {
-        var tipMsg = (option.tipMsg == undefined || option.tipMsg == "") ? "确认提交吗?" : option.tipMsg;
-        var msg = (option.msg == undefined || option.msg == "") ? "处理成功!" : option.msg;
+        var tipMsg = "确认提交吗?";
+        var msg = "处理成功!";
+        if(option.tipMsg != undefined && option.tipMsg != ""){
+            tipMsg = option.tipMsg;
+        }
+
+        if(option.msg == undefined || option.msg == ""){
+            if(option.pk == undefined || option.pk == ""){
+                msg = "保存成功!"
+            }else{
+                msg = "修改成功!"
+            }
+        }else{
+            msg = option.msg;
+        }
+
         xqsight.utils._commitFun(option.url, option.data, option.callFun, "post", tipMsg, msg);
     },
 
@@ -341,10 +362,11 @@ xqsight.utils = {
                     method: method,
                     success: function (rep) {
                         if (rep.code != 0) {
-                            msg = rep.message;
+                            xqsight.win.alert(rep.message, rep.code);
+                        }else {
+                            xqsight.win.alert(msg, rep.code);
+                            callFun(rep);
                         }
-                        xqsight.win.alert(msg, rep.code);
-                        callFun(rep);
                     }
                 });
             }

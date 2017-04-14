@@ -41,25 +41,28 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="roleForm" name="roleForm">
+                        <input id="roleId" name="roleId" type="hidden">
+                        <input id="officeId" name="officeId" type="hidden" >
+
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="roleName" class="col-xs-2 control-label">角色名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="roleName" placeholder="角色名称" required>
+                                    <input type="text" class="form-control" id="roleName" name="roleName" placeholder="角色名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
                                 <label for="roleEnname" class="col-xs-2 control-label">英文名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="roleEnname" placeholder="英文名称">
+                                    <input type="text" class="form-control" id="roleEnname" name="roleEnname" placeholder="英文名称">
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>
                             <div class="form-group">
                                 <label for="sysFlag" class="col-xs-2 control-label">系统数据</label>
                                 <div class="col-xs-9">
-                                    <select id="sysFlag" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="系统数据" required>
+                                    <select id="sysFlag" name="sysFlag" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="系统数据" required>
                                         <option value="-1" selected>否</option>
                                         <option value="0">是</option>
                                     </select>
@@ -69,7 +72,7 @@
                             <div class="form-group">
                                 <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-xs-9">
-                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
+                                    <textarea class="form-control" id="remark" name="remark" placeholder="备注"></textarea>
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>

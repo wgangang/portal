@@ -76,6 +76,7 @@ xqsight.nameSpace.reg("cms.ad");
                         url: ctxData + "/cms/ad/" + selRows[0].adId + "?date=" + new Date().getTime(),
                         method: "delete",
                         success: function (retData) {
+                            debugger
                             xqsight.win.alert("删除成功", retData.code);
                             if (retData.code == "0") {
                                 obj.adTable.ajax.reload();

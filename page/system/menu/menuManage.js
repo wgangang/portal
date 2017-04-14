@@ -9,8 +9,6 @@ xqsight.nameSpace.reg("sys.menu");
 
         var ctxData = xqsight.utils.getServerPath("system");
 
-        var editMenu = {};
-
         /**
          * 申明内部对象
          * @type {xqsight.pmpf}
@@ -25,20 +23,6 @@ xqsight.nameSpace.reg("sys.menu");
             $("#btn_cancel").on("click",obj.cancelFun);
 
             obj.formSetValue();
-        };
-
-        /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function(){
-            editMenu.menuName = $("#menuName").val();
-            editMenu.icon = $("#icon").val();
-            editMenu.type = $("#type").val();
-            editMenu.url = $("#url").val();
-            editMenu.sort = $("#sort").val();
-            editMenu.permission = $("#permission").val();
-            editMenu.remark = $("#remark").val();
         };
 
         /**
@@ -58,30 +42,12 @@ xqsight.nameSpace.reg("sys.menu");
          * 保存 function
          */
         this.saveFun = function(){
-            var callback = function(btn){
-                if(btn == "yes"){
-                    obj.setParamFun();
-                    var url = "";
-                    if($.getUrlParam("menuId")== undefined || $.getUrlParam("menuId") =="" ){
-                        url = ctxData + "/sys/menu/save?date=" + new Date().getTime();
-                    }else{
-                        url = ctxData + "/sys/menu/update?date=" + new Date().getTime();
-                    }
-                    $.ajax({
-                        url: url,
-                        data: editMenu,
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.menuMain.editCallBackFun({"menuId" : $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？",callback);
+            var menuId = $.getUrlParam("menuId");
+            xqsight.utils.put({url:ctxData + "/sys/menu/",data:$("#menuForm").serializeArray(),pk:menuId,callFun:function (rep) {
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.menuMain.editCallBackFun({"menuId" : menuId});
+                xqsight.win.close();
+            }});
         };
 
         /**
@@ -97,29 +63,12 @@ xqsight.nameSpace.reg("sys.menu");
         this.formSetValue = function(){
             var menuId = $.getUrlParam("menuId");
             if(menuId == undefined || menuId =="" ){
-                editMenu.parentId = $.getUrlParam("parentId");
+                $("#parentId").val($.getUrlParam("parentId"));
                 return;
             }
-            $.ajax({
-                url: ctxData + "/sys/menu/querybyid?menuId=" + menuId + "&date=" + new Date().getTime(),
-                success: function(retData){
-                    if(retData.status == "0"){
-                        var data = retData.data;
-                        editMenu.menuId = data.menuId;
-                        editMenu.parentId = data.parentId;
-                        
-                        $("#menuName").val(data.menuName);
-                        $("#type").selectpicker('val',data.type);
-                        $("#icon").val(data.icon);
-                        $("#url").val(data.url);
-                        $("#sort").val(data.sort);
-                        $("#permission").val(data.permission);
-                        $("#remark").val(data.remark);
-                    }
-                }
-            });
-
-
+            xqsight.utils.load({url:ctxData + "/sys/menu/" + menuId,callFun:function (rep) {
+                xqsight.utils.fillForm("menuForm",rep.data);
+            }});
         }
     };
 

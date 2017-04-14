@@ -101,21 +101,10 @@ xqsight.nameSpace.reg("sys.role");
                 xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？",function(btn){
-                if(btn == "yes"){
-                    $.ajax({
-                        url : ctxData + "/sys/role/delete?date=" + new Date().getTime(),
-                        data : "roleId=" + selRows[0].roleId,
-                        success : function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                                obj.loadRoleTreeFun();
-                            }
-                        }
-                    });
-                }
-            });
-        }
+            xqsight.utils.delete({url:ctxData + "/sys/role/" + selRows[0].roleId,callFun:function (rep) {
+                obj.roleTable.ajax.reload();
+            } });
+        };
 
         /**
          * 加载数据表 function
@@ -128,17 +117,13 @@ xqsight.nameSpace.reg("sys.role");
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/sys/role/query',
+                "sAjaxSource": ctxData + '/sys/role/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url : sUrl,
-                        data : aoData,
-                        success : function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }});
                 },
                 "fnServerParams": function (aoData) {
                     var officeId = 0;
@@ -146,8 +131,8 @@ xqsight.nameSpace.reg("sys.role");
                         officeId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "roleName", "value": $("#roleName").val() },
-                        { "name": "officeId", "value": officeId }
+                        { "name": "filter_LIKES_role_name", "value": $("#roleName").val() },
+                        { "name": "filter_EQI_office_id", "value": officeId }
                     );
                 },
                 "aoColumnDefs": [
@@ -245,50 +230,46 @@ xqsight.nameSpace.reg("sys.role");
 
         /*** 加载 tree **/
         this.loadRolereeFun = function () {
-            $.ajax({
-                url: ctxData + "/sys/office/querytree?date="+new Date().getTime(),
-                success: function(retData){
-                    if(retData.status == 0){
-                        $.fn.zTree.init($("#officeTree"),{
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.officeTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.roleTable.ajax.reload();
-                                    return false;
-                                }
-                            }
-                        }, retData.data);
-
-                        obj.officeTree = $.fn.zTree.getZTreeObj("officeTree");
-
-                        if(obj.curSelTree.id != undefined ){
-                            obj.officeTree.selectNode(obj.curSelTree);
-                        }else{
-                            var nodes = obj.officeTree.getNodes();
-                            if (nodes.length>0) {
-                                obj.officeTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+            xqsight.utils.load({url:ctxData + "/sys/office/tree",callFun:function (rep) {
+                $.fn.zTree.init($("#officeTree"),{
+                    check: {
+                        enable: false,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
                         }
-
-                        obj.officeTree.expandAll(true);
-
-                        obj.roleTable.ajax.reload();
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.officeTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.roleTable.ajax.reload();
+                            return false;
+                        }
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, rep.data);
+
+                obj.officeTree = $.fn.zTree.getZTreeObj("officeTree");
+
+                if(obj.curSelTree.id != undefined ){
+                    obj.officeTree.selectNode(obj.curSelTree);
+                }else{
+                    var nodes = obj.officeTree.getNodes();
+                    if (nodes.length>0) {
+                        obj.officeTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
-        }
+
+                obj.officeTree.expandAll(true);
+
+                obj.roleTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }})
+        };
 
 
         /**

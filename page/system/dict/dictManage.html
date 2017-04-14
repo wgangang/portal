@@ -43,11 +43,14 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="dictForm" name="dictForm" class="form-auto">
+                        <input id="dictId" name="dictId" type="hidden">
+                        <input id="parentId" name="parentId" type="hidden">
+
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="dictName" class="col-xs-2 control-label">字典名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="dictName" placeholder="字典名称" required>
+                                    <input type="text" class="form-control" id="dictName" name="dictName" placeholder="字典名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
@@ -55,7 +58,7 @@
                             <div class="form-group">
                                 <label for="dictCode" class="col-xs-2 control-label">字典编号</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="dictCode" placeholder="字典编号" required>
+                                    <input type="text" class="form-control" id="dictCode" name="dictCode" placeholder="字典编号" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
@@ -63,7 +66,7 @@
                             <div class="form-group">
                                 <label for="dictValue" class="col-xs-2 control-label">字典值</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="dictValue" placeholder="字典值">
+                                    <input type="text" class="form-control" id="dictValue" name="dictValue" placeholder="字典值">
                                 </div>
                                 <div class="col-xs-1 red"></div>
                             </div>
@@ -71,14 +74,14 @@
                             <div class="form-group">
                                 <label for="sort" class="col-xs-2 control-label">区域排序</label>
                                 <div class="col-xs-9">
-                                    <input type="number" class="form-control" id="sort" value="0" placeholder="区域排序" required>
+                                    <input type="number" class="form-control" id="sort"  name="sort" value="0" placeholder="区域排序" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
                                 <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-xs-9">
-                                    <textdict class="form-control" id="remark" placeholder="备注"></textdict>
+                                    <textarea class="form-control" id="remark" name="remark" placeholder="备注"></textarea>
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>

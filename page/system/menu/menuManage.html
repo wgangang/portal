@@ -41,15 +41,15 @@
     <div class="main-content">
         <div class="main-content-inner">
             <div class="page-content">
-
                 <div class="row no-margin">
-
                     <form id="menuForm" name="menuForm" class="form-auto">
+                        <input id="menuId" name="menuId" type="hidden">
+                        <input id="parentId" name="parentId" type="hidden">
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="menuName" class="col-sm-2 control-label">菜单名称</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="menuName" placeholder="菜单名称" required>
+                                    <input type="text" class="form-control" id="menuName" name="menuName" placeholder="菜单名称" required>
                                 </div>
                                 <div class="col-sm-1 red">*</div>
                             </div>
@@ -57,7 +57,7 @@
                             <div class="form-group">
                                 <label for="type" class="col-sm-2 control-label">菜单类型</label>
                                 <div class="col-sm-9">
-                                    <select id="type" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="选择菜单类型" required>
+                                    <select id="type" name="type" class="form-control selectpicker" data-style="btn-white" data-width="100%" title="选择菜单类型" required>
                                         <option value="0" selected>菜单</option>
                                         <option value="1">功能</option>
                                     </select>
@@ -68,7 +68,7 @@
                             <div class="form-group">
                                 <label for="icon" class="col-sm-2 control-label">菜单图标</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="icon" placeholder="菜单图标">
+                                    <input type="text" class="form-control" id="icon" name="icon" placeholder="菜单图标">
                                 </div>
                                 <div class="col-sm-1"></div>
                             </div>
@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <label for="url" class="col-sm-2 control-label">菜单连接</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="url" placeholder="菜单连接">
+                                    <input type="text" class="form-control" id="url" name="url" placeholder="菜单连接">
                                 </div>
                                 <div class="col-sm-1"></div>
                             </div>
@@ -84,7 +84,7 @@
                             <div class="form-group">
                                 <label for="sort" class="col-sm-2 control-label">菜单顺序</label>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control" id="sort" value="0" placeholder="菜单顺序" required>
+                                    <input type="number" class="form-control" id="sort" name="sort" value="0" placeholder="菜单顺序" required>
                                 </div>
                                 <div class="col-sm-1 red">*</div>
                             </div>
@@ -92,7 +92,7 @@
                             <div class="form-group">
                                 <label for="permission" class="col-sm-2 control-label">权限标示</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="permission" placeholder="权限标示">
+                                    <input type="text" class="form-control" id="permission" name="permission" placeholder="权限标示">
                                 </div>
                                 <div class="col-sm-1"></div>
                             </div>
@@ -100,7 +100,7 @@
                             <div class="form-group">
                                 <label for="remark" class="col-sm-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
+                                    <textarea class="form-control" id="remark" name="remark" placeholder="备注"></textarea>
                                 </div>
                                 <div class="col-sm-1"></div>
                             </div>

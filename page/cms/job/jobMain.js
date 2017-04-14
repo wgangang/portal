@@ -103,8 +103,8 @@ xqsight.nameSpace.reg("cms.job");
                         url: ctxData + "/cms/job/" + selRows[0].jobId + "?date=" + new Date().getTime(),
                         method : "delete",
                         success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
+                            xqsight.win.alert("删除成功!", retData.code);
+                            if (retData.code == "0") {
                                 obj.jobTable.ajax.reload();
                             }
                         }
@@ -125,7 +125,7 @@ xqsight.nameSpace.reg("cms.job");
                         url: ctxData + "/cms/job/logic/" + selRows[0].jobId + "?date=" + new Date().getTime(),
                         method : "delete",
                         success: function (retData) {
-                            xqsight.win.alert("停止成功", retData.code);
+                            xqsight.win.alert("停止成功!", retData.code);
                             if (retData.code == "0") {
                                 obj.jobTable.ajax.reload();
                             }

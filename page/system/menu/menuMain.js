@@ -96,20 +96,9 @@ xqsight.nameSpace.reg("sys.menu");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？",function(btn){
-                if(btn == "yes"){
-                    $.ajax({
-                        url: ctxData + "/sys/menu/delete?date=" + new Date().getTime(),
-                        data: {menuId : selRows[0].menuId },
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                               obj.loadMenuTreeFun();
-                            }
-                        }
-                    });
-                }
-            });
+            xqsight.utils.delete({url:ctxData + "/sys/menu/" +selRows[0].menuId,callFun:function () {
+                obj.loadMenuTreeFun();
+            } });
         }
 
         /**
@@ -123,17 +112,13 @@ xqsight.nameSpace.reg("sys.menu");
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/sys/menu/query',
+                "sAjaxSource": ctxData + '/sys/menu/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url: sUrl,
-                        data: aoData,
-                        success: function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }});
                 },
                 "fnServerParams": function (aoData) {
                     var parentId = 0;
@@ -141,8 +126,8 @@ xqsight.nameSpace.reg("sys.menu");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "menuName", "value": $("#menuName").val() },
-                        { "name": "parentId", "value": parentId }
+                        { "name": "filter_LIKES_menu_name", "value": $("#menuName").val() },
+                        { "name": "filter_EQI_parent_id", "value": parentId }
                     );
                 },
                 "aoColumnDefs": [
@@ -222,58 +207,52 @@ xqsight.nameSpace.reg("sys.menu");
 
         /*** 加载 tree **/
         this.loadMenuTreeFun = function () {
-            $.ajax({
-                url: ctxData + "/sys/menu/querytree?date="+new Date().getTime(),
-                success: function(retData){
-                    if(retData.status == 0){
+            xqsight.utils.load({url:ctxData + "/sys/menu/tree",callFun:function (rep) {
+                var treeRoot = [{
+                    name : "系统菜单",
+                    id : 0,
+                    children : rep.data
+                }];
 
-                        var treeRoot = [{
-                            name : "系统菜单",
-                            id : 0,
-                            children : retData.data
-                        }];
-
-                        $.fn.zTree.init($("#menuTree"),{
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.menuTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.menuTable.ajax.reload();
-                                    e.preventDefault();
-                                    return false;
-                                }
-                            }
-                        }, treeRoot);
-
-                        obj.menuTree = $.fn.zTree.getZTreeObj("menuTree");
-
-                        if(obj.curSelTree.id != undefined ){
-                            obj.menuTree.selectNode(obj.curSelTree);
-                        }else{
-                            var nodes = obj.menuTree.getNodes();
-                            if (nodes.length>0) {
-                                obj.menuTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+                $.fn.zTree.init($("#menuTree"),{
+                    check: {
+                        enable: false,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
                         }
-
-                        obj.menuTree.expandAll(true);
-
-                        obj.menuTable.ajax.reload();
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.menuTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.menuTable.ajax.reload();
+                            e.preventDefault();
+                            return false;
+                        }
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, treeRoot);
+
+                obj.menuTree = $.fn.zTree.getZTreeObj("menuTree");
+
+                if(obj.curSelTree.id != undefined ){
+                    obj.menuTree.selectNode(obj.curSelTree);
+                }else{
+                    var nodes = obj.menuTree.getNodes();
+                    if (nodes.length>0) {
+                        obj.menuTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
-        }
+                obj.menuTree.expandAll(true);
+
+                obj.menuTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }});
+        };
 
 
         /**

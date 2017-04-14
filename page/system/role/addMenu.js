@@ -88,18 +88,14 @@ xqsight.nameSpace.reg("sys.role");
         };
 
         this.loadAuthMenu = function () {
-            $.ajax({
-                url: ctxData + "/sys/auth/queryauthmenu?date="+new Date().getTime(),
-                data : { "roleId" : $.getUrlParam("roleId")},
-                success: function(retData){
-                    obj.menuTree.checkAllNodes(false);
-                    $.each(retData.data,function(index,object){
-                        var nodes = obj.menuTree.getNodesByParam("id", object.id, null);
-                        obj.menuTree.checkNode(nodes[0], true, false);
-                    });
-                }
-            });
-        }
+            xqsight.utils.load({url:ctxData + "/sys/auth/authmenu",data:{ "roleId" : $.getUrlParam("roleId")},callFun:function(){
+                obj.menuTree.checkAllNodes(false);
+                $.each(retData.data,function(index,object){
+                    var nodes = obj.menuTree.getNodesByParam("id", object.id, null);
+                    obj.menuTree.checkNode(nodes[0], true, false);
+                });
+            }});
+        };
 
         /**
          *  获取树选择

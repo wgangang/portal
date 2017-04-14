@@ -56,16 +56,10 @@ xqsight.nameSpace.reg("xqsight.cms");
             var callback = function (btn) {
                 if (btn == "yes") {
                     obj.setParamFun();
-                    var method = "";
-                    if ($.getUrlParam("tagId") == undefined || $.getUrlParam("tagId") == "") {
-                        method="put";
-                    } else {
-                        method="post";
-                    }
                     $.ajax({
                         url: ctxData + "/cms/tag/?date=" + new Date().getTime(),
                         data: editTag,
-                        method:method,
+                        method:"post",
                         success: function (retData) {
                             xqsight.win.alert("处理成功!", retData.code);
                             if (retData.code == "0") {

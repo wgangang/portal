@@ -106,7 +106,7 @@
                     url: EventManageMVC.URLs.load + adId, callFun: function (rep) {
                         if (rep.code == "0") {
                             var data = rep.data;
-                            xqsight.utils.fillForm($("#eventForm"), data);
+                            xqsight.utils.fillForm("eventForm", data);
                             EventManageCommon.adEditor.$txt.html(data.adText);
                             $("#imgUrl").attr("src", data.adImage);
                         }

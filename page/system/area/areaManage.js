@@ -6,10 +6,7 @@ xqsight.nameSpace.reg("sys.area");
 
 (function(){
     sys.area.areaManage = function(){
-
         var ctxData = xqsight.utils.getServerPath("system");
-
-        var editMenu = {};
 
         /**
          * 申明内部对象
@@ -25,17 +22,6 @@ xqsight.nameSpace.reg("sys.area");
             $("#btn_cancel").on("click",obj.cancelFun);
 
             obj.formSetValue();
-        };
-
-        /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function(){
-            editMenu.areaName = $("#areaName").val();
-            editMenu.areaCode = $("#areaCode").val();
-            editMenu.sort = $("#sort").val();
-            editMenu.remark = $("#remark").val();
         };
 
         /**
@@ -55,30 +41,12 @@ xqsight.nameSpace.reg("sys.area");
          * 保存 function
          */
         this.saveFun = function(){
-            var callback = function(btn){
-                if(btn == "yes"){
-                    obj.setParamFun();
-                    var url = "";
-                    if($.getUrlParam("areaId")== undefined || $.getUrlParam("areaId") =="" ){
-                        url = ctxData + "/sys/area/save?date=" + new Date().getTime();
-                    }else{
-                        url = ctxData + "/sys/area/update?date=" + new Date().getTime();
-                    }
-                    $.ajax({
-                        url: url,
-                        data: editMenu,
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.areaMain.editCallBackFun({"areaId" : $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？",callback);
+            var areaId = $.getUrlParam("areaId");
+            xqsight.utils.put({url:ctxData + "/sys/area/",data:$("#areaForm").serializeArray(),pk:areaId,callFun:function(rep){
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.areaMain.editCallBackFun({"areaId" : areaId});
+                xqsight.win.close();
+            }});
         };
 
         /**
@@ -94,26 +62,12 @@ xqsight.nameSpace.reg("sys.area");
         this.formSetValue = function(){
             var areaId = $.getUrlParam("areaId");
             if(areaId == undefined || areaId =="" ){
-                editMenu.parentId = $.getUrlParam("parentId");
+                $("#parentId").val($.getUrlParam("parentId"));
                 return;
             }
-            $.ajax({
-                url: ctxData + "/sys/area/querybyid?areaId=" + areaId + "&date=" + new Date().getTime(),
-                success: function(retData){
-                    if(retData.status == "0"){
-                        var data = retData.data;
-                        editMenu.areaId = data.areaId;
-                        editMenu.parentId = data.parentId;
-                        
-                        $("#areaName").val(data.areaName);
-                        $("#areaCode").val(data.areaCode);
-                        $("#sort").val(data.sort);
-                        $("#remark").val(data.remark);
-                    }
-                }
-            });
-
-
+            xqsight.utils.load({url:ctxData + "/sys/area/" + areaId,callFun:function (rep) {
+                xqsight.utils.fillForm("areaForm",rep.data);
+            }});
         }
     };
 

@@ -44,11 +44,14 @@
 
                 <div class="row no-margin">
                     <form id="areaForm" name="areaForm" class="form-auto">
+                        <input id="areaId" name="areaId" type="hidden">
+                        <input id="parentId" name="parentId" type="hidden">
+
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="areaName" class="col-xs-2 control-label">区域名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="areaName" placeholder="区域名称" required>
+                                    <input type="text" class="form-control" id="areaName" name="areaName" placeholder="区域名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
@@ -56,7 +59,7 @@
                             <div class="form-group">
                                 <label for="areaCode" class="col-xs-2 control-label">区域编号</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="areaCode" placeholder="区域名称">
+                                    <input type="text" class="form-control" id="areaCode" name="areaCode" placeholder="区域名称">
                                 </div>
                                 <div class="col-xs-1 red"></div>
                             </div>
@@ -74,14 +77,14 @@
                             <div class="form-group">
                                 <label for="sort" class="col-xs-2 control-label">区域排序</label>
                                 <div class="col-xs-9">
-                                    <input type="number" class="form-control" id="sort" value="0" placeholder="区域排序" required>
+                                    <input type="number" class="form-control" id="sort" name="sort" value="0" placeholder="区域排序" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
                                 <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-xs-9">
-                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
+                                    <textarea class="form-control" id="remark" name="remark" placeholder="备注"></textarea>
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>

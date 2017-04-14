@@ -86,7 +86,7 @@ xqsight.nameSpace.reg("cms.article");
                         url: ctxData + "/cms/article/" + selRows[0].articleId + "?date=" + new Date().getTime(),
                         method: "delete",
                         success: function(retData){
-                            xqsight.win.alert(retData.message);
+                            xqsight.win.alert("删除成功!",retData.code);
                             if(retData.code == "0"){
                                 obj.artilceTable.ajax.reload();
                             }

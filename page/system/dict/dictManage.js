@@ -9,8 +9,6 @@ xqsight.nameSpace.reg("sys.dict");
 
         var ctxData = xqsight.utils.getServerPath("system");
 
-        var editMenu = {};
-
         /**
          * 申明内部对象
          * @type {xqsight.pmpf}
@@ -25,18 +23,6 @@ xqsight.nameSpace.reg("sys.dict");
             $("#btn_cancel").on("click",obj.cancelFun);
 
             obj.formSetValue();
-        };
-
-        /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function(){
-            editMenu.dictName = $("#dictName").val();
-            editMenu.dictCode = $("#dictCode").val();
-            editMenu.dictValue = $("#dictValue").val();
-            editMenu.sort = $("#sort").val();
-            editMenu.remark = $("#remark").val();
         };
 
         /**
@@ -56,30 +42,12 @@ xqsight.nameSpace.reg("sys.dict");
          * 保存 function
          */
         this.saveFun = function(){
-            var callback = function(btn){
-                if(btn == "yes"){
-                    obj.setParamFun();
-                    var url = "";
-                    if($.getUrlParam("dictId")== undefined || $.getUrlParam("dictId") =="" ){
-                        url = ctxData + "/sys/dict/save?date=" + new Date().getTime();
-                    }else{
-                        url = ctxData + "/sys/dict/update?date=" + new Date().getTime();
-                    }
-                    $.ajax({
-                        url: url,
-                        data: editMenu,
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.dictMain.editCallBackFun({"dictId" : $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？",callback);
+            var dictId = $.getUrlParam("dictId");
+            xqsight.utils.put({url:ctxData + "/sys/dict/",data:$("#dictForm").serializeArray(),pk:dictId,callFun:function (rep) {
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.dictMain.editCallBackFun({"dictId" : dictId});
+                xqsight.win.close();
+            }});
         };
 
         /**
@@ -95,27 +63,12 @@ xqsight.nameSpace.reg("sys.dict");
         this.formSetValue = function(){
             var dictId = $.getUrlParam("dictId");
             if(dictId == undefined || dictId =="" ){
-                editMenu.parentId = $.getUrlParam("parentId");
+                $("#parentId").val($.getUrlParam("parentId"));
                 return;
             }
-            $.ajax({
-                url: ctxData + "/sys/dict/querybyid?dictId=" + dictId + "&date=" + new Date().getTime(),
-                success: function(retData){
-                    if(retData.status == "0"){
-                        var data = retData.data;
-                        editMenu.dictId = data.dictId;
-                        editMenu.parentId = data.parentId;
-                        
-                        $("#dictName").val(data.dictName);
-                        $("#dictCode").val(data.dictCode);
-                        $("#dictValue").val(data.dictValue);
-                        $("#sort").val(data.sort);
-                        $("#remark").val(data.remark);
-                    }
-                }
-            });
-
-
+            xqsight.utils.load({url:ctxData + "/sys/dict/" + dictId,callFun:function (rep) {
+                xqsight.utils.fillForm("dictForm",rep.data);
+            }});
         }
     };
 

@@ -96,21 +96,10 @@ xqsight.nameSpace.reg("sys.dict");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？",function(btn){
-                if(btn == "yes"){
-                    $.ajax({
-                        url: ctxData + "/sys/dict/delete?date=" + new Date().getTime(),
-                        data: {dictId : selRows[0].dictId },
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                               obj.loadDictTreeFun();
-                            }
-                        }
-                    });
-                }
-            });
-        }
+            xqsight.utils.delete({url:ctxData + "/sys/dict/" + selRows[0].dictId,callFun:function (rep) {
+                obj.loadDictTreeFun();
+            }});
+        };
 
         /**
          * 加载数据表 function
@@ -123,17 +112,13 @@ xqsight.nameSpace.reg("sys.dict");
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/sys/dict/query',
+                "sAjaxSource": ctxData + '/sys/dict/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url: sUrl,
-                        data: aoData,
-                        success: function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }});
                 },
                 "fnServerParams": function (aoData) {
                     var parentId = 0;
@@ -141,8 +126,8 @@ xqsight.nameSpace.reg("sys.dict");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "dictName", "value": $("#dictName").val() },
-                        { "name": "parentId", "value": parentId }
+                        { "name": "filter_LIKES_dict_name", "value": $("#dictName").val() },
+                        { "name": "filter_EQI_parent_id", "value": parentId }
                     );
                 },
                 "aoColumnDefs": [
@@ -218,55 +203,51 @@ xqsight.nameSpace.reg("sys.dict");
 
         /*** 加载 tree **/
         this.loadDictTreeFun = function () {
-            $.ajax({
-                url: ctxData + "/sys/dict/querytree?date="+new Date().getTime(),
-                success: function(retData){
-                    if(retData.status == 0){
-                        var treeRoot = [{
-                            name : "系统字典",
-                            id : 0,
-                            children : retData.data
-                        }];
-                        $.fn.zTree.init($("#dictTree"),{
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.dictTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.dictTable.ajax.reload();
-                                    e.preventDefault();
-                                    return false;
-                                }
-                            }
-                        }, treeRoot);
-
-                        obj.dictTree = $.fn.zTree.getZTreeObj("dictTree");
-
-                        if(obj.curSelTree.id != undefined ){
-                            obj.dictTree.selectNode(obj.curSelTree);
-                        }else{
-                            var nodes = obj.dictTree.getNodes();
-                            if (nodes.length>0) {
-                                obj.dictTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+            xqsight.utils.load({url:ctxData + "/sys/dict/tree",callFun:function (rep) {
+                var treeRoot = [{
+                    name : "系统字典",
+                    id : 0,
+                    children : rep.data
+                }];
+                $.fn.zTree.init($("#dictTree"),{
+                    check: {
+                        enable: false,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
                         }
-
-                        obj.dictTree.expandAll(true);
-
-                        obj.dictTable.ajax.reload();
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.dictTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.dictTable.ajax.reload();
+                            e.preventDefault();
+                            return false;
+                        }
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, treeRoot);
+
+                obj.dictTree = $.fn.zTree.getZTreeObj("dictTree");
+
+                if(obj.curSelTree.id != undefined ){
+                    obj.dictTree.selectNode(obj.curSelTree);
+                }else{
+                    var nodes = obj.dictTree.getNodes();
+                    if (nodes.length>0) {
+                        obj.dictTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
+
+                obj.dictTree.expandAll(true);
+
+                obj.dictTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }});
         }
 
 

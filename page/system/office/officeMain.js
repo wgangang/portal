@@ -95,21 +95,10 @@ xqsight.nameSpace.reg("sys.office");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？",function(btn){
-                if(btn == "yes"){
-                    $.ajax({
-                        url: ctxData + "/sys/office/delete?date=" + new Date().getTime(),
-                        data: {officeId : selRows[0].officeId },
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                                obj.loadOfficeTreeFun();
-                            }
-                        }
-                    });
-                }
-            });
-        }
+            xqsight.utils.delete({url:ctxData + "/sys/office/" + selRows[0].officeId,callFun:function () {
+                obj.loadOfficeTreeFun();
+            } });
+        };
 
         /**
          * 加载数据表 function
@@ -122,17 +111,13 @@ xqsight.nameSpace.reg("sys.office");
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/sys/office/query',
+                "sAjaxSource": ctxData + '/sys/office/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url: sUrl,
-                        data: aoData,
-                        success: function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }});
                 },
                 "fnServerParams": function (aoData) {
                     var parentId = 1;
@@ -140,9 +125,9 @@ xqsight.nameSpace.reg("sys.office");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "officeName", "value": $("#officeName").val() },
-                        { "name": "officeCode", "value": $("#officeCode").val() },
-                        { "name": "parentId", "value": parentId }
+                        { "name": "filter_LIKES_office_name", "value": $("#officeName").val() },
+                        { "name": "filter_LIKES_office_code", "value": $("#officeCode").val() },
+                        { "name": "filter_EQI_parent_id", "value": parentId }
                     );
                 },
                 "aoColumnDefs": [
@@ -230,55 +215,51 @@ xqsight.nameSpace.reg("sys.office");
 
         /*** 加载 tree **/
         this.loadOfficeTreeFun = function () {
-            $.ajax({
-                url: ctxData + "/sys/office/querytree?date="+new Date().getTime(),
-                success: function(retData){
-                    if(retData.status == 0){
-                        var treeRoot = [{
-                            name : "系统机构",
-                            id : 0,
-                            children : retData.data
-                        }];
-                        $.fn.zTree.init($("#officeTree"),{
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.officeTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.officeTable.ajax.reload();
-                                    return false;
-                                }
-                            }
-                        }, treeRoot);
-
-                        obj.officeTree = $.fn.zTree.getZTreeObj("officeTree");
-
-                        if(obj.curSelTree.id != undefined ){
-                            obj.officeTree.selectNode(obj.curSelTree);
-                        }else{
-                            var nodes = obj.officeTree.getNodes();
-                            if (nodes.length>0) {
-                                obj.officeTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+            xqsight.utils.load({url:ctxData + "/sys/office/tree",callFun:function (rep) {
+                var treeRoot = [{
+                    name : "系统机构",
+                    id : 0,
+                    children : rep.data
+                }];
+                $.fn.zTree.init($("#officeTree"),{
+                    check: {
+                        enable: false,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
                         }
-
-                        obj.officeTree.expandAll(true);
-
-                        obj.officeTable.ajax.reload();
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.officeTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.officeTable.ajax.reload();
+                            return false;
+                        }
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, treeRoot);
+
+                obj.officeTree = $.fn.zTree.getZTreeObj("officeTree");
+
+                if(obj.curSelTree.id != undefined ){
+                    obj.officeTree.selectNode(obj.curSelTree);
+                }else{
+                    var nodes = obj.officeTree.getNodes();
+                    if (nodes.length>0) {
+                        obj.officeTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
-        }
+
+                obj.officeTree.expandAll(true);
+
+                obj.officeTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }});
+        };
         
         /**
          *

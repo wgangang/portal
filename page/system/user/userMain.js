@@ -86,21 +86,10 @@ xqsight.nameSpace.reg("sys.user");
                 xqsight.win.alert("请选择删除的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？",function(btn){
-                if(btn == "yes"){
-                    $.ajax({
-                        url : ctxData + "/sys/user/delete?date=" + new Date().getTime(),
-                        data : "id=" + selRows[0].id,
-                        success : function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                                obj.userTable.ajax.reload();
-                            }
-                        }
-                    });
-                }
-            });
-        }
+            xqsight.utils.delete({url: ctxData + "/sys/user/" + selRows[0].id,callFun:function (rep) {
+                obj.userTable.ajax.reload();
+            } });
+        };
 
         /**
          * 加载数据表 function
@@ -118,21 +107,17 @@ xqsight.nameSpace.reg("sys.user");
                 "bInfo" : true,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "sPaginationType" : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
                 "bServerSide" : true,
-                "sAjaxSource": ctxData + '/sys/user/query',
+                "sAjaxSource": ctxData + '/sys/user/page/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        "url": sUrl,
-                        "data": aoData,
-                        "success": function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }});
                 },
                 "fnServerParams": function (aoData) {
                     aoData.push(
-                        { "name": "loginId", "value": $("#loginId").val() }
+                        { "name": "filter_LIKES_login_id", "value": $("#loginId").val() }
                     );
                 },
                 "aoColumnDefs": [

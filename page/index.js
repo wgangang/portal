@@ -65,14 +65,11 @@ xqsight.nameSpace.reg("sys");
 
         /** 初始化菜单 */
         this.initMenuFun = function(){
-            $.ajax({
-                url: ctxData + "/sys/auth/queryusermenu?date=" + new Date().getTime() ,
-                success: function(retData){
-                    var menuHtml = "";
-                    menuHtml =  obj.foreachFun(menuHtml,retData.data) + "</ul></li>";
-                    $("#portal_menus").append(menuHtml);
-                }
-            });
+            xqsight.utils.load({url: ctxData + "/sys/auth/usermenu",callFun:function (req) {
+                var menuHtml = "";
+                menuHtml =  obj.foreachFun(menuHtml,req.data) + "</ul></li>";
+                $("#portal_menus").append(menuHtml);
+            }});
         };
 
         /** 菜单循环处理 */

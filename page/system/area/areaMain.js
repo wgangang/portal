@@ -96,21 +96,10 @@ xqsight.nameSpace.reg("sys.area");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？",function(btn){
-                if(btn == "yes"){
-                    $.ajax({
-                        url: ctxData + "/sys/area/delete?date=" + new Date().getTime(),
-                        data: {areaId : selRows[0].areaId },
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                               obj.loadAreaTreeFun();
-                            }
-                        }
-                    });
-                }
-            });
-        }
+            xqsight.utils.delete({url:ctxData + "/sys/area/" + selRows[0].areaId,callFun:function () {
+                obj.loadAreaTreeFun();
+            }});
+        };
 
         /**
          * 加载数据表 function
@@ -125,16 +114,11 @@ xqsight.nameSpace.reg("sys.area");
                 "paging":   false,
                 "sAjaxSource": ctxData + '/sys/area/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        method : "get",
-                        url: sUrl,
-                        data: aoData,
-                        success: function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }});
                 },
                 "fnServerParams": function (aoData) {
                     var parentId = 0;
@@ -142,8 +126,8 @@ xqsight.nameSpace.reg("sys.area");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "areaName", "value": $("#areaName").val() },
-                        { "name": "parentId", "value": parentId }
+                        { "name": "filter_LIKES_area_name", "value": $("#areaName").val() },
+                        { "name": "filter_EQI_parent_id", "value": parentId }
                     );
                 },
                 "aoColumnDefs": [
@@ -208,57 +192,49 @@ xqsight.nameSpace.reg("sys.area");
 
         /*** 加载 tree **/
         this.loadAreaTreeFun = function () {
-            $.ajax({
-                method : "get",
-                url: ctxData + "/sys/area/tree?date="+new Date().getTime(),
-                success: function(retData){
-                    if(retData.code == 0){
-                        var treeRoot = [{
-                            name : "系统区域",
-                            id : 0,
-                            children : retData.data
-                        }];
-                        $.fn.zTree.init($("#areaTree"),{
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.areaTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.areaTable.ajax.reload();
-                                    e.preventDefault();
-                                    return false;
-                                }
-                            }
-                        }, treeRoot);
+            xqsight.utils.load({url:ctxData + "/sys/area/tree",callFun:function (rep) {
+                var treeRoot = [{
+                    name : "系统区域",
+                    id : 0,
+                    children : rep.data
+                }];
 
-                        obj.areaTree = $.fn.zTree.getZTreeObj("areaTree");
-
-                        if(obj.curSelTree.id != undefined ){
-                            obj.areaTree.selectNode(obj.curSelTree);
-                        }else{
-                            var nodes = obj.areaTree.getNodes();
-                            if (nodes.length>0) {
-                                obj.areaTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+                $.fn.zTree.init($("#areaTree"),{
+                    check: { enable: false, },
+                    data: {
+                        simpleData: {  enable: true  }
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.areaTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.areaTable.ajax.reload();
+                            e.preventDefault();
+                            return false;
                         }
-
-                        obj.areaTree.expandAll(true);
-
-                        obj.areaTable.ajax.reload();
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, treeRoot);
+
+                obj.areaTree = $.fn.zTree.getZTreeObj("areaTree");
+
+                if(obj.curSelTree.id != undefined ){
+                    obj.areaTree.selectNode(obj.curSelTree);
+                }else{
+                    var nodes = obj.areaTree.getNodes();
+                    if (nodes.length>0) {
+                        obj.areaTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
-        }
+
+                obj.areaTree.expandAll(true);
+
+                obj.areaTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }});
+        };
 
 
         /**

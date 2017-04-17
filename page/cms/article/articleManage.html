@@ -48,19 +48,23 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="articleForm" name="articleForm" class="form-auto">
+                        <input id="articleId" name="articleId" type="hidden">
+                        <input type="hidden" id="articleImg" name="articleImg"/>
+                        <input type="hidden" id="thumbnailImg" name="thumbnailImg"/>
+
                         <div class="col-xs-9 no-margin no-padding">
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label for="articleTitle" class="col-sm-1 control-label">标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="articleTitle" placeholder="标题"
+                                        <input type="text" class="form-control" id="articleTitle" name="articleTitle" placeholder="标题"
                                                required>
                                     </div>
                                     <div class="col-sm-1 red">*</div>
 
                                     <label for="publishTime" class="col-sm-1 control-label">发布时间</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="publishTime" placeholder="发布时间"
+                                        <input type="text" class="form-control" id="publishTime" name="publishTime" placeholder="发布时间"
                                                required>
                                     </div>
                                     <div class="col-sm-1 red">*</div>
@@ -68,13 +72,13 @@
                                 <div class="form-group">
                                     <label for="articleAuthor" class="col-sm-1 control-label">作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="articleAuthor" placeholder="作者">
+                                        <input type="text" class="form-control" id="articleAuthor" name="articleAuthor" placeholder="作者">
                                     </div>
                                     <div class="col-sm-1 red"></div>
 
                                     <label for="articleHit" class="col-sm-1 control-label">是否显示</label>
                                     <div class="col-sm-4">
-                                        <select id="articleHit" class="form-control selectpicker" data-style="btn-white"
+                                        <select id="articleHit" name="articleHit" class="form-control selectpicker" data-style="btn-white"
                                                 data-width="100%" title="是否显示" required>
                                             <option value="0" selected>显示</option>
                                             <option value="-1">隐藏</option>
@@ -85,7 +89,7 @@
                                 <div class="form-group">
                                     <label for="articleDesp" class="col-sm-1 control-label">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="articleDesp" placeholder="描述">
+                                        <input type="text" class="form-control" id="articleDesp" name="articleDesp" placeholder="描述">
                                     </div>
                                     <div class="col-sm-1 "></div>
                                 </div>
@@ -93,14 +97,14 @@
                                 <div class="form-group">
                                     <label for="articleContent" class="col-sm-1 control-label">内&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;容</label>
                                     <div class="col-sm-10">
-                                        <textarea id="articleContent" style="height:400px;"></textarea>
+                                        <textarea id="articleContent" name="articleContent" style="height:400px;"></textarea>
                                     </div>
                                     <div class="col-sm-1 red"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="articleSource" class="col-sm-1 control-label">来&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="articleSource" placeholder="来源">
+                                        <input type="text" class="form-control" id="articleSource" name="articleSource" placeholder="来源">
                                     </div>
                                     <div class="col-sm-1 "></div>
                                 </div>
@@ -109,7 +113,7 @@
                         <div class="col-xs-3">
                             <label for="tags">部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门</label>
                             <div>
-                                <input id="department" class="form-control">
+                                <input type="text" id="department" name="department" class="form-control">
                             </div>
                             <label for="tags">标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签</label>
                             <div>
@@ -128,7 +132,6 @@
                                                     <i class="ace-icon fa fa-pencil "></i>
                                                 </a>
                                             </div>
-                                            <input type="hidden" id="thumbnailImg"/>
                                         </li>
                                     </ul>
                                 </div>
@@ -146,7 +149,6 @@
                                                     <i class="ace-icon fa fa-pencil "></i>
                                                 </a>
                                             </div>
-                                            <input type="hidden" id="articleImg"/>
                                         </li>
                                     </ul>
                                 </div>

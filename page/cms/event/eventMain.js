@@ -70,20 +70,10 @@ xqsight.nameSpace.reg("cms.event");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？", function (btn) {
-                if (btn == "yes") {
-                    $.ajax({
-                        url: ctxData + "/cms/ad/" + selRows[0].adId + "?date=" + new Date().getTime(),
-                        method: "delete",
-                        success: function (retData) {
-                            xqsight.win.alert("删除成功", retData.code);
-                            if (retData.code == "0") {
-                                obj.eventTable.ajax.reload();
-                            }
-                        }
-                    });
-                }
-            });
+
+            xqsight.utils.delete({url:ctxData + "/cms/ad/" + selRows[0].adId,callFun:function () {
+                obj.eventTable.ajax.reload();
+            }})
         }
 
         /**  加载数据表 function  **/
@@ -100,22 +90,18 @@ xqsight.nameSpace.reg("cms.event");
                 "bInfo" : true,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "sPaginationType" : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
                 "bServerSide" : true,
-                "sAjaxSource": ctxData + '/cms/ad/page?filter_INI_type=2,3',
+                "sAjaxSource": ctxData + '/cms/ad/page',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url : sUrl,
-                        data : aoData,
-                        method : "get",
-                        success : function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep.data);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }})
                 },
                 "fnServerParams": function (aoData) {
                     aoData.push(
-                        {"name": "adName", "value": $("#adName").val()}
+                        {"name": "filter_LIKES_ad_name", "value": $("#adName").val()},
+                        {"name": "filter_INI_type", "value": "2,3"}
                     );
                 },
                 "aoColumnDefs": [

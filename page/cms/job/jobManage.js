@@ -14,7 +14,6 @@ xqsight.nameSpace.reg("xqsight.cms");
          */
         var obj = this;
 
-        var editJob = {};
         var jobEditor = {};
         var positionEditor = {};
 
@@ -84,25 +83,12 @@ xqsight.nameSpace.reg("xqsight.cms");
          * 保存 function
          */
         this.saveFun = function () {
-            var callback = function (btn) {
-                if (btn == "yes") {
-                    obj.setParamFun();
-                    $.ajax({
-                        url:  ctxData + "/cms/job/?date=" + new Date().getTime(),
-                        data: editJob,
-                        method : "post",
-                        success: function (retData) {
-                            xqsight.win.alert("处理成功", retData.code);
-                            if (retData.code == "0") {
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.jobMain.editCallBackFun({"jobId": $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？", callback);
+            var jobId = $.getUrlParam("jobId");
+            xqsight.utils.put({url: ctxData + "/cms/job/",data:$("#jobForm").serializeArray(),pk:jobId,callFun:function (rep) {
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.jobMain.editCallBackFun({"jobId": jobId});
+                xqsight.win.close();
+            }})
         };
 
         /**
@@ -118,34 +104,14 @@ xqsight.nameSpace.reg("xqsight.cms");
         this.formSetValue = function () {
             var jobId = $.getUrlParam("jobId");
             if (jobId == undefined || jobId == "") {
-                editJob.positionId = $.getUrlParam("positionId");
+                $("#positionId").val($.getUrlParam("positionId"));
                 return;
             }
-            $.ajax({
-                url: ctxData + "/cms/job/" + jobId + "?date=" + new Date().getTime,
-                method: "get",
-                success: function (retData) {
-                    if (retData.code == "0") {
-                        var data = retData.data;
-                        editJob.jobId = data.jobId;
-                        editJob.positionId = data.positionId;
-
-                        $("#jobName").val(data.jobName);
-                       /* $("#jobStartTime").val(data.jobStartTime);
-                        $("#jobEndTime").val(data.jobEndTime);*/
-                        $("#jobEmail").val(data.jobEmail);
-                        $("#active").selectpicker('val', data.active);
-                        $("#jobType").selectpicker('val', data.jobType);
-                        //$("#positionDesp").val(data.positionDesp);
-                        //$("#jobNeed").val(data.jobNeed);
-                        $("#jobDepartment").val(data.jobDepartment);
-                        //$("#remark").val(data.remark);
-
-                        jobEditor.$txt.html(data.jobNeed);
-                        positionEditor.$txt.html(data.positionDesp);
-                    }
-                }
-            });
+            xqsight.utils.load({url:ctxData + "/cms/job/" + jobId ,callFun:function (rep) {
+                xqsight.utils.fillForm("jobForm",rep.data);
+                jobEditor.$txt.html(rep.data.jobNeed);
+                positionEditor.$txt.html(rep.data.positionDesp);
+            }})
         };
     };
 

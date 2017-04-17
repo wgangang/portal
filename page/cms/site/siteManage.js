@@ -15,8 +15,6 @@ xqsight.nameSpace.reg("xqsight.cms");
          */
         var obj = this;
 
-        var editSite = {};
-
         /**
          * 初始化调用 function
          */
@@ -26,17 +24,6 @@ xqsight.nameSpace.reg("xqsight.cms");
             $("#btn_cancel").bind("click",obj.cancelFun);
 
             obj.formSetValue();
-        };
-
-        /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function(){
-            editSite.siteName = $("#siteName").val();
-            editSite.siteCode = $("#siteCode").val();
-            editSite.sort = $("#sort").val();
-            editSite.remark = $("#remark").val();
         };
 
         /**
@@ -56,30 +43,12 @@ xqsight.nameSpace.reg("xqsight.cms");
          * 保存 function
          */
         this.saveFun = function(){
-            var callback = function(btn){
-                if(btn == "yes"){
-                    obj.setParamFun();
-                    var url = "";
-                    if($.getUrlParam("siteId")== undefined || $.getUrlParam("siteId") =="" ){
-                        url = ctxData + "/cms/site/save?date=" + new Date().getTime();
-                    }else{
-                        url = ctxData + "/cms/site/update?date=" + new Date().getTime();
-                    }
-                    $.ajax({
-                        url : url ,
-                        data : editSite,
-                        success : function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.siteMain.editCallBackFun({"siteId" : $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？",callback);
+            var siteId =  $.getUrlParam("siteId");
+            xqsight.utils.put({url:ctxData + "/cms/site/",data:$("#siteForm").serializeArray(),pk:siteId,callFun:function (rep) {
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.siteMain.editCallBackFun({"siteId" : siteId});
+                xqsight.win.close();
+            }});
         };
 
         /**
@@ -95,22 +64,13 @@ xqsight.nameSpace.reg("xqsight.cms");
         this.formSetValue = function(){
             var siteId = $.getUrlParam("siteId");
             if(siteId== undefined || siteId =="" ){
-                editSite.parentId = $.getUrlParam("parentId");
+                $("#parentId").val($.getUrlParam("parentId"));
                 return;
             }
-            $.ajax({
-                url : ctxData + "/cms/site/querybyid?siteId=" + siteId + "&date=" + new Date().getTime,
-                success : function(retData){
-                    if(retData.status == "0"){
-                        editSite = retData.data;
-                        editSite.parentId = editSite.parentId;
-                        $("#siteName").val(editSite.siteName);
-                        $("#siteCode").val(editSite.siteCode);
-                        $("#sort").val(editSite.sort);
-                        $("#remark").val(editSite.remark);
-                    }
-                }
-            });
+
+            xqsight.utils.load({url:ctxData + "/cms/site/" + siteId,callFun:function (rep) {
+                xqsight.utils.fillForm("siteForm",rep.data);
+            }})
         }
     };
 

@@ -38,18 +38,20 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="siteForm" name="siteForm">
+                        <input id="siteId" name="siteId" type="hidden">
+                        <input id="parentId" name="parentId" type="hidden">
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="siteName" class="col-xs-2 control-label">站点名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="siteName" placeholder="站点名称" required>
+                                    <input type="text" class="form-control" id="siteName" name="siteName" placeholder="站点名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
                                 <label for="siteCode" class="col-xs-2 control-label">站点编号</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="siteCode" placeholder="站点编号" required>
+                                    <input type="text" class="form-control" id="siteCode" name="siteCode" placeholder="站点编号" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
@@ -57,7 +59,7 @@
                             <div class="form-group">
                                 <label for="sort" class="col-xs-2 control-label">排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序</label>
                                 <div class="col-xs-9">
-                                    <input type="number" class="form-control" id="sort" value="0" placeholder="排序" required>
+                                    <input type="number" class="form-control" id="sort" name="sort" value="0" placeholder="排序" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
@@ -65,7 +67,7 @@
                             <div class="form-group">
                                 <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-xs-9">
-                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
+                                    <textarea class="form-control" id="remark" name="remark" placeholder="备注"></textarea>
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>

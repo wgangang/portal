@@ -95,20 +95,10 @@ xqsight.nameSpace.reg("cms.model");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？", function (btn) {
-                if (btn == "yes") {
-                    $.ajax({
-                        url: ctxData + "/cms/model/delete?date=" + new Date().getTime(),
-                        data: {modelId: selRows[0].modelId},
-                        success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
-                                obj.loadModelTreeFun();
-                            }
-                        }
-                    });
-                }
-            });
+
+            xqsight.utils.delete({url:ctxData + "/cms/model/" + selRows[0].modelId,callFun:function (rep) {
+                obj.loadModelTreeFun();
+            } });
         }
 
         /**
@@ -122,17 +112,13 @@ xqsight.nameSpace.reg("cms.model");
                 "bInfo": false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide": true,
                 "paging": false,
-                "sAjaxSource": ctxData + '/cms/model/query',
+                "sAjaxSource": ctxData + '/cms/model/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url: sUrl,
-                        data: aoData,
-                        success: function (data) {
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }})
                 },
                 "fnServerParams": function (aoData) {
                     var parentId = 0;
@@ -140,9 +126,9 @@ xqsight.nameSpace.reg("cms.model");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        {"name": "modelName", "value": $("#modelName").val()},
-                        {"name": "modelCode", "value": $("#modelCode").val()},
-                        {"name": "parentId", "value": parentId}
+                        {"name": "filter_LIKES_model_name", "value": $("#modelName").val()},
+                        {"name": "filter_LIKES_model_code", "value": $("#modelCode").val()},
+                        {"name": "filter_EQI_parent_id", "value": parentId}
                     );
                 },
                 "aoColumnDefs": [
@@ -202,55 +188,51 @@ xqsight.nameSpace.reg("cms.model");
 
         /*** 加载 model tree **/
         this.loadModelTreeFun = function () {
-            $.ajax({
-                url: ctxData + "/cms/model/querytree?date=" + new Date().getTime(),
-                success: function (retData) {
-                    if (retData.status == 0) {
-                        var treeRoot = [{
-                            name: "系统模块",
-                            id: 0,
-                            children: retData.data
-                        }];
+            xqsight.utils.load({url:ctxData + "/cms/model/tree",callFun:function (rep) {
+                var treeRoot = [{
+                    name: "系统模块",
+                    id: 0,
+                    children: rep.data
+                }];
 
-                        $.fn.zTree.init($("#modelTree"), {
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.modelTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.modelTable.ajax.reload();
-                                    return false;
-                                }
-                            }
-                        }, treeRoot);
-
-                        obj.modelTree = $.fn.zTree.getZTreeObj("modelTree");
-
-                        if (obj.curSelTree.id != undefined) {
-                            obj.modelTree.selectNode(obj.curSelTree);
-                        } else {
-                            var nodes = obj.modelTree.getNodes();
-                            if (nodes.length > 0) {
-                                obj.modelTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+                $.fn.zTree.init($("#modelTree"), {
+                    check: {
+                        enable: false,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
                         }
-
-                        obj.modelTree.expandAll(true);
-
-                        obj.modelTable.ajax.reload();
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.modelTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.modelTable.ajax.reload();
+                            return false;
+                        }
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, treeRoot);
+
+                obj.modelTree = $.fn.zTree.getZTreeObj("modelTree");
+
+                if (obj.curSelTree.id != undefined) {
+                    obj.modelTree.selectNode(obj.curSelTree);
+                } else {
+                    var nodes = obj.modelTree.getNodes();
+                    if (nodes.length > 0) {
+                        obj.modelTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
+
+                obj.modelTree.expandAll(true);
+
+                obj.modelTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }})
         }
 
 
@@ -268,7 +250,6 @@ xqsight.nameSpace.reg("cms.model");
             //选中之前选中的数据
 
         }
-
 
     };
 

@@ -16,10 +16,6 @@ var layIndex;
          */
         var obj = this;
 
-        var editAd = {};
-
-        var adEditor = {};
-
         /**
          * 初始化调用 function
          */
@@ -45,40 +41,7 @@ var layIndex;
             $("#btn-preview").on("click", function () {
                 xqsight.win.imgShow($("#adImage").val());
             });
-            // obj.editorFun();
             obj.formSetValue();
-        };
-
-        this.editorFun = function () {
-            adEditor = new wangEditor('adText');
-            // 上传图片
-            adEditor.config.uploadImgUrl = ctxData + '/files/core/editor';
-            adEditor.config.menus = [
-                'source', '|', 'bold', 'underline', 'italic', 'strikethrough', 'eraser', 'forecolor', 'bgcolor',
-                '|', 'quote', 'fontfamily', 'fontsize', 'head', 'unorderlist', 'orderlist', 'alignleft', 'aligncenter', 'alignright',
-                '|', 'link', 'unlink', '|', 'undo', 'redo', 'fullscreen'
-            ];
-            adEditor.config.uploadParams = {
-                "editor": 'wangeditor',
-                "action": "uploadimage"
-            };
-            adEditor.config.withCredentials = false;
-            adEditor.config.hideLinkImg = true;
-            adEditor.config.printLog = false;
-            adEditor.create();
-        }
-
-        /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function () {
-            editAd.adImage = $("#adImage").val();
-            editAd.adName = $("#adName").val();
-            editAd.type = 1;
-            editAd.sort = $("#sort").val();
-            editAd.adUrl = $("#adUrl").val();
-            editAd.adText = $("#adText").val();//encodeURIComponent(adEditor.$txt.html());
         };
 
         /**  验证 function */
@@ -96,25 +59,12 @@ var layIndex;
          * 保存 function
          */
         this.saveFun = function () {
-            var callback = function (btn) {
-                if (btn == "yes") {
-                    obj.setParamFun();
-                    $.ajax({
-                        url: ctxData + "/cms/ad/?date=" + new Date().getTime(),
-                        data: editAd,
-                        method: "post",
-                        success: function (retData) {
-                            xqsight.win.alert("处理成功", retData.code);
-                            if (retData.code == "0") {
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.adMain.editCallBackFun({"adId": $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？", callback);
+            var adId = $.getUrlParam("adId");
+            xqsight.utils.put({url:ctxData + "/cms/ad/",data:$("#adForm").serializeArray(),pk:adId,callFun:function (rep) {
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.adMain.editCallBackFun({"adId":adId});
+                xqsight.win.close();
+            }})
         };
 
         /**
@@ -132,25 +82,10 @@ var layIndex;
             if (adId == undefined || adId == "") {
                 return;
             }
-            $.ajax({
-                url: ctxData + "/cms/ad/" + adId + "?date=" + new Date().getTime,
-                method: "get",
-                success: function (retData) {
-                    if (retData.code == "0") {
-                        var data = retData.data;
-                        editAd.adId = data.adId;
-                        editAd.siteId = data.siteId;
-                        editAd.type = 1;
-                        $("#adImage").val(data.adImage);
-                        $("#imgUrl").attr("src", data.adImage);
-                        $("#adName").val(data.adName);
-                        $("#sort").val(data.sort);
-                        $("#adUrl").val(data.adUrl);
-                        $("#adText").val(data.adText);
-                        //adEditor.$txt.html(data.adText);
-                    }
-                }
-            });
+            xqsight.utils.load({url: ctxData + "/cms/ad/" + adId,callFun:function (rep) {
+                xqsight.utils.fillForm("adForm",rep.data);
+                $("#imgUrl").attr("src", rep.data.adImage);
+            }})
         };
     };
 

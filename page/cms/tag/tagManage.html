@@ -38,25 +38,27 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="tagForm" name="tagForm">
+                        <input id="tagId" name="tagId" type="hidden">
+
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="tagName" class="col-xs-2 control-label">标签名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="tagName" placeholder="标签名称" required>
+                                    <input type="text" class="form-control" id="tagName" name="tagName" placeholder="标签名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
                                 <label for="tagType" class="col-xs-2 control-label">标签类型</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="tagType" value="default" placeholder="标签类型" disabled>
+                                    <input type="text" class="form-control" id="tagType" name="tagType" value="default" placeholder="标签类型" disabled>
                                 </div>
                                 <div class="col-xs-1 red"></div>
                             </div>
                             <div class="form-group">
                                 <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-xs-9">
-                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
+                                    <textarea class="form-control" id="remark" name="remark" placeholder="备注"></textarea>
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>

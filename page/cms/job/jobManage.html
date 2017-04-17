@@ -42,12 +42,15 @@
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row no-margin">
-                    <form id="modelForm" name="modelForm">
+                    <form id="jobForm" name="modelForm">
+                        <input id="jobId" name="jobId" type="hidden">
+                        <input id="positionId" name="positionId" type="hidden">
+
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="jobName" class="col-xs-2 control-label">招聘名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="jobName" placeholder="招聘名称" required>
+                                    <input type="text" class="form-control" id="jobName" name="jobName" placeholder="招聘名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
@@ -66,12 +69,12 @@
                             <div class="form-group">
                                 <label for="jobEmail" class="col-xs-2 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
                                 <div class="col-xs-3">
-                                    <input type="email" class="form-control" id="jobEmail" placeholder="邮箱" required>
+                                    <input type="email" class="form-control" id="jobEmail" name="jobEmail" placeholder="邮箱" required>
                                 </div>
                                 <div class="col-xs-1 red"></div>
                                 <label for="active" class="col-xs-1 control-label">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>
                                 <div class="col-xs-4">
-                                    <select id="active" class="form-control selectpicker" data-live-search="false"  data-style="btn-white" data-width="100%" title="状态">
+                                    <select id="active" name="active" class="form-control selectpicker" data-live-search="false"  data-style="btn-white" data-width="100%" title="状态">
                                         <option value="0" selected>正常</option>
                                         <option value="-1">结束</option>
                                     </select>
@@ -81,12 +84,12 @@
                             <div class="form-group">
                                 <label for="jobDepartment" class="col-xs-2 control-label">部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门</label>
                                 <div class="col-xs-3">
-                                    <input type="text" class="form-control" id="jobDepartment" placeholder="部门" required>
+                                    <input type="text" class="form-control" id="jobDepartment" name="jobDepartment" placeholder="部门" required>
                                 </div>
                                 <div class="col-xs-1 red"></div>
                                 <label for="jobType" class="col-xs-1 control-label">职位类型</label>
                                 <div class="col-xs-4">
-                                    <select id="jobType" class="form-control selectpicker" data-live-search="false"  data-style="btn-white" data-width="100%" title="职位类型">
+                                    <select id="jobType" name="jobType" class="form-control selectpicker" data-live-search="false"  data-style="btn-white" data-width="100%" title="职位类型">
                                         <option value="0" selected>全职</option>
                                         <option value="1">兼职</option>
                                     </select>
@@ -96,31 +99,17 @@
                             <div class="form-group">
                                 <label for="positionDesp" class="col-xs-2 control-label">职位描述</label>
                                 <div class="col-xs-9">
-                                    <textarea id="positionDesp"  style="height:150px;width: 100%;"></textarea>
+                                    <textarea id="positionDesp" name="positionDesp"  style="height:150px;width: 100%;"></textarea>
                                 </div>
                                 <div class="col-xs-1 red"></div>
                             </div>
                             <div class="form-group">
                                 <label for="jobNeed" class="col-xs-2 control-label">岗位需求</label>
                                 <div class="col-xs-9">
-                                    <textarea id="jobNeed"  style="height:150px;width: 100%;"></textarea>
+                                    <textarea id="jobNeed" name="jobNeed"  style="height:150px;width: 100%;"></textarea>
                                 </div>
                                 <div class="col-xs-1 red"></div>
                             </div>
-                           <!-- <div class="form-group">
-                                <label for="jobAddress" class="col-xs-2 control-label">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点</label>
-                                <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="jobAddress" placeholder="地点">
-                                </div>
-                                <div class="col-xs-1 red"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
-                                <div class="col-xs-9">
-                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
-                                </div>
-                                <div class="col-xs-1"></div>
-                            </div>-->
                         </div>
                     </form>
                 </div><!-- /.col -->

@@ -14,8 +14,6 @@ xqsight.nameSpace.reg("xqsight.cms");
          */
         var obj = this;
 
-        var editTag = {};
-
         /**
          * 初始化调用 function
          */
@@ -24,16 +22,6 @@ xqsight.nameSpace.reg("xqsight.cms");
             $("#btn_save").bind("click", obj.validateFun);
             $("#btn_cancel").bind("click", obj.cancelFun);
             obj.formSetValue();
-        };
-
-        /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function () {
-            editTag.tagName = $("#tagName").val();
-            editTag.tagType = $("#tagType").val();
-            editTag.remark = $("#remark").val();
         };
 
         /**
@@ -53,25 +41,12 @@ xqsight.nameSpace.reg("xqsight.cms");
          * 保存 function
          */
         this.saveFun = function () {
-            var callback = function (btn) {
-                if (btn == "yes") {
-                    obj.setParamFun();
-                    $.ajax({
-                        url: ctxData + "/cms/tag/?date=" + new Date().getTime(),
-                        data: editTag,
-                        method:"post",
-                        success: function (retData) {
-                            xqsight.win.alert("处理成功!", retData.code);
-                            if (retData.code == "0") {
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.tagMain.editCallBackFun({"tagId": $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？", callback);
+            var tagId =  $.getUrlParam("tagId");
+            xqsight.utils.put({url:ctxData + "/cms/tag/",data:$("#tagForm").serializeArray(),pk:tagId,callFun:function (rep) {
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.tagMain.editCallBackFun({"tagId": tagId});
+                xqsight.win.close();
+            }})
         };
 
         /**
@@ -89,18 +64,9 @@ xqsight.nameSpace.reg("xqsight.cms");
             if (tagId == undefined || tagId == "") {
                 return;
             }
-            $.ajax({
-                url: ctxData + "/cms/tag/" + tagId + "?date=" + new Date().getTime,
-                method : "get",
-                success: function (retData) {
-                    if (retData.code == "0") {
-                        var data = retData.data;
-                        editTag.tagId = data.tagId;
-                        $("#tagName").val(data.tagName);
-                        $("#remark").val(data.remark);
-                    }
-                }
-            });
+            xqsight.utils.load({url:ctxData + "/cms/tag/" + tagId,callFun:function (rep) {
+                xqsight.utils.fillForm("tagForm",rep.data);
+            }})
         };
     };
 

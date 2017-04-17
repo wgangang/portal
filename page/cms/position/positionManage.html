@@ -38,18 +38,21 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="positionForm" name="positionForm">
+                        <input id="positionId" name="positionId" type="hidden">
+                        <input id="parentId" name="parentId" type="hidden">
+
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="positionName" class="col-xs-2 control-label">职位名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="positionName" placeholder="职位名称" required>
+                                    <input type="text" class="form-control" id="positionName" name="positionName" placeholder="职位名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
                                 <label for="positionCode" class="col-xs-2 control-label">职位编号</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="positionCode" placeholder="职位编号" required>
+                                    <input type="text" class="form-control" id="positionCode" name="positionCode" placeholder="职位编号" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
@@ -65,7 +68,7 @@
                             <div class="form-group">
                                 <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-xs-9">
-                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
+                                    <textarea class="form-control" id="remark" name="remark" placeholder="备注"></textarea>
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>

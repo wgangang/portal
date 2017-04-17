@@ -88,20 +88,10 @@ xqsight.nameSpace.reg("cms.tag");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？", function (btn) {
-                if (btn == "yes") {
-                    $.ajax({
-                        url: ctxData + "/cms/tag/" + selRows[0].tagId + "?date=" + new Date().getTime(),
-                        method: "delete",
-                        success: function (retData) {
-                            xqsight.win.alert("删除成功!", retData.code);
-                            if (retData.code == "0") {
-                                obj.tagTable.ajax.reload();
-                            }
-                        }
-                    });
-                }
-            });
+
+            xqsight.utils.delete({url:ctxData + "/cms/tag/" + selRows[0].tagId,callFun:function () {
+                obj.tagTable.ajax.reload();
+            }})
         }
 
         /**
@@ -117,20 +107,15 @@ xqsight.nameSpace.reg("cms.tag");
                 "paging": false,
                 "sAjaxSource": ctxData + '/cms/tag/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url: sUrl,
-                        method: "get",
-                        data: aoData,
-                        success: function (data) {
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }})
                 },
                 "fnServerParams": function (aoData) {
                     aoData.push(
-                        {"name": "tagName", "value": $("#tagName").val()}
+                        {"name": "filter_LIKES_tag_name", "value": $("#tagName").val()}
                     );
                 },
                 "aoColumnDefs": [

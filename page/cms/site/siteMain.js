@@ -96,21 +96,10 @@ xqsight.nameSpace.reg("cms.site");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？",function(btn){
-                if(btn == "yes"){
-                    $.ajax({
-                        url: ctxData + "/cms/site/delete?date=" + new Date().getTime(),
-                        data: {siteId : selRows[0].siteId },
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                            if(retData.status == "0"){
-                                obj.loadSiteTreeFun();
-                            }
-                        }
-                    });
-                }
-            });
-        }
+            xqsight.utils.delete({url: ctxData + "/cms/site/" + selRows[0].siteId,callFun:function (rep) {
+                obj.loadSiteTreeFun();
+            } });
+        };
 
         /**
          * 加载数据表 function
@@ -123,17 +112,13 @@ xqsight.nameSpace.reg("cms.site");
                 "bInfo" : false,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
                 "bServerSide" : true,
                 "paging":   false,
-                "sAjaxSource": ctxData + '/cms/site/query',
+                "sAjaxSource": ctxData + '/cms/site/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url: sUrl,
-                        data: aoData,
-                        success: function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }});
                 },
                 "fnServerParams": function (aoData) {
                     var parentId = 0;
@@ -141,8 +126,8 @@ xqsight.nameSpace.reg("cms.site");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "siteName", "value": $("#siteName").val() },
-                        { "name": "parentId", "value": parentId }
+                        { "name": "filter_LIKES_site_name", "value": $("#siteName").val() },
+                        { "name": "filter_EQI_parent_id", "value": parentId }
                     );
                 },
                 "aoColumnDefs": [
@@ -207,56 +192,52 @@ xqsight.nameSpace.reg("cms.site");
 
         /*** 加载 tree **/
         this.loadSiteTreeFun = function () {
-            $.ajax({
-                url: ctxData + "/cms/site/querytree?date="+new Date().getTime(),
-                success: function(retData){
-                    if(retData.status == 0){
-                        var treeRoot = [{
-                            name : "系统站点",
-                            id : 0,
-                            children : retData.data
-                        }];
-                        $.fn.zTree.init($("#siteTree"),{
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.siteTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.siteTable.ajax.reload();
-                                    e.preventDefault();
-                                    return false;
-                                }
-                            }
-                        }, treeRoot);
-
-                        obj.siteTree = $.fn.zTree.getZTreeObj("siteTree");
-
-                        if(obj.curSelTree.id != undefined ){
-                            obj.siteTree.selectNode(obj.curSelTree);
-                        }else{
-                            var nodes = obj.siteTree.getNodes();
-                            if (nodes.length>0) {
-                                obj.siteTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+            xqsight.utils.load({url:ctxData + "/cms/site/tree",callFun:function (rep) {
+                var treeRoot = [{
+                    name : "系统站点",
+                    id : 0,
+                    children : rep.data
+                }];
+                $.fn.zTree.init($("#siteTree"),{
+                    check: {
+                        enable: false,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
                         }
-
-                        obj.siteTree.expandAll(true);
-
-                        obj.siteTable.ajax.reload();
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.siteTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.siteTable.ajax.reload();
+                            e.preventDefault();
+                            return false;
+                        }
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, treeRoot);
+
+                obj.siteTree = $.fn.zTree.getZTreeObj("siteTree");
+
+                if(obj.curSelTree.id != undefined ){
+                    obj.siteTree.selectNode(obj.curSelTree);
+                }else{
+                    var nodes = obj.siteTree.getNodes();
+                    if (nodes.length>0) {
+                        obj.siteTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
-        }
+
+                obj.siteTree.expandAll(true);
+
+                obj.siteTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }});
+        };
 
 
         /**

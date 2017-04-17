@@ -22,10 +22,11 @@ xqsight.nameSpace.reg("sys.role");
          */
         this.init = function() {
             obj.loadMenuTreeFun();
+            obj.loadRoleDataFun();
 
-            /*$("#roleName").change(function(){
-                obj.loadAuthMenu( $("#roleName").val());
-            });*/
+            $("#roleName").change(function(){
+                obj.loadAuthMenu();
+            });
 
             //绑定事件
             $("#btn_save").bind("click",obj.validateFun);
@@ -65,19 +66,9 @@ xqsight.nameSpace.reg("sys.role");
          * 保存 function
          */
         this.saveFun = function(){
-            var callback = function(btn){
-                if(btn == "yes"){
-                    var url = ctxData + "/sys/auth/saverolemenu?date=" + new Date().getTime();
-                    $.ajax({
-                        url: url ,
-                        data:  obj.setParamFun(),
-                        success: function(retData){
-                            xqsight.win.alert(retData.msg,retData.status);
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？",callback);
+            xqsight.utils.put({url:ctxData + "/sys/auth/rolemenu",data:obj.setParamFun(),callFun:function (rep) {
+
+            }})
         };
 
         /**
@@ -88,9 +79,9 @@ xqsight.nameSpace.reg("sys.role");
         };
 
         this.loadAuthMenu = function () {
-            xqsight.utils.load({url:ctxData + "/sys/auth/authmenu",data:{ "roleId" : $.getUrlParam("roleId")},callFun:function(){
+            xqsight.utils.load({url:ctxData + "/sys/auth/authmenu",data:{ "roleId" : $("#roleName").val()},callFun:function(rep){
                 obj.menuTree.checkAllNodes(false);
-                $.each(retData.data,function(index,object){
+                $.each(rep.data,function(index,object){
                     var nodes = obj.menuTree.getNodesByParam("id", object.id, null);
                     obj.menuTree.checkNode(nodes[0], true, false);
                 });
@@ -101,30 +92,27 @@ xqsight.nameSpace.reg("sys.role");
          *  获取树选择
          */
         this.loadMenuTreeFun = function(){
-            $.ajax({
-                url: ctxData + "/sys/menu/querytree?date="+new Date().getTime(),
-                success: function(retData){
-                    $.fn.zTree.init($("#menuTree"), {
-                        check: {
-                            enable: true,
-                        },
-                        data: {
-                            simpleData: {
-                                enable:true,
-                                idKey: "id",
-                                pIdKey: "parentId",
-                                rootPId: ""
-                            }
-                        },
-                    }, retData.data);
+            xqsight.utils.load({url: ctxData + "/sys/menu/tree",callFun:function (rep) {
+                $.fn.zTree.init($("#menuTree"), {
+                    check: {
+                        enable: true,
+                    },
+                    data: {
+                        simpleData: {
+                            enable:true,
+                            idKey: "id",
+                            pIdKey: "parentId",
+                            rootPId: ""
+                        }
+                    },
+                }, rep.data);
 
-                    obj.menuTree = $.fn.zTree.getZTreeObj("menuTree");
+                obj.menuTree = $.fn.zTree.getZTreeObj("menuTree");
 
-                    obj.loadAuthMenu();
+                obj.loadAuthMenu();
 
-                    obj.menuTree.expandAll(true);
-                }
-            });
+                obj.menuTree.expandAll(true);
+            }})
         }
 
         /**
@@ -132,31 +120,22 @@ xqsight.nameSpace.reg("sys.role");
          */
         this.loadRoleDataFun = function(){
             var roleId = $.getUrlParam("roleId");
-            $.ajax({
-                type: "POST",
-                dataType : 'jsonp',
-                url:  ctxData + "/sys/role/queryall",
-                success: function(objMsg){
-                    if(objMsg.status == "0"){
-                        $.each(objMsg.data,function(index,role){
-                            var _pinyin = " ";
-                            if(typeof(pinyin) == "function" || typeof(pinyin) == "object")
-                                _pinyin = pinyin.getCamelChars(role.roleName);
+            xqsight.utils.load({url:ctxData + "/sys/role/",callFun:function (rep) {
+                $.each(rep.data,function(index,role){
+                    var _pinyin = " ";
+                    if(typeof(pinyin) == "function" || typeof(pinyin) == "object")
+                        _pinyin = pinyin.getCamelChars(role.roleName);
 
-                            if(roleId != undefined && roleId == role.roleId ){
-                                $("#roleName").append("<option data-tokens='" + _pinyin + "' value='" + role.roleId +"' selected>" + role.roleName + "</option>");
-                            }else{
-                                $("#roleName").append("<option data-tokens='" + _pinyin + "' value='" + role.roleId +"'>" + role.roleName + "</option>");
-                            }
-                        });
-                        $('#roleName').selectpicker('refresh');
-
-                        obj.loadAuthMenu(roleId);
+                    if(roleId != undefined && roleId == role.roleId ){
+                        $("#roleName").append("<option data-tokens='" + _pinyin + "' value='" + role.roleId +"' selected>" + role.roleName + "</option>");
+                    }else{
+                        $("#roleName").append("<option data-tokens='" + _pinyin + "' value='" + role.roleId +"'>" + role.roleName + "</option>");
                     }
-                }
-            });
+                });
+                $('#roleName').selectpicker('refresh');
+                obj.loadAuthMenu(roleId);
+            }})
         }
-
     };
 
     /**

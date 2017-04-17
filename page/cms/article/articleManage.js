@@ -15,8 +15,6 @@ var layIndex;
          */
         var obj = this;
 
-        var editArticle = {};
-
         var artileEditor = {};
 
 
@@ -149,33 +147,18 @@ var layIndex;
 
         /**  保存 function */
         this.saveFun = function () {
-            var callback = function (btn) {
-                if (btn == "yes") {
-                    obj.setParamFun();
-                    $.ajax({
-                        url: ctxData + "/cms/article/?date=" + new Date().getTime(),
-                        data: editArticle,
-                        method : "post",
-                        success: function (retData) {
-                            xqsight.win.alert("处理成功",retData.code);
-                            if (retData.code == "0") {
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.articleMain.editCallBackFun({"articleId": $.getUrlParam("articleId")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？", callback);
+            var articleId = $.getUrlParam("articleId");
+            xqsight.utils.put({url:ctxData + "/cms/article/",data:$("#articleForm").serializeArray(),pk:articleId,callFun:function (rep) {
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.articleMain.editCallBackFun({"articleId":articleId});
+                xqsight.win.close();
+            }})
         };
 
         /**
          * 取消 function
          */
         this.cancelFun = function () {
-            // xqsight.tab.getCurrentIframeContent($.getUrlParam(xqsight.iframeId)).articleMain.artilceTable.ajax.reload()
-            //window.top.index.closeCurrentTab(window.top.$("#tab_article"));
             xqsight.win.close();
         };
 
@@ -187,35 +170,17 @@ var layIndex;
             if (articleId == undefined || articleId == "") {
                 return;
             }
-            $.ajax({
-                method : "get",
-                url: ctxData + "/cms/article/" + articleId + "?date=" + new Date().getTime(),
-                success: function (retData) {
-                    if (retData.code == "0") {
-                        var data = retData.data;
-                        editArticle.articleId = data.articleId;
-                        $("#articleTitle").val(data.articleTitle);
-                        $("#articleDesp").val(data.articleDesp);
-                        $("#articleAuthor").val(data.articleAuthor);
-                        $("#articleSource").val(data.articleSource);
-                        $("#publishTime").val(data.publishTime);
-                        $("#articleImg").val(data.articleImg);
-                        $("#imgArticle").attr("src",data.articleImg);
 
-                        $("#thumbnailImg").val(data.thumbnailImg);
-                        $("#imgThumbnail").attr("src",data.thumbnailImg);
-
-                        $("#department").val(data.department);
-                        $("#articleHit").selectpicker('val', data.articleHit);
-                        artileEditor.$txt.html(data.articleContent);
-                        $.each(data.tags,function(index,object){
-                            var $tag_obj = $('#tags').data('tag');
-                            $tag_obj.add(object);
-                        });
-                        $("#tags").val(data.tags);
-                    }
-                }
-            });
+            xqsight.utils.load({url:ctxData + "/cms/article/" + articleId,callFun:function (rep) {
+                xqsight.utils.fillForm("articleForm",rep.data);
+                $("#imgArticle").attr("src",rep.data.articleImg);
+                $("#imgThumbnail").attr("src",rep.data.thumbnailImg);
+                artileEditor.$txt.html(rep.data.articleContent);
+                $.each(rep.data.tags,function(index,object){
+                    var $tag_obj = $('#tags').data('tag');
+                    $tag_obj.add(object);
+                });
+            }})
         };
     };
 

@@ -76,23 +76,12 @@
                 });
             },
             save: function () {
-                var msg = "处理成功!";
-                if ($.getUrlParam("adId") == undefined || $.getUrlParam("adId") == "") {
-                    msg = "保存成功!";
-                } else {
-                    msg = "修改成功!";
-                }
-                xqsight.utils.put({
-                    url: EventManageMVC.URLs.save,
-                    data: $("#eventForm").serializeArray(),
-                    tipMsg: "确认提交吗？",
-                    msg: msg,
-                    callFun: function (rep) {
-                        var iframeContent = xqsight.tab.getCurrentIframeContent();
-                        iframeContent.eventMain.editCallBackFun({"adId": $.getUrlParam("id")});
-                        xqsight.win.close();
-                    }
-                });
+                var adId = $.getUrlParam("adId");
+                xqsight.utils.put({url:EventManageMVC.URLs.save,data:$("#eventForm").serializeArray(),pk:adId,callFun:function (rep) {
+                    var iframeContent = xqsight.tab.getCurrentIframeContent();
+                    iframeContent.eventMain.editCallBackFun({"adId": adId});
+                    xqsight.win.close();
+                }})
             },
             cancel: function () {
                 xqsight.win.close();
@@ -104,12 +93,9 @@
                 }
                 xqsight.utils.load({
                     url: EventManageMVC.URLs.load + adId, callFun: function (rep) {
-                        if (rep.code == "0") {
-                            var data = rep.data;
-                            xqsight.utils.fillForm("eventForm", data);
-                            EventManageCommon.adEditor.$txt.html(data.adText);
-                            $("#imgUrl").attr("src", data.adImage);
-                        }
+                        xqsight.utils.fillForm("eventForm", rep.data);
+                        EventManageCommon.adEditor.$txt.html(rep.data.adText);
+                        $("#imgUrl").attr("src", rep.data.adImage);
                     }
                 });
             }

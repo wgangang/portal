@@ -40,11 +40,14 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="modelForm" name="modelForm">
+                        <input id="modelId" name="modelId" type="hidden">
+                        <input id="parentId" name="parentId" type="hidden">
+                        <input id="siteId" name="siteId" type="hidden">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label for="siteId" class="col-xs-2 control-label">所属站点</label>
+                                <label for="siteShow" class="col-xs-2 control-label">所属站点</label>
                                 <div class="col-xs-9">
-                                    <div id="siteId" type="selectTree" class="ui-select">
+                                    <div id="siteShow" type="selectTree" class="ui-select">
                                     </div>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
@@ -53,21 +56,21 @@
                             <div class="form-group">
                                 <label for="modelName" class="col-xs-2 control-label">模块名称</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="modelName" placeholder="模块名称" required>
+                                    <input type="text" class="form-control" id="modelName" name="modelName" placeholder="模块名称" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
                                 <label for="modelCode" class="col-xs-2 control-label">模块编号</label>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="modelCode" placeholder="模块编号" required>
+                                    <input type="text" class="form-control" id="modelCode" name="modelCode" placeholder="模块编号" required>
                                 </div>
                                 <div class="col-xs-1 red">*</div>
                             </div>
                             <div class="form-group">
                                 <label for="remark" class="col-xs-2 control-label">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</label>
                                 <div class="col-xs-9">
-                                    <textarea class="form-control" id="remark" placeholder="备注"></textarea>
+                                    <textarea class="form-control" id="remark" name="remark" placeholder="备注"></textarea>
                                 </div>
                                 <div class="col-xs-1"></div>
                             </div>

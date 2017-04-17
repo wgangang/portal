@@ -110,7 +110,7 @@ xqsight.nameSpace.reg("sys.user");
                 "sAjaxSource": ctxData + '/sys/user/page/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
                     xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
-                        fnCallback(rep);
+                        fnCallback(rep.data);
                         //渲染结束重新设置高度
                         parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
                     }});

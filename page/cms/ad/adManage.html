@@ -45,13 +45,17 @@
         <div class="main-content-inner">
             <div class="page-content">
                 <div class="row no-margin">
-                    <form id="modelForm" name="modelForm">
+                    <form id="adForm" name="modelForm">
+                        <input id="adId" name="adId" type="hidden">
+                        <input id="adImage" name="adImage" type="hidden" />
+                        <input id="type" name="type" value="1" type="hidden" />
+
                         <div class="col-xs-9">
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label for="adName" class="col-sm-1 control-label">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="adName" placeholder="名称" required>
+                                        <input type="text" class="form-control" id="adName" name="adName" placeholder="名称" required>
                                     </div>
                                     <div class="col-sm-1 red">*</div>
                                 </div>
@@ -59,21 +63,21 @@
                                 <div class="form-group">
                                     <label for="adText" class="col-sm-1 control-label">展示内容</label>
                                     <div class="col-sm-10">
-                                        <textarea id="adText" style="height:100px;width: 100%"></textarea>
+                                        <textarea id="adText" name="adText" style="height:100px;width: 100%"></textarea>
                                     </div>
                                     <div class="col-sm-1 red"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="sort" class="col-sm-1 control-label">排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="sort" value="1" placeholder="排序">
+                                        <input type="number" class="form-control" id="sort" name="sort" value="1" placeholder="排序">
                                     </div>
                                     <div class="col-sm-1 red"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="adUrl" class="col-sm-1 control-label">连接地址</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="adUrl" placeholder="连接地址">
+                                        <input type="text" class="form-control" id="adUrl" name="adUrl" placeholder="连接地址">
                                     </div>
                                     <div class="col-sm-1 red"></div>
                                 </div>
@@ -83,7 +87,7 @@
 
                         <div class="col-xs-3">
                             <div>
-                                <label for="adImage">图片</label>
+                                <label >图片</label>
                                 <div class="center">
                                     <ul class="ace-thumbnails clearfix">
                                         <!-- #section:pages/gallery -->
@@ -94,7 +98,6 @@
                                                     <i class="ace-icon fa fa-pencil "></i>
                                                 </a>
                                             </div>
-                                            <input type="hidden" id="adImage"/>
                                         </li>
                                     </ul>
                                 </div>

@@ -96,20 +96,9 @@ xqsight.nameSpace.reg("cms.position");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？",function(btn){
-                if(btn == "yes"){
-                    $.ajax({
-                        url: ctxData + "/cms/position/" + selRows[0].positionId + "?date=" + new Date().getTime(),
-                        method : "delete",
-                        success: function(retData){
-                            xqsight.win.alert("删除成功",retData.code);
-                            if(retData.code == "0"){
-                                obj.loadPositionTreeFun();
-                            }
-                        }
-                    });
-                }
-            });
+            xqsight.utils.delete({url:ctxData + "/cms/position/" + selRows[0].positionId,callFun:function (rep) {
+                obj.loadPositionTreeFun();
+            }})
         }
 
         /**
@@ -125,16 +114,11 @@ xqsight.nameSpace.reg("cms.position");
                 "paging":   false,
                 "sAjaxSource": ctxData + '/cms/position/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url: sUrl,
-                        method : "get",
-                        data: aoData,
-                        success: function(data){
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }})
                 },
                 "fnServerParams": function (aoData) {
                     var parentId = 0;
@@ -142,8 +126,8 @@ xqsight.nameSpace.reg("cms.position");
                         parentId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        { "name": "positionName", "value": $("#positionName").val() },
-                        { "name": "parentId", "value": parentId }
+                        { "name": "filter_LIKES_position_name", "value": $("#positionName").val() },
+                        { "name": "filter_EQI_parent_id", "value": parentId }
                     );
                 },
                 "aoColumnDefs": [
@@ -167,10 +151,6 @@ xqsight.nameSpace.reg("cms.position");
                     data: "positionCode",
                     sWidth : "100",
                     sClass : "text-left"
-                },{
-                    data: "sort",
-                    sWidth : "60",
-                    sClass : "text-center"
                 },{
                     data: "createTime",
                     sWidth : "80",
@@ -208,56 +188,51 @@ xqsight.nameSpace.reg("cms.position");
 
         /*** 加载 tree **/
         this.loadPositionTreeFun = function () {
-            $.ajax({
-                url: ctxData + "/cms/position/tree?date="+new Date().getTime(),
-                method : "get",
-                success: function(retData){
-                    if(retData.code == 0){
-                        var treeRoot = [{
-                            name : "系统职位",
-                            id : 0,
-                            children : retData.data
-                        }];
-                        $.fn.zTree.init($("#positionTree"),{
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.positionTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.positionTable.ajax.reload();
-                                    e.preventDefault();
-                                    return false;
-                                }
-                            }
-                        }, treeRoot);
-
-                        obj.positionTree = $.fn.zTree.getZTreeObj("positionTree");
-
-                        if(obj.curSelTree.id != undefined ){
-                            obj.positionTree.selectNode(obj.curSelTree);
-                        }else{
-                            var nodes = obj.positionTree.getNodes();
-                            if (nodes.length>0) {
-                                obj.positionTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+            xqsight.utils.load({url:ctxData + "/cms/position/tree",callFun:function (rep) {
+                var treeRoot = [{
+                    name : "系统职位",
+                    id : 0,
+                    children : rep.data
+                }];
+                $.fn.zTree.init($("#positionTree"),{
+                    check: {
+                        enable: false,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
                         }
-
-                        obj.positionTree.expandAll(true);
-
-                        obj.positionTable.ajax.reload();
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.positionTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.positionTable.ajax.reload();
+                            e.preventDefault();
+                            return false;
+                        }
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, treeRoot);
+
+                obj.positionTree = $.fn.zTree.getZTreeObj("positionTree");
+
+                if(obj.curSelTree.id != undefined ){
+                    obj.positionTree.selectNode(obj.curSelTree);
+                }else{
+                    var nodes = obj.positionTree.getNodes();
+                    if (nodes.length>0) {
+                        obj.positionTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
+
+                obj.positionTree.expandAll(true);
+
+                obj.positionTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }})
         }
 
 

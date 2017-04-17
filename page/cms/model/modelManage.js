@@ -14,8 +14,6 @@ xqsight.nameSpace.reg("xqsight.cms");
          */
         var obj = this;
 
-        var editModel = {};
-
         /**
          * 初始化调用 function
          */
@@ -25,26 +23,19 @@ xqsight.nameSpace.reg("xqsight.cms");
             $("#btn_cancel").bind("click", obj.cancelFun);
 
             //归属站点
-            $("#siteId").ComboBoxTree({
-                url: ctxData + "/cms/site/querytree?date="+new Date().getTime(),
+            $("#siteShow").ComboBoxTree({
+                url: ctxData + "/cms/site/tree?date="+new Date().getTime(),
                 description: "==请选择==",
                 height: "195px",
-                allowSearch: false
+                allowSearch: false,
+                callback:function(data){
+                    $("#siteId").val(data.id);
+                }
             });
 
             obj.formSetValue();
         };
 
-        /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function () {
-            editModel.modelName = $("#modelName").val();
-            editModel.modelCode = $("#modelCode").val();
-            editModel.siteId= $("#siteId").attr("data-value");
-            editModel.remark = $("#remark").val();
-        };
 
         /**
          * 验证 function
@@ -63,30 +54,12 @@ xqsight.nameSpace.reg("xqsight.cms");
          * 保存 function
          */
         this.saveFun = function () {
-            var callback = function (btn) {
-                if (btn == "yes") {
-                    obj.setParamFun();
-                    var url = "";
-                    if ($.getUrlParam("modelId") == undefined || $.getUrlParam("modelId") == "") {
-                        url = ctxData + "/cms/model/save?date=" + new Date().getTime();
-                    } else {
-                        url = ctxData + "/cms/model/update?date=" + new Date().getTime();
-                    }
-                    $.ajax({
-                        url: url,
-                        data: editModel,
-                        success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.modelMain.editCallBackFun({"modelId": $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
-                }
-            };
-            xqsight.win.confirm("确认提交吗？", callback);
+            var modelId = $.getUrlParam("modelId");
+            xqsight.utils.put({url:ctxData + "/cms/model/",data:$("#modelForm").serializeArray(),pk:modelId,callFun:function (rep) {
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.modelMain.editCallBackFun({"modelId": modelId});
+                xqsight.win.close();
+            }})
         };
 
         /**
@@ -102,25 +75,13 @@ xqsight.nameSpace.reg("xqsight.cms");
         this.formSetValue = function () {
             var modelId = $.getUrlParam("modelId");
             if (modelId == undefined || modelId == "") {
-                editModel.parentId = $.getUrlParam("parentId");
+                $("#parentId").val($.getUrlParam("parentId"));
                 return;
             }
-            $.ajax({
-                url: ctxData + "/cms/model/querybyid?date=" + new Date().getTime,
-                data: {"modelId": modelId},
-                success: function (retData) {
-                    if (retData.status == "0") {
-                        var data = retData.data;
-                        editModel.modelId = data.modelId;
-                        editModel.parentId = data.parentId;
-
-                        $("#modelName").val(data.modelName);
-                        $("#modelCode").val(data.modelCode);
-                        $("#remark").val(data.remark);
-                        $("#siteId").ComboBoxTreeSetValue(data.siteId);
-                    }
-                }
-            });
+            xqsight.utils.load({url:ctxData + "/cms/model/" + modelId,callFun:function (rep) {
+                xqsight.utils.fillForm("modelForm",rep.data);
+                $("#siteId").ComboBoxTreeSetValue(rep.data.siteId);
+            }})
         };
     };
 

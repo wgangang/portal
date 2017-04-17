@@ -43,13 +43,18 @@
             <div class="page-content">
                 <div class="row no-margin">
                     <form id="userForm" name="userForm" class="form-auto">
+                        <input id="id" name="id" type="hidden">
+                        <input id="companyId" name="companyId" type="hidden">
+                        <input id="officeId" name="officeId" type="hidden">
+                        <input type="hidden" id="imgUrl" name="imgUrl"/>
+
                         <div class="col-xs-9 no-margin no-padding">
                             <div class="form-horizontal">
 
                                 <div class="form-group">
                                     <label for="companyId" class="col-sm-1 control-label">归属公司</label>
                                     <div class="col-sm-10">
-                                        <div id="companyId" type="selectTree" class="ui-select">
+                                        <div id="companyShow" type="selectTree" class="ui-select">
                                         </div>
                                     </div>
                                     <div class="col-sm-1 red">*</div>
@@ -58,7 +63,7 @@
                                 <div class="form-group">
                                     <label for="officeId" class="col-sm-1 control-label">归属部门</label>
                                     <div class="col-sm-10">
-                                        <div id="officeId" type="selectTree" class="ui-select">
+                                        <div id="officeShow" type="selectTree" class="ui-select">
                                         </div>
                                     </div>
                                     <div class="col-sm-1 red">*</div>
@@ -67,7 +72,7 @@
                                 <div class="form-group">
                                     <label for="userCode" class="col-sm-1 control-label">用户编号</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="userCode" placeholder="用户编号">
+                                        <input type="text" class="form-control" id="userCode" name="userCode" placeholder="用户编号">
                                     </div>
                                     <div class="col-sm-1 red">*</div>
                                 </div>
@@ -75,7 +80,7 @@
                                 <div class="form-group">
                                     <label for="userName" class="col-sm-1 control-label">用&nbsp;&nbsp;户&nbsp;&nbsp;名</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="userName" placeholder="用户名">
+                                        <input type="text" class="form-control" id="userName" name="userName" placeholder="用户名">
                                     </div>
                                     <div class="col-sm-1 red">*</div>
                                 </div>
@@ -83,13 +88,13 @@
                                 <div class="form-group">
                                     <label for="userBorn" class="col-sm-1 control-label">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="userBorn" placeholder="生日">
+                                        <input type="text" class="form-control" id="userBorn" name="userBorn" placeholder="生日">
                                     </div>
                                     <div class="col-sm-1 red"></div>
 
                                     <label for="sex" class="col-sm-1 control-label">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
                                     <div class="col-sm-4">
-                                        <select id="sex" class="form-control selectpicker" data-style="btn-white"
+                                        <select id="sex" name="sex" class="form-control selectpicker" data-style="btn-white"
                                                 data-width="100%" title="性别" required>
                                             <option value="1" selected>男</option>
                                             <option value="2">女</option>
@@ -102,7 +107,7 @@
                                 <div class="form-group">
                                     <label for="cellPhone" class="col-sm-1 control-label">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="cellPhone" placeholder="电话">
+                                        <input type="text" class="form-control" id="cellPhone" name="cellPhone" placeholder="电话">
                                     </div>
                                     <div class="col-sm-1 red">*</div>
                                 </div>
@@ -111,7 +116,7 @@
                                 <div class="form-group">
                                     <label for="email" class="col-sm-1 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="email" placeholder="邮箱">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="邮箱">
                                     </div>
                                     <div class="col-sm-1 red">*</div>
                                 </div>
@@ -125,13 +130,12 @@
                                     <ul class="ace-thumbnails clearfix">
                                         <!-- #section:pages/gallery -->
                                         <li>
-                                            <img id="imgUrl" width="150" height="150" alt="150x150" src="http://placehold.it/150x150">
+                                            <img id="userImage" width="150" height="150" alt="150x150" src="http://placehold.it/150x150">
                                             <div class="tools tools-bottom">
                                                 <a href="javascript:void(0);" id="btn-upload-pic">
                                                     <i class="ace-icon fa fa-pencil "></i>
                                                 </a>
                                             </div>
-                                            <input type="hidden" id="userImage"/>
                                         </li>
                                     </ul>
                                 </div>

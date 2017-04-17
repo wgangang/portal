@@ -97,20 +97,10 @@ xqsight.nameSpace.reg("cms.job");
                 xqsight.win.alert("请选择修改的数据");
                 return;
             }
-            xqsight.win.confirm("确认删除吗？", function (btn) {
-                if (btn == "yes") {
-                    $.ajax({
-                        url: ctxData + "/cms/job/" + selRows[0].jobId + "?date=" + new Date().getTime(),
-                        method : "delete",
-                        success: function (retData) {
-                            xqsight.win.alert("删除成功!", retData.code);
-                            if (retData.code == "0") {
-                                obj.jobTable.ajax.reload();
-                            }
-                        }
-                    });
-                }
-            });
+
+            xqsight.utils.delete({url:ctxData + "/cms/job/" + selRows[0].jobId,callFun:function () {
+                obj.jobTable.ajax.reload();
+            }})
         }
 
         this.stopFun = function () {
@@ -119,20 +109,9 @@ xqsight.nameSpace.reg("cms.job");
                 xqsight.win.alert("请选择停止的数据");
                 return;
             }
-            xqsight.win.confirm("确认停止吗？", function (btn) {
-                if (btn == "yes") {
-                    $.ajax({
-                        url: ctxData + "/cms/job/logic/" + selRows[0].jobId + "?date=" + new Date().getTime(),
-                        method : "delete",
-                        success: function (retData) {
-                            xqsight.win.alert("停止成功!", retData.code);
-                            if (retData.code == "0") {
-                                obj.jobTable.ajax.reload();
-                            }
-                        }
-                    });
-                }
-            });
+            xqsight.utils.delete({url:ctxData + "/cms/job/logic/" + selRows[0].jobId,tipMsg:"确认停止吗？",msg:"停止成功!",callFun:function () {
+                obj.jobTable.ajax.reload();
+            }})
         }
 
 
@@ -149,16 +128,11 @@ xqsight.nameSpace.reg("cms.job");
                 "paging": false,
                 "sAjaxSource": ctxData + '/cms/job/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {
-                    $.ajax({
-                        url: sUrl,
-                        method : "get",
-                        data: aoData,
-                        success: function (data) {
-                            fnCallback(data);
-                            //渲染结束重新设置高度
-                            parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
-                        }
-                    });
+                    xqsight.utils.load({url:sUrl,data:aoData,callFun:function (rep) {
+                        fnCallback(rep);
+                        //渲染结束重新设置高度
+                        parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                    }})
                 },
                 "fnServerParams": function (aoData) {
                     var positionId = 0;
@@ -166,9 +140,8 @@ xqsight.nameSpace.reg("cms.job");
                         positionId = obj.curSelTree.id;
                     }
                     aoData.push(
-                        {"name": "jobName", "value": $("#jobName").val()},
-                        //{ "name": "jobCode", "value": $("#jobCode").val() },
-                        {"name": "positionId", "value": positionId}
+                        {"name": "filter_LIKES_job_name", "value": $("#jobName").val()},
+                        {"name": "filter_EQI_position_id", "value": positionId}
                     );
                 },
                 "aoColumnDefs": [
@@ -239,48 +212,43 @@ xqsight.nameSpace.reg("cms.job");
 
         /*** 加载 tree **/
         this.loadPositionTreeFun = function () {
-            $.ajax({
-                url: ctxData + "/cms/position/tree?date=" + new Date().getTime(),
-                method : "get",
-                success: function (retData) {
-                    if (retData.code == 0) {
-                        $.fn.zTree.init($("#positionTree"), {
-                            check: {
-                                enable: false,
-                            },
-                            data: {
-                                simpleData: {
-                                    enable: true
-                                }
-                            },
-                            callback: {
-                                onClick: function onClick(e, treeId, treeNode) {
-                                    obj.positionTree.selectNode(treeNode);
-                                    obj.curSelTree = treeNode;
-                                    obj.jobTable.ajax.reload();
-                                    return false;
-                                }
-                            }
-                        }, retData.data);
-
-                        obj.positionTree = $.fn.zTree.getZTreeObj("positionTree");
-
-                        if (obj.curSelTree.id != undefined) {
-                            obj.positionTree.selectNode(obj.curSelTree);
-                        } else {
-                            var nodes = obj.positionTree.getNodes();
-                            if (nodes.length > 0) {
-                                obj.positionTree.selectNode(nodes[0]);
-                                obj.curSelTree = nodes[0];
-                            }
+            xqsight.utils.load({url:ctxData + "/cms/position/tree",callFun:function (rep) {
+                $.fn.zTree.init($("#positionTree"), {
+                    check: {
+                        enable: false,
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
                         }
-                        obj.positionTree.expandAll(true);
-                        obj.jobTable.ajax.reload();
+                    },
+                    callback: {
+                        onClick: function onClick(e, treeId, treeNode) {
+                            obj.positionTree.selectNode(treeNode);
+                            obj.curSelTree = treeNode;
+                            obj.jobTable.ajax.reload();
+                            return false;
+                        }
                     }
-                    //渲染结束重新设置高度
-                    parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+                }, rep.data);
+
+                obj.positionTree = $.fn.zTree.getZTreeObj("positionTree");
+
+                if (obj.curSelTree.id != undefined) {
+                    obj.positionTree.selectNode(obj.curSelTree);
+                } else {
+                    var nodes = obj.positionTree.getNodes();
+                    if (nodes.length > 0) {
+                        obj.positionTree.selectNode(nodes[0]);
+                        obj.curSelTree = nodes[0];
+                    }
                 }
-            });
+                obj.positionTree.expandAll(true);
+                obj.jobTable.ajax.reload();
+
+                //渲染结束重新设置高度
+                parent.xqsight.common.setIframeHeight($.getUrlParam(xqsight.iframeId));
+            }})
         }
 
         /**

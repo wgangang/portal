@@ -16,7 +16,7 @@ var layIndex;
          * @type {xqsight.pmpf}
          */
         var obj = this;
-        var editUser = {};
+
         /**
          * 初始化调用 function
          */
@@ -27,24 +27,26 @@ var layIndex;
             $("#btn_cancel").bind("click", obj.cancelFun);
             //归属公司
             $("#companyShow").ComboBoxTree({
-                url: ctxData + "/sys/office/tree?filter_EQI_office_typ=1",
+                url: ctxData + "/sys/office/tree?filter_EQI_office_type=1",
                 description: "==请选择==",
                 height: "195px",
                 allowSearch: false,
                 callback:function(data){
                     $("#companyId").val(data.id);
+                    $("#officeIdDiv").show();
+                    $("#officeShow").ComboBoxTree({
+                        url: ctxData + "/sys/office/tree?filter_EQI_office_type=2&filter_EQI_parent_id="+data.id,
+                        description: "==请选择==",
+                        height: "195px",
+                        allowSearch: false,
+                        callback:function(data){
+                            $("#officeId").val(data.id);
+                        }
+                    });
                 }
             });
             //
-            $("#officeShow").ComboBoxTree({
-                url: ctxData + "/sys/office/tree?filter_EQI_office_typ=2",
-                description: "==请选择==",
-                height: "195px",
-                allowSearch: false,
-                callback:function(data){
-                    $("#officeId").val(data.id);
-                }
-            });
+
             $("#btn-upload-pic").on("click", function () {
                 layIndex = layer.open({
                     type: 2,
@@ -64,23 +66,6 @@ var layIndex;
         };
 
         /**
-         * 设置参数 function
-         * @returns {string}
-         */
-        this.setParamFun = function () {
-            editUser.companyId = $("#companyId").attr("data-value");
-            editUser.officeId = $("#officeId").attr("data-value");
-            editUser.userCode = $("#userCode").val();
-            editUser.userName = $("#userName").val();
-            editUser.userBorn = $("#userBorn").val();
-            editUser.sex = $("#sex").val();
-            editUser.imgUrl = $("#userImage").val();
-            editUser.cellPhone = $("#cellPhone").val();
-            editUser.email = $("#email").val();
-            editUser.remark = $("#remark").val();
-        };
-
-        /**
          * 验证 function
          */
         this.validateFun = function () {
@@ -97,37 +82,16 @@ var layIndex;
          * 保存 function
          */
         this.saveFun = function () {
-            var callback = function (btn) {
-                if (btn == "yes") {
-                    obj.setParamFun();
-                    var url = "";
-                    var flag = true;
-                    if ($.getUrlParam("id") == undefined || $.getUrlParam("id") == "") {
-                        url = ctxData + "/sys/user/save?date=" + new Date().getTime();
-                    } else {
-                        flag = false;
-                        url = ctxData + "/sys/user/update?date=" + new Date().getTime();
-                    }
-                    $.ajax({
-                        url: url,
-                        data: editUser,
-                        type: "post",
-                        success: function (retData) {
-                            xqsight.win.alert(retData.msg, retData.status);
-                            if (retData.status == "0") {
-                                if (flag) {
-                                    xqsight.win.alert("您的默认密码是:!password");
-                                }
+            var id = $.getUrlParam("id");
 
-                                var iframeContent = xqsight.tab.getCurrentIframeContent();
-                                iframeContent.userMain.editCallBackFun({"userId": $.getUrlParam("id")});
-                                xqsight.win.close();
-                            }
-                        }
-                    });
+            xqsight.utils.put({url:ctxData + "/sys/user/",data:$("#userForm").serializeArray(),pk:id,callFun:function (rep) {
+                if($.getUrlParam("id") == undefined || $.getUrlParam("id") == ""){
+                    xqsight.win.alert("您的默认密码是:!password");
                 }
-            };
-            xqsight.win.confirm("确认提交吗？", callback);
+                var iframeContent = xqsight.tab.getCurrentIframeContent();
+                iframeContent.userMain.editCallBackFun({"userId": $.getUrlParam("id")});
+                xqsight.win.close();
+            }})
         };
 
         /**
@@ -145,29 +109,14 @@ var layIndex;
             if (id == undefined || id == "") {
                 return;
             }
-            $.ajax({
-                "url": ctxData + "/sys/user/querybyid?id=" + id + "&date=" + new Date().getTime,
-                "success": function (retData) {
-                    if (retData.status == "0") {
-                        var data = retData.data;
-                        editUser.id = data.id;
-                        editUser.orgId = data.orgId;
 
-                        $("#companyId").ComboBoxTreeSetValue(data.companyId);
-                        $("#officeId").ComboBoxTreeSetValue(data.officeId);
-                        $("#userName").val(data.userName);
-                        $("#userCode").val(data.userCode);
-                        $("#userBorn").val(data.userBorn);
-                        $("#userImage").val(data.imgUrl);
-                        $("#imgUrl").attr("src", data.imgUrl)
-                        $("#cellPhone").val(data.cellPhone);
-                        $("#email").val(data.email);
-                        $("#sex").selectpicker('val', data.sex);
-                        $("#remark").val(data.remark);
-
-                    }
-                }
-            });
+            xqsight.utils.load({url:ctxData + "/sys/user/"+id,callFun:function (rep) {
+                xqsight.utils.fillForm("userForm",rep.data);
+                $("#companyShow").ComboBoxTreeSetValue(data.companyId);
+                $("#officeIdShow").ComboBoxTreeSetValue(data.officeId);
+                $("#userImage").attr("src", rep.data.imgUrl)
+                $("#officeIdDiv").show();
+            }})
         }
 
     };

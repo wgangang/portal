@@ -34,18 +34,18 @@ var layIndex;
                 callback:function(data){
                     $("#companyId").val(data.id);
                     $("#officeIdDiv").show();
-                    $("#officeShow").ComboBoxTree({
-                        url: ctxData + "/sys/office/tree?filter_EQI_office_type=2&filter_EQI_parent_id="+data.id,
-                        description: "==请选择==",
-                        height: "195px",
-                        allowSearch: false,
-                        callback:function(data){
-                            $("#officeId").val(data.id);
-                        }
-                    });
                 }
             });
             //
+            $("#officeShow").ComboBoxTree({
+                url: ctxData + "/sys/office/tree?filter_EQI_office_type=2",//&filter_EQI_parent_id=",
+                description: "==请选择==",
+                height: "195px",
+                allowSearch: false,
+                callback:function(data){
+                    $("#officeId").val(data.id);
+                }
+            });
 
             $("#btn-upload-pic").on("click", function () {
                 layIndex = layer.open({
@@ -112,10 +112,9 @@ var layIndex;
 
             xqsight.utils.load({url:ctxData + "/sys/user/"+id,callFun:function (rep) {
                 xqsight.utils.fillForm("userForm",rep.data);
-                $("#companyShow").ComboBoxTreeSetValue(data.companyId);
-                $("#officeIdShow").ComboBoxTreeSetValue(data.officeId);
+                $("#companyShow").ComboBoxTreeSetValue(rep.data.companyId);
+                $("#officeShow").ComboBoxTreeSetValue(rep.data.officeId);
                 $("#userImage").attr("src", rep.data.imgUrl)
-                $("#officeIdDiv").show();
             }})
         }
 
@@ -132,8 +131,8 @@ var layIndex;
 var userManage = new sys.user.userManage();
 
 var _imgCallBack = function (data) {
-    $("#userImage").val(data);
-    $("#imgUrl").attr("src", data);
+    $("#imgUrl").val(data.url);
+    $("#userImage").attr("src", data.url);
     layer.close(layIndex)
 }
 

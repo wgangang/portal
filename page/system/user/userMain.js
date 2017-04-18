@@ -161,7 +161,7 @@ xqsight.nameSpace.reg("sys.user");
                         else{return "未知"}
                     }
                 },{
-                    data : "cellphone",
+                    data : "cellPhone",
                     sWidth : "80",
                     sClass : "text-center"
                 },{

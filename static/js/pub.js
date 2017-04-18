@@ -251,6 +251,7 @@ xqsight.utils = {
                     case "hidden":
                     case "number":
                     case "email":
+                    case "tel":
                         $ctrls.val(value);
                         break;
                     case "radio":

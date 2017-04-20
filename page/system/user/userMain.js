@@ -96,16 +96,12 @@ xqsight.nameSpace.reg("sys.user");
          */
         this.loadUserTableFun = function(){
             var record_table = $("#user-table").DataTable({
-                "oLanguage" : { // 汉化
-                    sUrl : xqsight.utils.getServerPath("dataTableLocal")
-                },
                 "bAutoWidth" : false,
                 "bFilter" : false,// 搜索栏
                 "bLengthChange" : false,// 每行显示记录数
                 "iDisplayLength" : 15,// 每页显示行数
                 "bSort" : false,
                 "bInfo" : true,// Showing 1 to 10 of 23 entries 总记录数没也显示多少等信息
-                "sPaginationType" : "full_numbers", // 分页，一共两种样式 另一种为two_button // 是datatables默认
                 "bServerSide" : true,
                 "sAjaxSource": ctxData + '/sys/user/page/',
                 "fnServerData": function (sUrl, aoData, fnCallback) {

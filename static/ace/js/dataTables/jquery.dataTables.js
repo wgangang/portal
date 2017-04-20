@@ -6272,16 +6272,46 @@
 			/* Language definitions */
 			var oLanguage = oSettings.oLanguage;
 			$.extend( true, oLanguage, oInit.oLanguage );
-			
-			if ( oLanguage.sUrl !== "" )
+
+			if ( oLanguage.sUrl == undefined || oLanguage.sUrl == "" )
 			{
 				/* Get the language definitions from a file - because this Ajax call makes the language
 				 * get async to the remainder of this function we use bInitHandedOff to indicate that
 				 * _fnInitialise will be fired by the returned Ajax handler, rather than the constructor
 				 */
-				$.ajax( {
+                var zn_ch_json = {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                };
+                _fnLanguageCompat( zn_ch_json );
+                _fnCamelToHungarian( defaults.oLanguage, zn_ch_json );
+                $.extend( true, oLanguage, zn_ch_json );
+                _fnInitialise( oSettings );
+
+				/*$.ajax( {
 					dataType: 'json',
-					url: oLanguage.sUrl,
+					method:"get",
+					url: dataJson,
 					success: function ( json ) {
 						_fnLanguageCompat( json );
 						_fnCamelToHungarian( defaults.oLanguage, json );
@@ -6292,7 +6322,7 @@
 						// Error occurred loading language file, continue on as best we can
 						_fnInitialise( oSettings );
 					}
-				} );
+				} );*/
 				bInitHandedOff = true;
 			}
 			
